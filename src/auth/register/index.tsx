@@ -18,9 +18,12 @@ const useStyles = makeStyles({
   root: {
     maxWidth: 345,
   },
+  textField: {
+    marginBottom: "16px",
+  },
 });
 
-export const Signup = () => {
+export const RegisterPage = () => {
   const { fields, submit, eachValid } = useForm(registerForm);
   const responseFromServer = useStore($registerResponseFromServer);
   const pending = useStore(registerUserFx.pending);
@@ -38,6 +41,7 @@ export const Signup = () => {
       </Typography>
       <form onSubmit={onSumbit}>
         <TextField
+          className={classes.textField}
           id="email"
           label="Почта"
           variant="outlined"
@@ -50,6 +54,7 @@ export const Signup = () => {
           })}
         </div>
         <TextField
+          className={classes.textField}
           id="password"
           label="Пароль"
           variant="outlined"
@@ -63,6 +68,7 @@ export const Signup = () => {
           })}
         </div>
         <TextField
+          className={classes.textField}
           id="firstName"
           label="Имя"
           variant="outlined"
@@ -70,6 +76,7 @@ export const Signup = () => {
           onChange={(e) => fields.firstName.onChange(e.target.value)}
         />
         <TextField
+          className={classes.textField}
           id="lastName"
           label="Фамилия"
           variant="outlined"
@@ -84,7 +91,7 @@ export const Signup = () => {
         >
           Зарегистироваться
         </Button>
-        <div>{responseFromServer}</div>
+        {responseFromServer && <div>responseFromServer</div>}
       </form>
     </Card>
   );

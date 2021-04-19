@@ -1,6 +1,7 @@
-import { Signup } from "./auth/signup";
+import { RegisterPage } from "./auth/register";
 import { renderRoutes } from "react-router-config";
 import { MainPage } from "./App";
+import { LoginPage } from "./auth/login";
 
 const routes = () => [
   {
@@ -8,11 +9,15 @@ const routes = () => [
     exact: true,
     component: MainPage,
   },
-
   {
-    path: "/signup",
+    path: "/register",
     exact: true,
-    component: Signup,
+    component: RegisterPage,
+  },
+  {
+    path: "/login",
+    exact: true,
+    component: LoginPage,
   },
 ];
 
