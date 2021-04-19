@@ -1,13 +1,19 @@
 import {
   Button,
   Card,
+  FormControl,
+  InputLabel,
   makeStyles,
   TextField,
   Typography,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { useForm } from "effector-forms/dist";
 import { useStore } from "effector-react";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import {
   $registerResponseFromServer,
   registerForm,
@@ -16,16 +22,34 @@ import {
 
 const useStyles = makeStyles({
   root: {
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
     maxWidth: 345,
+    padding: "2rem",
+    width: "42rem",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
   },
   textField: {
-    marginBottom: "16px",
+    marginBottom: "2rem",
+    width: "100%",
   },
 });
 
 export const RegisterPage = () => {
   const { fields, submit, eachValid } = useForm(registerForm);
   const responseFromServer = useStore($registerResponseFromServer);
+  const [showPassword, setShowPassword] = useState(false);
   const pending = useStore(registerUserFx.pending);
   const classes = useStyles();
 
@@ -34,65 +58,101 @@ export const RegisterPage = () => {
     submit();
   };
 
+  const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
+
   return (
-    <Card className={classes.root}>
-      <Typography gutterBottom variant="h4" component="h2" align="center">
-        signup
-      </Typography>
-      <form onSubmit={onSumbit}>
-        <TextField
-          className={classes.textField}
-          id="email"
-          label="Почта"
-          variant="outlined"
-          value={fields.email.value}
-          onChange={(e) => fields.email.onChange(e.target.value)}
-        />
-        <div>
-          {fields.email.errorText({
-            email: "Введите корректный email",
-          })}
-        </div>
-        <TextField
-          className={classes.textField}
-          id="password"
-          label="Пароль"
-          variant="outlined"
-          type="password"
-          value={fields.password.value}
-          onChange={(e) => fields.password.onChange(e.target.value)}
-        />
-        <div>
-          {fields.password.errorText({
-            required: "Поле пароль не должно быть пустым",
-          })}
-        </div>
-        <TextField
-          className={classes.textField}
-          id="firstName"
-          label="Имя"
-          variant="outlined"
-          value={fields.firstName.value}
-          onChange={(e) => fields.firstName.onChange(e.target.value)}
-        />
-        <TextField
-          className={classes.textField}
-          id="lastName"
-          label="Фамилия"
-          variant="outlined"
-          value={fields.lastName.value}
-          onChange={(e) => fields.lastName.onChange(e.target.value)}
-        />
-        <Button
-          color="primary"
-          variant="outlined"
-          type="submit"
-          disabled={!eachValid || pending}
-        >
-          Зарегистироваться
-        </Button>
-        {responseFromServer && <div>responseFromServer</div>}
-      </form>
-    </Card>
+    <div className={classes.root}>
+      <Card className={classes.card}>
+        <Typography gutterBottom variant="h5" component="h4" align="center">
+          Регистрация
+        </Typography>
+        <form onSubmit={onSumbit}>
+          <TextField
+            className={classes.textField}
+            id="email"
+            label="Почта"
+            variant="outlined"
+            size="small"
+            value={fields.email.value}
+            onChange={(e) => fields.email.onChange(e.target.value)}
+          />
+          <div>
+            {fields.email.errorText({
+              email: "Введите корректный email",
+            })}
+          </div>
+          <FormControl
+            className={classes.textField}
+            variant="outlined"
+            size="small"
+          >
+            <InputLabel htmlFor="outlined-adornment-password">
+              Пароль
+            </InputLabel>
+            <OutlinedInput
+              autoComplete="false"
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              value={fields.password.value}
+              onChange={(e) => fields.password.onChange(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    size="small"
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={70}
+            />
+          </FormControl>
+
+          <div>
+            {fields.password.errorText({
+              required: "Поле пароль не должно быть пустым",
+            })}
+          </div>
+          <TextField
+            className={classes.textField}
+            id="firstName"
+            label="Имя"
+            variant="outlined"
+            size="small"
+            value={fields.firstName.value}
+            onChange={(e) => fields.firstName.onChange(e.target.value)}
+          />
+          <TextField
+            className={classes.textField}
+            id="lastName"
+            label="Фамилия"
+            variant="outlined"
+            size="small"
+            value={fields.lastName.value}
+            onChange={(e) => fields.lastName.onChange(e.target.value)}
+          />
+          <Button
+            color="primary"
+            variant="outlined"
+            type="submit"
+            fullWidth
+            disabled={!eachValid || pending}
+          >
+            Зарегистироваться
+          </Button>
+          {responseFromServer && (
+            <Typography color="error" component="p" align="center">
+              responseFromServer
+            </Typography>
+          )}
+        </form>
+      </Card>
+    </div>
   );
 };
