@@ -41,8 +41,11 @@ const useStyles = makeStyles({
     width: "100%",
   },
   textField: {
-    marginBottom: "2rem",
+    marginTop: "2rem",
     width: "100%",
+  },
+  button: {
+    marginTop: "2rem",
   },
 });
 
@@ -65,7 +68,7 @@ export const RegisterPage = () => {
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
-        <Typography gutterBottom variant="h5" component="h4" align="center">
+        <Typography variant="h5" component="h4" align="center">
           Регистрация
         </Typography>
         <form onSubmit={onSumbit}>
@@ -78,11 +81,12 @@ export const RegisterPage = () => {
             value={fields.email.value}
             onChange={(e) => fields.email.onChange(e.target.value)}
           />
-          <div>
+          <Typography color="error" component="p">
             {fields.email.errorText({
               email: "Введите корректный email",
             })}
-          </div>
+          </Typography>
+
           <FormControl
             className={classes.textField}
             variant="outlined"
@@ -113,12 +117,12 @@ export const RegisterPage = () => {
               labelWidth={70}
             />
           </FormControl>
-
-          <div>
+          <Typography color="error" component="p">
             {fields.password.errorText({
               required: "Поле пароль не должно быть пустым",
             })}
-          </div>
+          </Typography>
+
           <TextField
             className={classes.textField}
             id="firstName"
@@ -128,6 +132,7 @@ export const RegisterPage = () => {
             value={fields.firstName.value}
             onChange={(e) => fields.firstName.onChange(e.target.value)}
           />
+
           <TextField
             className={classes.textField}
             id="lastName"
@@ -137,7 +142,9 @@ export const RegisterPage = () => {
             value={fields.lastName.value}
             onChange={(e) => fields.lastName.onChange(e.target.value)}
           />
+
           <Button
+            className={classes.button}
             color="primary"
             variant="outlined"
             type="submit"

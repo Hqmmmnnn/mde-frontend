@@ -1,3 +1,9 @@
+import { CylinderQuantityCheckbox } from "../components/cylinderQuantity";
+import { FlangeCheckbox } from "../components/flangeType";
+import { ManufacturersCheckBox } from "../components/manufacturers";
+import { RotationSpeedCheckbox } from "../components/rotation-speed";
+import { FacetValue } from "../engines_search/model";
+
 export interface Engine {
   id: number;
   model: string;
@@ -43,15 +49,15 @@ export interface Engine {
 
 export interface EngineFilter {
   model: string;
-  manufacturerName: string;
-  powerRating: number | number[];
-  rotationSpeed: number;
-  cylinderQuantity: number;
-  flangeType: string;
-  weightDryNoImplements: string;
-  length: string;
-  width: string;
-  height: string;
+  manufacturerName: ManufacturersCheckBox;
+  powerRating: FacetValue;
+  rotationSpeed: RotationSpeedCheckbox;
+  cylinderQuantity: CylinderQuantityCheckbox;
+  flangeType: FlangeCheckbox;
+  weightDryNoImplements: FacetValue;
+  length: FacetValue;
+  width: FacetValue;
+  height: FacetValue;
   imoEcoStandard: string;
   epaEcoStandard: string;
   euEcoStandard: string;

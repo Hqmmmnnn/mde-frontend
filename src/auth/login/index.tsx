@@ -37,8 +37,11 @@ const useStyles = makeStyles({
     width: "100%",
   },
   textField: {
-    marginBottom: "2rem",
+    marginTop: "2rem",
     width: "100%",
+  },
+  button: {
+    marginTop: "2rem",
   },
 });
 
@@ -64,7 +67,7 @@ export const LoginPage = () => {
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
-        <Typography gutterBottom variant="h5" component="h4" align="center">
+        <Typography variant="h5" component="h4" align="center">
           Вход
         </Typography>
 
@@ -111,6 +114,7 @@ export const LoginPage = () => {
           </FormControl>
 
           <Button
+            className={classes.button}
             color="primary"
             variant="outlined"
             type="submit"

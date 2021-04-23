@@ -31,6 +31,7 @@ export const EngineSearch = () => {
         }}
       />
       <IconButton
+        size="small"
         type="submit"
         className={classes.iconButton}
         aria-label="search"
