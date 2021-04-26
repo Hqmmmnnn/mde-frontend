@@ -1,9 +1,6 @@
 import { combine, createEffect, createEvent, createStore, Store } from "effector";
 import { Engine, EngineFilter } from "../api/Engines";
-import { cylinderQuantityInitialValue } from "../components/cylinderQuantity";
-import { flangeTypeInitialState } from "../components/flangeType";
-import { manufacturersInitialValue } from "../components/manufacturers";
-import { rotationSpeedInitialState } from "../components/rotation-speed";
+import { getCheckboxData, getCheckboxWithSearchData } from "../components/checkbox/model";
 
 export const getEnginesFx = createEffect<string, Engine[], Error>(async (queryParams) => {
   const req = await fetch(`/engines${queryParams}`);
@@ -68,6 +65,7 @@ const $lastFetchedEngineId = createStore<number>(0).on(
 export type FacetValue = {
   from: number;
   to: number;
+  checked: boolean;
 };
 
 export const getFacetData = (initialState: FacetValue) => {
@@ -76,7 +74,7 @@ export const getFacetData = (initialState: FacetValue) => {
   const facetFromToChanged = createEvent<FacetValue>();
 
   const handleFromToChange = (e: any, newValue: any) => {
-    facetFromToChanged({ from: newValue[0], to: newValue[1] });
+    facetFromToChanged({ from: newValue[0], to: newValue[1], checked: true });
   };
 
   const handleFromChange = (e: any) => {
@@ -91,10 +89,12 @@ export const getFacetData = (initialState: FacetValue) => {
     .on(facetFromChanged, ({ to }, payload) => ({
       from: payload,
       to,
+      checked: true,
     }))
     .on(facetToChanged, ({ from }, payload) => ({
       from,
       to: payload,
+      checked: true,
     }))
     .on(facetFromToChanged, (_, payload) => payload);
 
@@ -113,48 +113,28 @@ export type FacetData = {
   $facetStore: Store<FacetValue>;
 };
 
-export const powerRating: FacetData = getFacetData({ from: 1000, to: 2000 });
-export const lengthData: FacetData = getFacetData({ from: 2000, to: 3000 });
-export const widthData: FacetData = getFacetData({ from: 2000, to: 4000 });
-export const heightData: FacetData = getFacetData({ from: 2000, to: 4000 });
+export const powerRating: FacetData = getFacetData({ from: 1000, to: 2000, checked: false });
+export const lengthData: FacetData = getFacetData({ from: 2000, to: 3000, checked: false });
+export const widthData: FacetData = getFacetData({ from: 2000, to: 4000, checked: false });
+export const heightData: FacetData = getFacetData({ from: 2000, to: 4000, checked: false });
 export const weightDryNoImplementsData: FacetData = getFacetData({
   from: 3000,
   to: 5000,
+  checked: false,
 });
 
-export const getCheckBoxData = function <T>(initialState: T) {
-  const checkBoxChanged = createEvent<{ name: string; value: boolean }>();
-
-  const handleCheckBoxChange = checkBoxChanged.prepend((e: any) => ({
-    name: e.target.name,
-    value: e.target.checked,
-  }));
-
-  const $store = createStore<T>(initialState).on(
-    checkBoxChanged,
-    (state, { name, value }: { name: string; value: boolean }) => {
-      return {
-        ...state,
-        [name]: value,
-      };
-    }
-  );
-
-  return { $store, handleCheckBoxChange };
-};
-
-export const manufacturersData = getCheckBoxData(manufacturersInitialValue);
-export const rotationSpeedData = getCheckBoxData(rotationSpeedInitialState);
-export const cylinderQuantityData = getCheckBoxData(cylinderQuantityInitialValue);
-export const flangeTypeData = getCheckBoxData(flangeTypeInitialState);
+export const flangeTypeData = getCheckboxData([]);
+export const cylinderQuantityData = getCheckboxData([]);
+export const rotationSpeedData = getCheckboxData([]);
+export const manufacturersData = getCheckboxWithSearchData([]);
 
 export const $engineFilter = combine<EngineFilter>({
   model: $engineModel,
-  manufacturerName: manufacturersData.$store,
+  manufacturerNames: manufacturersData.$checkboxes,
   powerRating: powerRating.$facetStore,
-  rotationSpeed: rotationSpeedData.$store,
-  cylinderQuantity: cylinderQuantityData.$store,
-  flangeType: flangeTypeData.$store,
+  rotationSpeed: rotationSpeedData.$checkboxes,
+  cylinderQuantity: cylinderQuantityData.$checkboxes,
+  flangeType: flangeTypeData.$checkboxes,
   weightDryNoImplements: weightDryNoImplementsData.$facetStore,
   length: lengthData.$facetStore,
   width: widthData.$facetStore,

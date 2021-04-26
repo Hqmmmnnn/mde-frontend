@@ -1,7 +1,4 @@
-import { CylinderQuantityCheckbox } from "../components/cylinderQuantity";
-import { FlangeCheckbox } from "../components/flangeType";
-import { ManufacturersCheckBox } from "../components/manufacturers";
-import { RotationSpeedCheckbox } from "../components/rotation-speed";
+import { CheckboxProps } from "../components/checkbox/model";
 import { FacetValue } from "../engines_search/model";
 
 export interface Engine {
@@ -49,11 +46,11 @@ export interface Engine {
 
 export interface EngineFilter {
   model: string;
-  manufacturerName: ManufacturersCheckBox;
+  manufacturerNames: CheckboxProps[];
   powerRating: FacetValue;
-  rotationSpeed: RotationSpeedCheckbox;
-  cylinderQuantity: CylinderQuantityCheckbox;
-  flangeType: FlangeCheckbox;
+  rotationSpeed: CheckboxProps[];
+  cylinderQuantity: CheckboxProps[];
+  flangeType: CheckboxProps[];
   weightDryNoImplements: FacetValue;
   length: FacetValue;
   width: FacetValue;

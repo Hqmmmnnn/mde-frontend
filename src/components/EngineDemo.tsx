@@ -9,7 +9,9 @@ import {
 } from "@material-ui/core";
 
 import { useStore } from "effector-react";
-import { $engines } from "../engines_search/model";
+import { useEffect } from "react";
+import { useHistory } from "react-router";
+import { $engines, getEnginesFx } from "../engines_search/model";
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +32,12 @@ const useStyles = makeStyles({
 });
 
 export const EngineDemo = () => {
+  const history = useHistory();
+
+  useEffect(() => {
+    getEnginesFx(history.location.search);
+  }, []);
+
   const engines = useStore($engines);
   const styles = useStyles();
 
@@ -48,12 +56,7 @@ export const EngineDemo = () => {
                 title="Картинка двигателя"
               />
               <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="h2"
-                  align="center"
-                >
+                <Typography gutterBottom variant="h5" component="h2" align="center">
                   {engine.model}
                 </Typography>
                 <Typography
@@ -67,203 +70,83 @@ export const EngineDemo = () => {
                 </Typography>
                 <br />
 
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     количество цилиндров
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.cylinderQuantity}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     вес без оборудования
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.weightDryNoImplements}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     рейтинг нагрузки
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.loadMode}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     тип фланца
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.flangeType}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     назначение
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.assignment}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     мощность
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.powerRating}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     IMO
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.imoEcoStandard}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     EPA
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.epaEcoStandard}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     EU
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.euEcoStandard}
                   </Typography>
                 </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     UIC
                   </Typography>
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
+                  <Typography gutterBottom variant="body2" color="textSecondary" component="p">
                     {engine.uicEcoStandard}
                   </Typography>
                 </div>
@@ -303,11 +186,7 @@ export const EngineDemo = () => {
                   >
                     Подробнее
                   </Button>
-                  <Button
-                    size="medium"
-                    className={styles.margin}
-                    color="secondary"
-                  >
+                  <Button size="medium" className={styles.margin} color="secondary">
                     Удалить
                   </Button>
                 </div>

@@ -1,30 +1,18 @@
-import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  IconButton,
-  InputBase,
-  makeStyles,
-} from "@material-ui/core";
+import { Box, IconButton, InputBase, makeStyles } from "@material-ui/core";
 
-import { useState } from "react";
-import { CheckBoxesProps, EffCheckbox } from "./CheckBoxListWithCollapse";
 import SearchIcon from "@material-ui/icons/Search";
+import { Checkboxes } from "./checkbox/Checkbox";
+import { CheckboxWithSearchDataProps } from "./checkbox/model";
 
-export const CheckBoxesWithSearch = function <T>({
-  checkBoxes,
-  effStore,
-  handleChange,
-}: CheckBoxesProps<T>) {
+export const CheckBoxesWithSearch = ({
+  $filteredCheckboxes,
+  checkedChanged,
+  checkboxesFiltered,
+}: CheckboxWithSearchDataProps) => {
   const classes = useCheckBoxesWithSearchStyles();
-  const [items, setItems] = useState(checkBoxes);
 
   const filterCheckBoxes = (e: any) => {
-    setItems(
-      checkBoxes.filter((c) =>
-        c.name.toLocaleLowerCase().startsWith(e.target.value.toLocaleLowerCase())
-      )
-    );
+    checkboxesFiltered(e.target.value);
   };
 
   return (
@@ -41,15 +29,7 @@ export const CheckBoxesWithSearch = function <T>({
       </Box>
 
       <Box p={0.25}>
-        <FormGroup>
-          {items.map(({ name, label }) => (
-            <FormControlLabel
-              key={name}
-              control={<EffCheckbox name={name} effStore={effStore} handleChange={handleChange} />}
-              label={label}
-            />
-          ))}
-        </FormGroup>
+        <Checkboxes $checkboxes={$filteredCheckboxes} checkedChanged={checkedChanged} />
       </Box>
     </>
   );

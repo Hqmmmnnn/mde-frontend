@@ -14,7 +14,7 @@ export const LoadMoreEnginesButton = () => {
       onClick={() => {
         const params = getQueryParams(engineFilter);
         console.log(params.toString());
-        history.push({ search: params.toString() });
+        history.push({ search: params.toString().replaceAll("%2C", ",") });
         return loadMoreEnginesFx(history.location.search);
       }}
     >
