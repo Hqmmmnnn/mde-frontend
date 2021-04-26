@@ -1,20 +1,20 @@
 import axios from "axios";
 import { createEvent, createStore, Store, Event, sample, createEffect, Effect } from "effector";
 
-export type CheckboxProps = {
+export type CheckboxValue = {
   name: string;
   label: string;
   checked: boolean;
 };
 
-export type CheckboxDataFromServer = {
+type CheckboxDataFromServer = {
   id: number;
   name: string;
   note?: string;
 };
 
 export type CheckboxDataProps = {
-  $checkboxes: Store<CheckboxProps[]>;
+  $checkboxes: Store<CheckboxValue[]>;
   checkedChanged: Event<string>;
 };
 
@@ -22,10 +22,10 @@ export type CheckboxData = {
   lastStateRestored: Event<string[]>;
   dataFromServerLoaded: Effect<string, CheckboxDataFromServer[], Error>;
   checkedChanged: Event<string>;
-  $checkboxes: Store<CheckboxProps[]>;
+  $checkboxes: Store<CheckboxValue[]>;
 };
 
-export const getCheckboxData = (initialState: CheckboxProps[]): CheckboxData => {
+export const getCheckboxData = (initialState: CheckboxValue[]): CheckboxData => {
   const checkedChanged = createEvent<string>();
   const lastStateRestored = createEvent<string[]>();
   const dataFromServerLoaded = createEffect<string, CheckboxDataFromServer[], Error>(
@@ -36,7 +36,7 @@ export const getCheckboxData = (initialState: CheckboxProps[]): CheckboxData => 
     }
   );
 
-  const $checkboxes = createStore<CheckboxProps[]>(initialState)
+  const $checkboxes = createStore<CheckboxValue[]>(initialState)
     .on(checkedChanged, (checkboxes, checkboxName) =>
       checkboxes.map((checkbox) => {
         return checkbox.name === checkboxName
@@ -78,18 +78,18 @@ export type CheckboxWithSearchData = {
   dataFromServerLoaded: Effect<string, CheckboxDataFromServer[], Error>;
   checkboxesFiltered: Event<string>;
   checkedChanged: Event<string>;
-  $checkboxes: Store<CheckboxProps[]>;
-  $filteredCheckboxes: Store<CheckboxProps[]>;
+  $checkboxes: Store<CheckboxValue[]>;
+  $filteredCheckboxes: Store<CheckboxValue[]>;
 };
 
 export type CheckboxWithSearchDataProps = {
   checkboxesFiltered: Event<string>;
   checkedChanged: Event<string>;
-  $filteredCheckboxes: Store<CheckboxProps[]>;
+  $filteredCheckboxes: Store<CheckboxValue[]>;
 };
 
 export const getCheckboxWithSearchData = (
-  initialState: CheckboxProps[]
+  initialState: CheckboxValue[]
 ): CheckboxWithSearchData => {
   const checkboxesFiltered = createEvent<string>();
   const checkedChanged = createEvent<string>();
@@ -102,7 +102,7 @@ export const getCheckboxWithSearchData = (
     }
   );
 
-  const $checkboxes = createStore<CheckboxProps[]>(initialState)
+  const $checkboxes = createStore<CheckboxValue[]>(initialState)
     .on(checkedChanged, (checkboxes, id) =>
       checkboxes.map((checkbox) => {
         return checkbox.name === id ? { ...checkbox, checked: !checkbox.checked } : checkbox;
@@ -112,7 +112,7 @@ export const getCheckboxWithSearchData = (
       return payload.map((checkbox) => {
         console.log("manufacturers");
         console.log(checkbox);
-        const obj: CheckboxProps = {
+        const obj: CheckboxValue = {
           name: checkbox.name.replaceAll(" ", "_"),
           label: checkbox.name,
           checked: false,
@@ -132,7 +132,7 @@ export const getCheckboxWithSearchData = (
       });
     });
 
-  const $filteredCheckboxes = createStore<CheckboxProps[]>(initialState)
+  const $filteredCheckboxes = createStore<CheckboxValue[]>(initialState)
     .on(checkedChanged, (checkboxes, checkboxName) =>
       checkboxes.map((checkbox) => {
         return checkbox.name === checkboxName
@@ -144,7 +144,7 @@ export const getCheckboxWithSearchData = (
       return payload.map((checkbox) => {
         console.log("manufacturers");
         console.log(checkbox);
-        const obj: CheckboxProps = {
+        const obj: CheckboxValue = {
           name: checkbox.name.replaceAll(" ", "_"),
           label: checkbox.name,
           checked: false,

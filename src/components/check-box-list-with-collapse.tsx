@@ -1,8 +1,6 @@
 import {
   Collapse,
   FormControl,
-  FormControlLabel,
-  FormGroup,
   IconButton,
   Typography,
   Box,

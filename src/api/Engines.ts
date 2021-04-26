@@ -1,4 +1,4 @@
-import { CheckboxProps } from "../components/checkbox/model";
+import { CheckboxValue } from "../components/checkbox/model";
 import { FacetValue } from "../engines_search/model";
 
 export interface Engine {
@@ -46,18 +46,18 @@ export interface Engine {
 
 export interface EngineFilter {
   model: string;
-  manufacturerNames: CheckboxProps[];
+  manufacturerNames: CheckboxValue[];
   powerRating: FacetValue;
-  rotationSpeed: CheckboxProps[];
-  cylinderQuantity: CheckboxProps[];
-  flangeType: CheckboxProps[];
+  rotationSpeed: CheckboxValue[];
+  cylindersQuantity: CheckboxValue[];
+  flangeTypes: CheckboxValue[];
   weightDryNoImplements: FacetValue;
   length: FacetValue;
   width: FacetValue;
   height: FacetValue;
-  imoEcoStandard: string;
-  epaEcoStandard: string;
-  euEcoStandard: string;
-  uicEcoStandard: string;
+  imoEcoStandard: CheckboxValue[];
+  epaEcoStandard: CheckboxValue[];
+  euEcoStandard: CheckboxValue[];
+  uicEcoStandard: CheckboxValue[];
   lastFetchedEngineId: number;
 }

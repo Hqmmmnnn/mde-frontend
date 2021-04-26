@@ -36,7 +36,7 @@ export const EngineDemo = () => {
 
   useEffect(() => {
     getEnginesFx(history.location.search);
-  }, []);
+  }, [history.location.search]);
 
   const engines = useStore($engines);
   const styles = useStyles();

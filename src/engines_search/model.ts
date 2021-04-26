@@ -33,29 +33,6 @@ export const $engines = createStore<Engine[]>([])
 export const engineModelChanged = createEvent<string>();
 export const lastFetchedEngineIdChanged = createEvent<number>();
 
-const getEcoStandardData = (initialState: string) => {
-  const ecoStanardChanged = createEvent<string>();
-
-  const $ecoStanard = createStore<string>(initialState).on(
-    ecoStanardChanged,
-    (_, payload) => payload
-  );
-
-  const handleEcoStanardChange = (e: any) => {
-    ecoStanardChanged(e.target.value);
-  };
-
-  return {
-    $ecoStanard,
-    handleEcoStanardChange,
-  };
-};
-
-export const imoEcoStandardData = getEcoStandardData("");
-export const epaEcoStandardData = getEcoStandardData("");
-export const euEcoStandardData = getEcoStandardData("");
-export const uicEcoStandardData = getEcoStandardData("");
-
 const $engineModel = createStore<string>("").on(engineModelChanged, (_, payload) => payload);
 const $lastFetchedEngineId = createStore<number>(0).on(
   lastFetchedEngineIdChanged,
@@ -123,6 +100,10 @@ export const weightDryNoImplementsData: FacetData = getFacetData({
   checked: false,
 });
 
+export const imoEcoStandardData = getCheckboxData([]);
+export const epaEcoStandardData = getCheckboxData([]);
+export const euEcoStandardData = getCheckboxData([]);
+export const uicEcoStandardData = getCheckboxData([]);
 export const flangeTypeData = getCheckboxData([]);
 export const cylinderQuantityData = getCheckboxData([]);
 export const rotationSpeedData = getCheckboxData([]);
@@ -133,15 +114,15 @@ export const $engineFilter = combine<EngineFilter>({
   manufacturerNames: manufacturersData.$checkboxes,
   powerRating: powerRating.$facetStore,
   rotationSpeed: rotationSpeedData.$checkboxes,
-  cylinderQuantity: cylinderQuantityData.$checkboxes,
-  flangeType: flangeTypeData.$checkboxes,
+  cylindersQuantity: cylinderQuantityData.$checkboxes,
+  flangeTypes: flangeTypeData.$checkboxes,
   weightDryNoImplements: weightDryNoImplementsData.$facetStore,
   length: lengthData.$facetStore,
   width: widthData.$facetStore,
   height: heightData.$facetStore,
-  imoEcoStandard: imoEcoStandardData.$ecoStanard,
-  epaEcoStandard: epaEcoStandardData.$ecoStanard,
-  euEcoStandard: euEcoStandardData.$ecoStanard,
-  uicEcoStandard: uicEcoStandardData.$ecoStanard,
+  imoEcoStandard: imoEcoStandardData.$checkboxes,
+  epaEcoStandard: epaEcoStandardData.$checkboxes,
+  euEcoStandard: euEcoStandardData.$checkboxes,
+  uicEcoStandard: uicEcoStandardData.$checkboxes,
   lastFetchedEngineId: $lastFetchedEngineId,
 });

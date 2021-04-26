@@ -14,23 +14,28 @@ import {
   cylinderQuantityData,
   rotationSpeedData,
   manufacturersData,
+  imoEcoStandardData,
+  epaEcoStandardData,
+  euEcoStandardData,
+  uicEcoStandardData,
 } from "./engines_search/model";
 import Button from "@material-ui/core/Button";
 import { getInitialStateFromQueryParams, getQueryParams } from "./lib/getQueryParams";
-import { EngineSearch } from "./components/EngineSearch";
-import { ImoEcoStandard } from "./components/eco-standards/ImoEcoStandard";
-import { EpaEcoStandard } from "./components/eco-standards/EpaEcoStandard";
-import { EuEcoStandard } from "./components/eco-standards/EuEcoStandard";
-import { Facet } from "./components/Facet";
-import { EngineDemo } from "./components/EngineDemo";
-import { LoadMoreEnginesButton } from "./components/LoadMoreEnginesButton";
+import { EngineSearch } from "./components/engine-search";
+
+import { Facet } from "./components/facet";
+import { EngineDemo } from "./components/engine-demo";
+import { LoadMoreEnginesButton } from "./components/load-more-engines-button";
 import { Routes } from "./routes";
-import { UicEcoStandard } from "./components/eco-standards/UicEcoStandard";
-import { CylinderQuantity } from "./components/cylinderQuantity";
+import { CylinderQuantity } from "./components/cylinder-quantity";
 import { Manufacturers } from "./components/manufacturers";
 import { RotationSpeed } from "./components/rotation-speed";
-import { FlangeTypes } from "./components/flangeTypes";
+import { FlangeTypes } from "./components/flange-types";
 import { useEffect } from "react";
+import { ImoEcoStandard } from "./components/imo-eco-standard";
+import { EpaEcoStandard } from "./components/epa-eco-standard";
+import { EuEcoStandard } from "./components/eu-eco-standard";
+import { UicEcoStandard } from "./components/uic-eco-standards";
 
 const Btn = () => {
   const engineFilter = useStore($engineFilter);
@@ -60,10 +65,14 @@ const Aside = () => {
     const searchParams = new URLSearchParams(search);
 
     Promise.all([
-      manufacturersData.dataFromServerLoaded("/manufacturers"),
-      flangeTypeData.dataFromServerLoaded("/flangeTypes"),
       cylinderQuantityData.dataFromServerLoaded("/cylindersQuantity"),
       rotationSpeedData.dataFromServerLoaded("/rotationSpeed"),
+      manufacturersData.dataFromServerLoaded("/manufacturers"),
+      flangeTypeData.dataFromServerLoaded("/flangeTypes"),
+      imoEcoStandardData.dataFromServerLoaded("/imoEcoStandards"),
+      epaEcoStandardData.dataFromServerLoaded("/epaEcoStandards"),
+      euEcoStandardData.dataFromServerLoaded("/euEcoStandards"),
+      uicEcoStandardData.dataFromServerLoaded("/uicEcoStandards"),
     ]).then(() => {
       getInitialStateFromQueryParams(searchParams);
     });

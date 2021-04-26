@@ -1,5 +1,5 @@
 import { EngineFilter } from "../api/Engines";
-import { CheckboxProps } from "../components/checkbox/model";
+import { CheckboxValue } from "../components/checkbox/model";
 import { cylinderQuantityData, flangeTypeData } from "../engines_search/model";
 
 export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
@@ -7,20 +7,20 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
 
   for (const [key, value] of Object.entries(engineFilter)) {
     if (
-      key === "flangeType" ||
+      key === "flangeTypes" ||
       key === "manufacturerNames" ||
-      key === "cylinderQuantity" ||
-      key === "rotationSpeed"
+      key === "cylindersQuantity" ||
+      key === "rotationSpeed" ||
+      key === "imoEcoStandard" ||
+      key === "epaEcoStandard" ||
+      key === "euEcoStandard" ||
+      key === "uicEcoStandard"
     ) {
-      const values = <CheckboxProps[]>value;
-
+      const values = value as CheckboxValue[];
       const names = values.filter(({ checked }) => checked).map(({ name }) => name);
 
-      if (names.length) {
-        params.append(key, names.join(","));
-      } else {
-        params.delete(key);
-      }
+      if (names.length) params.append(key, names.join(","));
+      else params.delete(key);
 
       continue;
     }
@@ -51,15 +51,7 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
 };
 
 export const getInitialStateFromQueryParams = (search: URLSearchParams) => {
-  let model = "";
-
-  console.log("getInitialStateFromQueryParams");
   for (let [name, value] of search.entries()) {
-    if (name === "model") {
-      model = value;
-      continue;
-    }
-
     if (name === "flangeType") {
       const names = value.split(",");
 

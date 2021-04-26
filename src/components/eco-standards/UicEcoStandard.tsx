@@ -1,6 +1,6 @@
 import { uicEcoStandardData } from "../../engines_search/model";
 import { EcoStanardItemValue, EcoStandardSelect } from "./EcoStandardSelect";
-
+/*
 export const UicEcoStandard = () => (
   <EcoStandardSelect
     labelId="uic-eco-standard-select-helper-label"
@@ -17,3 +17,4 @@ const items: EcoStanardItemValue[] = [
   { value: "UIC_III", name: "UIC III" },
   { value: "UIC_IV", name: "UIC IV" },
 ];
+*/

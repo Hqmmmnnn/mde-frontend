@@ -1,7 +1,7 @@
 import { Box, FormGroup } from "@material-ui/core";
 import { rotationSpeedData } from "../engines_search/model";
 import { Checkboxes } from "./checkbox/Checkbox";
-import { CheckBoxListWithCollapse } from "./CheckBoxListWithCollapse";
+import { CheckBoxListWithCollapse } from "./check-box-list-with-collapse";
 
 export const RotationSpeed = () => (
   <CheckBoxListWithCollapse listLabel="Скорость вращения">
