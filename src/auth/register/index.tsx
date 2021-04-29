@@ -1,6 +1,5 @@
 import {
   Button,
-  Card,
   FormControl,
   InputLabel,
   makeStyles,
@@ -14,11 +13,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { useForm } from "effector-forms/dist";
 import { useStore } from "effector-react";
 import { FormEvent, useState } from "react";
-import {
-  $registerResponseFromServer,
-  registerForm,
-  registerUserFx,
-} from "./model";
+import { $registerResponseFromServer, registerForm, registerUserFx } from "./model";
 
 const useStyles = makeStyles({
   root: {
@@ -49,7 +44,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const RegisterPage = () => {
+export const RegisterModal = () => {
   const { fields, submit, eachValid } = useForm(registerForm);
   const responseFromServer = useStore($registerResponseFromServer);
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +62,7 @@ export const RegisterPage = () => {
 
   return (
     <div className={classes.root}>
-      <Card className={classes.card}>
+      <div className={classes.card}>
         <Typography variant="h5" component="h4" align="center">
           Регистрация
         </Typography>
@@ -87,14 +82,8 @@ export const RegisterPage = () => {
             })}
           </Typography>
 
-          <FormControl
-            className={classes.textField}
-            variant="outlined"
-            size="small"
-          >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Пароль
-            </InputLabel>
+          <FormControl className={classes.textField} variant="outlined" size="small">
+            <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
             <OutlinedInput
               autoComplete="false"
               id="outlined-adornment-password"
@@ -153,13 +142,14 @@ export const RegisterPage = () => {
           >
             Зарегистироваться
           </Button>
+
           {responseFromServer && (
             <Typography color="error" component="p" align="center">
               responseFromServer
             </Typography>
           )}
         </form>
-      </Card>
+      </div>
     </div>
   );
 };

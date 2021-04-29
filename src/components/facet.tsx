@@ -59,9 +59,15 @@ export const Facet = ({ data, label }: FacetProps) => {
     setExpanded(!expanded);
   };
 
-  const { handleFromChange, handleToChange, handleFromToChange, $facetStore } = data;
+  const {
+    handleFromChange,
+    handleToChange,
+    handleFromToChange,
+    $facetStore,
+    $initialStateFromServer,
+  } = data;
   const { from, to } = useStore($facetStore);
-  const initialState = useState($facetStore.defaultState)[0];
+  const initialState = useStore($initialStateFromServer);
 
   return (
     <>
@@ -104,7 +110,7 @@ export const Facet = ({ data, label }: FacetProps) => {
           />
         </Box>
         <Slider
-          step={10}
+          step={5}
           value={[
             from < initialState.from ? initialState.from : from,
             to > initialState.to ? initialState.to : to,

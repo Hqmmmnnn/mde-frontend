@@ -30,7 +30,6 @@ export const getCheckboxData = (initialState: CheckboxValue[]): CheckboxData => 
   const lastStateRestored = createEvent<string[]>();
   const dataFromServerLoaded = createEffect<string, CheckboxDataFromServer[], Error>(
     async (url) => {
-      console.log("make request to server");
       const json = await axios.get<CheckboxDataFromServer[]>(url);
       return json.data;
     }
@@ -46,7 +45,6 @@ export const getCheckboxData = (initialState: CheckboxValue[]): CheckboxData => 
     )
     .on(dataFromServerLoaded.doneData, (_, payload) => {
       return payload.map((checkbox) => {
-        console.log("data from server done");
         return {
           name: checkbox.name.replaceAll(" ", "_"),
           label: checkbox.name,
@@ -56,7 +54,6 @@ export const getCheckboxData = (initialState: CheckboxValue[]): CheckboxData => 
     })
     .on(lastStateRestored, (state, payload) => {
       return state.map((checkbox) => {
-        console.log("loadStateRestored");
         if (payload.includes(checkbox.name)) {
           return { ...checkbox, checked: true };
         }
@@ -96,7 +93,6 @@ export const getCheckboxWithSearchData = (
   const lastStateRestored = createEvent<string[]>();
   const dataFromServerLoaded = createEffect<string, CheckboxDataFromServer[], Error>(
     async (url) => {
-      console.log("make request to server");
       const json = await axios.get<CheckboxDataFromServer[]>(url);
       return json.data;
     }
@@ -109,21 +105,14 @@ export const getCheckboxWithSearchData = (
       })
     )
     .on(dataFromServerLoaded.doneData, (_, payload) => {
-      return payload.map((checkbox) => {
-        console.log("manufacturers");
-        console.log(checkbox);
-        const obj: CheckboxValue = {
-          name: checkbox.name.replaceAll(" ", "_"),
-          label: checkbox.name,
-          checked: false,
-        };
-        console.log("edited man " + obj.name + " " + obj.label);
-        return obj;
-      });
+      return payload.map((checkbox) => ({
+        name: checkbox.name.replaceAll(" ", "_"),
+        label: checkbox.name,
+        checked: false,
+      }));
     })
     .on(lastStateRestored, (state, payload) => {
       return state.map((checkbox) => {
-        console.log("loadStateRestored");
         if (payload.includes(checkbox.name)) {
           return { ...checkbox, checked: true };
         }
@@ -141,21 +130,14 @@ export const getCheckboxWithSearchData = (
       })
     )
     .on(dataFromServerLoaded.doneData, (_, payload) => {
-      return payload.map((checkbox) => {
-        console.log("manufacturers");
-        console.log(checkbox);
-        const obj: CheckboxValue = {
-          name: checkbox.name.replaceAll(" ", "_"),
-          label: checkbox.name,
-          checked: false,
-        };
-        console.log("edited man " + obj.name + " " + obj.label);
-        return obj;
-      });
+      return payload.map((checkbox) => ({
+        name: checkbox.name.replaceAll(" ", "_"),
+        label: checkbox.name,
+        checked: false,
+      }));
     })
     .on(lastStateRestored, (state, payload) => {
       return state.map((checkbox) => {
-        console.log("loadStateRestored");
         if (payload.includes(checkbox.name)) {
           return { ...checkbox, checked: true };
         }

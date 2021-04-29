@@ -1,6 +1,5 @@
 import {
   Button,
-  Card,
   FormControl,
   IconButton,
   InputAdornment,
@@ -17,18 +16,17 @@ import { FormEvent, useState } from "react";
 import { $loginErrorFromServer, loginForm, loginUserFx } from "./model";
 
 const useStyles = makeStyles({
-  root: {
-    height: "100%",
+  modal: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
   card: {
+    backgroundColor: "#fff",
     display: "flex",
     flexDirection: "column",
-    maxWidth: 345,
     padding: "2rem",
-    width: "42rem",
+    borderRadius: "0 0 15px 15px",
   },
   form: {
     display: "flex",
@@ -45,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const LoginPage = () => {
+export const LoginModal = () => {
   const classes = useStyles();
   const { fields, submit, eachValid } = useForm(loginForm);
   const errorFromServer = useStore($loginErrorFromServer);
@@ -65,72 +63,64 @@ export const LoginPage = () => {
     !fields.email.isTouched || !fields.password.isTouched || !eachValid;
 
   return (
-    <div className={classes.root}>
-      <Card className={classes.card}>
-        <Typography variant="h5" component="h4" align="center">
-          Вход
-        </Typography>
+    <div className={classes.card}>
+      <Typography variant="h5" component="h4" align="center">
+        Вход
+      </Typography>
 
-        <form onSubmit={onSumbit} className={classes.form}>
-          <TextField
-            className={classes.textField}
-            id="email"
-            label="Почта"
-            variant="outlined"
-            size="small"
-            value={fields.email.value}
-            onChange={(e) => fields.email.onChange(e.target.value)}
+      <form onSubmit={onSumbit} className={classes.form}>
+        <TextField
+          className={classes.textField}
+          id="email"
+          label="Почта"
+          variant="outlined"
+          size="small"
+          value={fields.email.value}
+          onChange={(e) => fields.email.onChange(e.target.value)}
+        />
+
+        <FormControl className={classes.textField} variant="outlined" size="small">
+          <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
+          <OutlinedInput
+            autoComplete="false"
+            id="outlined-adornment-password"
+            type={showPassword ? "text" : "password"}
+            value={fields.password.value}
+            onChange={(e) => fields.password.onChange(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  size="small"
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={70}
           />
+        </FormControl>
 
-          <FormControl
-            className={classes.textField}
-            variant="outlined"
-            size="small"
-          >
-            <InputLabel htmlFor="outlined-adornment-password">
-              Пароль
-            </InputLabel>
-            <OutlinedInput
-              autoComplete="false"
-              id="outlined-adornment-password"
-              type={showPassword ? "text" : "password"}
-              value={fields.password.value}
-              onChange={(e) => fields.password.onChange(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    size="small"
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              labelWidth={70}
-            />
-          </FormControl>
+        <Button
+          className={classes.button}
+          color="primary"
+          variant="outlined"
+          type="submit"
+          fullWidth
+          disabled={isTextFieldsNotTouchedOrFieldsNotValid || pending}
+        >
+          Войти
+        </Button>
 
-          <Button
-            className={classes.button}
-            color="primary"
-            variant="outlined"
-            type="submit"
-            fullWidth
-            disabled={isTextFieldsNotTouchedOrFieldsNotValid || pending}
-          >
-            Войти
-          </Button>
-
-          {errorFromServer && (
-            <Typography color="error" component="p" align="center">
-              {errorFromServer}
-            </Typography>
-          )}
-        </form>
-      </Card>
+        {errorFromServer && (
+          <Typography color="error" component="p" align="center">
+            {errorFromServer}
+          </Typography>
+        )}
+      </form>
     </div>
   );
 };

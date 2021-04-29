@@ -11,41 +11,6 @@ html {
   height: 100%;
 }
 
-.wrapper {
-  display: grid;
-  height: 100%;
-  grid-gap: 20px;
-  grid-template-rows: 60px 1fr 60px;
-  grid-template-columns: 25% 1fr 1fr 1fr;
-  grid-template-areas:
-    "header header header header"
-    "aside main main main"
-    "footer footer footer footer";
-}
-
-.header {
-  grid-area: header;
-}
-
-.aside {
-  grid-area: aside;
-  margin-left: 20px;
-}
-
-.main {
-  grid-area: main;
-}
-
-.footer {
-  grid-area: footer;
-}
-
 .button {
   text-transform: capitalize!;
-}
-
-.engine-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 30px;
 }

@@ -1,4 +1,4 @@
-import { makeStyles, Paper, InputBase, IconButton } from "@material-ui/core";
+import { makeStyles, InputBase, IconButton, Card } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { engineModelChanged } from "../engines_search/model";
 
@@ -22,7 +22,7 @@ export const EngineSearch = () => {
   const classes = useStyles();
 
   return (
-    <Paper component="div" className={classes.root}>
+    <Card component="div" className={classes.root} variant="outlined">
       <InputBase
         className={classes.input}
         placeholder="Искать по модели"
@@ -30,14 +30,9 @@ export const EngineSearch = () => {
           engineModelChanged(e.target.value);
         }}
       />
-      <IconButton
-        size="small"
-        type="submit"
-        className={classes.iconButton}
-        aria-label="search"
-      >
+      <IconButton size="small" type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />
       </IconButton>
-    </Paper>
+    </Card>
   );
 };

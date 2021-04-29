@@ -55,9 +55,9 @@ export interface EngineFilter {
   length: FacetValue;
   width: FacetValue;
   height: FacetValue;
-  imoEcoStandard: CheckboxValue[];
-  epaEcoStandard: CheckboxValue[];
-  euEcoStandard: CheckboxValue[];
-  uicEcoStandard: CheckboxValue[];
+  imoEcoStandards: CheckboxValue[];
+  epaEcoStandards: CheckboxValue[];
+  euEcoStandards: CheckboxValue[];
+  uicEcoStandards: CheckboxValue[];
   lastFetchedEngineId: number;
 }

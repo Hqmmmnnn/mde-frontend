@@ -1,4 +1,4 @@
-import { Box, IconButton, InputBase, makeStyles } from "@material-ui/core";
+import { Box, Card, IconButton, InputBase, makeStyles } from "@material-ui/core";
 
 import SearchIcon from "@material-ui/icons/Search";
 import { Checkboxes } from "./checkbox/Checkbox";
@@ -17,16 +17,18 @@ export const CheckBoxesWithSearch = ({
 
   return (
     <>
-      <Box component="div" className={classes.root}>
-        <InputBase
-          className={classes.input}
-          placeholder="Имя производителя"
-          onChange={filterCheckBoxes}
-        />
-        <IconButton size="small" className={classes.iconButton} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Box>
+      <Card variant="outlined">
+        <Box component="div" className={classes.root}>
+          <InputBase
+            className={classes.input}
+            placeholder="Имя производителя"
+            onChange={filterCheckBoxes}
+          />
+          <IconButton size="small" className={classes.iconButton} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Box>
+      </Card>
 
       <Box p={0.25}>
         <Checkboxes $checkboxes={$filteredCheckboxes} checkedChanged={checkedChanged} />

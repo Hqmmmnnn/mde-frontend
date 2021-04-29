@@ -9,7 +9,7 @@ import {
   widthData,
   heightData,
   weightDryNoImplementsData,
-  powerRating,
+  powerRatingData,
   flangeTypeData,
   cylinderQuantityData,
   rotationSpeedData,
@@ -18,6 +18,7 @@ import {
   epaEcoStandardData,
   euEcoStandardData,
   uicEcoStandardData,
+  filterResetTriggered,
 } from "./engines_search/model";
 import Button from "@material-ui/core/Button";
 import { getInitialStateFromQueryParams, getQueryParams } from "./lib/getQueryParams";
@@ -25,7 +26,6 @@ import { EngineSearch } from "./components/engine-search";
 
 import { Facet } from "./components/facet";
 import { EngineDemo } from "./components/engine-demo";
-import { LoadMoreEnginesButton } from "./components/load-more-engines-button";
 import { Routes } from "./routes";
 import { CylinderQuantity } from "./components/cylinder-quantity";
 import { Manufacturers } from "./components/manufacturers";
@@ -36,13 +36,17 @@ import { ImoEcoStandard } from "./components/imo-eco-standard";
 import { EpaEcoStandard } from "./components/epa-eco-standard";
 import { EuEcoStandard } from "./components/eu-eco-standard";
 import { UicEcoStandard } from "./components/uic-eco-standards";
+import { Header } from "./components/header";
+import { Grid, Box } from "@material-ui/core";
+import { AccountLoader } from "./lib/accout-loader";
 
-const Btn = () => {
+const SearchWithFiltersButton = () => {
   const engineFilter = useStore($engineFilter);
   const history = useHistory();
 
   return (
     <Button
+      fullWidth
       variant="contained"
       color="primary"
       onClick={() => {
@@ -50,10 +54,24 @@ const Btn = () => {
         lastFetchedEngineIdChanged(0);
         params.delete("lastFetchedEngineId");
         history.push({ search: params.toString().replaceAll("%2C", ",") });
+
         return getEnginesFx(history.location.search);
       }}
     >
       Поиск
+    </Button>
+  );
+};
+
+const ResetFilterButton = () => {
+  return (
+    <Button
+      onClick={() => filterResetTriggered()}
+      variant="outlined"
+      color="secondary"
+      style={{ margin: "16px 0" }}
+    >
+      Сбросить фильтр
     </Button>
   );
 };
@@ -73,8 +91,16 @@ const Aside = () => {
       epaEcoStandardData.dataFromServerLoaded("/epaEcoStandards"),
       euEcoStandardData.dataFromServerLoaded("/euEcoStandards"),
       uicEcoStandardData.dataFromServerLoaded("/uicEcoStandards"),
+      powerRatingData.dataFromServerLoaded("/powerRatingMinAndMax"),
+      weightDryNoImplementsData.dataFromServerLoaded("/weightDryNoImplementsMinAndMax"),
     ]).then(() => {
-      getInitialStateFromQueryParams(searchParams);
+      Promise.all([
+        lengthData.dataFromServerLoaded("/lengthMinAndMax"),
+        widthData.dataFromServerLoaded("/widthMinAndMax"),
+        heightData.dataFromServerLoaded("/heightMinAndMax"),
+      ]).then(() => {
+        getInitialStateFromQueryParams(searchParams);
+      });
     });
   }, []);
 
@@ -92,35 +118,43 @@ const Aside = () => {
       <EuEcoStandard />
       <UicEcoStandard />
 
-      <Facet data={powerRating} label="Мощность двигателя" />
+      <Facet data={powerRatingData} label="Мощность двигателя" />
       <Facet data={weightDryNoImplementsData} label="Вес без оборудования" />
       <Facet data={lengthData} label="Длина" />
       <Facet data={widthData} label="Ширина" />
       <Facet data={heightData} label="Высота" />
-      <Btn />
+
+      <SearchWithFiltersButton />
+      <ResetFilterButton />
     </div>
   );
 };
 
 export const MainPage = () => (
-  <div className="wrapper">
-    <header className="header">header</header>
-    <aside className="aside">
-      <Aside />
-    </aside>
-    <main className="main">
-      <EngineDemo />
-      <LoadMoreEnginesButton />
-    </main>
-    <footer className="footer">footer</footer>
-  </div>
+  <Grid container spacing={2}>
+    <Grid item xs={12}>
+      <Header />
+    </Grid>
+    <Grid item xs={12} container spacing={4}>
+      <Grid item xs={12} sm={12} md={3}>
+        <Box paddingLeft={2}>
+          <Aside />
+        </Box>
+      </Grid>
+      <Grid item xs={12} sm={12} md={9}>
+        <EngineDemo />
+      </Grid>
+    </Grid>
+  </Grid>
 );
 
 function App() {
   return (
     <>
       <Router>
-        <Routes />
+        <AccountLoader>
+          <Routes />
+        </AccountLoader>
       </Router>
     </>
   );

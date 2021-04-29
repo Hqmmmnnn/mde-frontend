@@ -1,7 +1,8 @@
 import axios from "axios";
 import { createEffect, forward, restore, createEvent } from "effector";
 import { createForm } from "effector-forms/dist";
-import { tokenChanged } from "../../lib/token";
+import { loadSessionFx } from "../../features/common/session/session-model";
+import { tokenChanged } from "../../features/common/token";
 import { validationRules } from "../../lib/validationRules";
 
 type LoginRequest = {
@@ -9,7 +10,7 @@ type LoginRequest = {
   password: string;
 };
 
-type LoginResponse = {
+type Token = {
   token: string;
 };
 
@@ -30,14 +31,15 @@ export const loginForm = createForm({
   validateOn: ["submit"],
 });
 
-export const loginUserFx = createEffect<LoginRequest, void, Error>(
-  async (loginData) => {
-    axios
-      .post<LoginResponse>("/auth/login", loginData)
-      .then((res) => tokenChanged(res.data.token))
-      .catch((e) => loginErrorReceived(e.response.data));
-  }
-);
+export const loginUserFx = createEffect<LoginRequest, void, Error>(async (loginData) => {
+  axios
+    .post<Token>("/auth/login", loginData)
+    .then((res) => {
+      tokenChanged(res.data.token);
+      loadSessionFx();
+    })
+    .catch((e) => loginErrorReceived(e.response.data));
+});
 
 const loginErrorReceived = createEvent<string>();
 export const $loginErrorFromServer = restore(loginErrorReceived, "");
