@@ -1,21 +1,21 @@
 import axios from "axios";
 import { combine, createEffect, createEvent, createStore, Effect, Event, Store } from "effector";
-import { Engine, EngineFilter } from "../api/Engines";
-import { getCheckboxData, getCheckboxWithSearchData } from "../components/checkbox/model";
+import { EngineDemo, EngineFilter } from "../../api/Engines";
+import { getCheckboxData, getCheckboxWithSearchData } from "../../components/checkbox/model";
 
-export const getEnginesFx = createEffect<string, Engine[], Error>(async (queryParams) => {
+export const getEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
   const req = await fetch(`/engines${queryParams}`);
   const data = req.json();
   return data;
 });
 
-export const loadMoreEnginesFx = createEffect<string, Engine[], Error>(async (queryParams) => {
+export const loadMoreEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
   const req = await fetch(`/engines${queryParams}`);
   const data = req.json();
   return data;
 });
 
-export const $engines = createStore<Engine[]>([])
+export const $engines = createStore<EngineDemo[]>([])
   .on(getEnginesFx.doneData, (_, engines) => {
     if (engines && engines.length > 0) {
       lastFetchedEngineIdChanged(engines[engines.length - 1].id);
@@ -31,11 +31,14 @@ export const $engines = createStore<Engine[]>([])
     return [...state, ...payload];
   });
 
-export const filterResetTriggered = createEvent();
 export const engineModelChanged = createEvent<string>();
 export const lastFetchedEngineIdChanged = createEvent<number>();
 
-const $engineModel = createStore<string>("").on(engineModelChanged, (_, payload) => payload);
+export const engineModelLastStateRestored = createEvent<string>();
+export const $engineModel = createStore<string>("")
+  .on(engineModelChanged, (_, payload) => payload)
+  .on(engineModelLastStateRestored, (_, payload) => payload);
+
 const $lastFetchedEngineId = createStore<number>(0).on(
   lastFetchedEngineIdChanged,
   (_, payload) => payload

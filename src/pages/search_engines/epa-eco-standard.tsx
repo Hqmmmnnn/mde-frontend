@@ -1,7 +1,7 @@
 import { Box, FormGroup } from "@material-ui/core";
-import { epaEcoStandardData } from "../engines_search/model";
-import { CheckBoxListWithCollapse } from "./check-box-list-with-collapse";
-import { Checkboxes } from "./checkbox/Checkbox";
+import { epaEcoStandardData } from "./model";
+import { CheckBoxListWithCollapse } from "../../components/check-box-list-with-collapse";
+import { Checkboxes } from "../../components/checkbox/Checkbox";
 
 export const EpaEcoStandard = () => (
   <CheckBoxListWithCollapse listLabel="EPA эко стандарт">

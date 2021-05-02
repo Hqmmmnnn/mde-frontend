@@ -1,4 +1,4 @@
-import { epaEcoStandardData } from "../../engines_search/model";
+import { epaEcoStandardData } from "../../pages/search_engines/model";
 import { EcoStanardItemValue, EcoStandardSelect } from "./EcoStandardSelect";
 /*
 export const EpaEcoStandard = () => (

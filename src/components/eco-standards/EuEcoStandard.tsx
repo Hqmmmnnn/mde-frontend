@@ -1,4 +1,4 @@
-import { euEcoStandardData } from "../../engines_search/model";
+import { euEcoStandardData } from "../../pages/search_engines/model";
 import { EcoStanardItemValue, EcoStandardSelect } from "./EcoStandardSelect";
 
 /*

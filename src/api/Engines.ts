@@ -1,5 +1,26 @@
 import { CheckboxValue } from "../components/checkbox/model";
-import { FacetValue } from "../engines_search/model";
+import { FacetValue } from "../pages/search_engines/model";
+
+export interface EngineDemo {
+  id: number;
+  model: string;
+  manufacturerName: string;
+  cylinderQuantity: number;
+  weightDryNoImplements: number;
+  loadMode: string;
+  flangeType: string;
+  assignment: string;
+  powerRating: number;
+  imoEcoStandard: string;
+  epaEcoStandard: string;
+  euEcoStandard: string;
+  uicEcoStandard: string;
+  length: number;
+  width: number;
+  height: number;
+  classificationSociety: string;
+  image: string;
+}
 
 export interface Engine {
   id: number;

@@ -1,7 +1,7 @@
 import { Box, FormGroup } from "@material-ui/core";
-import { uicEcoStandardData } from "../engines_search/model";
-import { CheckBoxListWithCollapse } from "./check-box-list-with-collapse";
-import { Checkboxes } from "./checkbox/Checkbox";
+import { CheckBoxListWithCollapse } from "../../components/check-box-list-with-collapse";
+import { Checkboxes } from "../../components/checkbox/Checkbox";
+import { uicEcoStandardData } from "./model";
 
 export const UicEcoStandard = () => (
   <CheckBoxListWithCollapse listLabel="UIC эко стандарт">

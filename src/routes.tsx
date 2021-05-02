@@ -1,11 +1,17 @@
 import { renderRoutes } from "react-router-config";
-import { MainPage } from "./App";
+import { EngineInfoPage } from "./pages/engine_info.tsx";
+import { SearchEnginesPage } from "./pages/search_engines";
 
 const routes = () => [
   {
     path: "/",
     exact: true,
-    component: MainPage,
+    component: SearchEnginesPage,
+  },
+  {
+    path: "/engines/:id",
+    exact: true,
+    component: EngineInfoPage,
   },
 ];
 

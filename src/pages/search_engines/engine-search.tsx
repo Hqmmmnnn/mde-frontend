@@ -1,6 +1,7 @@
 import { makeStyles, InputBase, IconButton, Card } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import { engineModelChanged } from "../engines_search/model";
+import { useStore } from "effector-react";
+import { engineModelChanged, $engineModel } from "./model";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const EngineSearch = () => {
+  const value = useStore($engineModel);
   const classes = useStyles();
 
   return (
@@ -26,6 +28,7 @@ export const EngineSearch = () => {
       <InputBase
         className={classes.input}
         placeholder="Искать по модели"
+        value={value}
         onChange={(e: any) => {
           engineModelChanged(e.target.value);
         }}

@@ -14,7 +14,8 @@ import {
   lengthData,
   widthData,
   heightData,
-} from "../engines_search/model";
+  engineModelLastStateRestored,
+} from "../pages/search_engines/model";
 
 export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
   const params = new URLSearchParams();
@@ -66,6 +67,11 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
 
 export const getInitialStateFromQueryParams = (search: URLSearchParams) => {
   for (let [name, value] of search.entries()) {
+    if (name === "model") {
+      engineModelLastStateRestored(value);
+      continue;
+    }
+
     if (name === "flangeTypes") {
       const names = value.split(",");
       flangeTypeData.lastStateRestored(names);

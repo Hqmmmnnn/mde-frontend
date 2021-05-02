@@ -1,7 +1,7 @@
 import { Box, FormGroup } from "@material-ui/core";
-import { cylinderQuantityData } from "../engines_search/model";
-import { Checkboxes } from "./checkbox/Checkbox";
-import { CheckBoxListWithCollapse } from "./check-box-list-with-collapse";
+import { CheckBoxListWithCollapse } from "../../components/check-box-list-with-collapse";
+import { Checkboxes } from "../../components/checkbox/Checkbox";
+import { cylinderQuantityData } from "./model";
 
 export const CylinderQuantity = () => (
   <CheckBoxListWithCollapse listLabel="Количество цилиндров">
