@@ -1,4 +1,4 @@
-import { uicEcoStandardData } from "../../pages/search_engines/model";
+import { uicEcoStandardData } from "../../pages/search-engines/model";
 import { EcoStanardItemValue, EcoStandardSelect } from "./EcoStandardSelect";
 /*
 export const UicEcoStandard = () => (

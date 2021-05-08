@@ -15,7 +15,7 @@ import {
   widthData,
   heightData,
   engineModelLastStateRestored,
-} from "../pages/search_engines/model";
+} from "../pages/search-engines/model";
 
 export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
   const params = new URLSearchParams();

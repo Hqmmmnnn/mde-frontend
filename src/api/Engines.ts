@@ -1,5 +1,5 @@
 import { CheckboxValue } from "../components/checkbox/model";
-import { FacetValue } from "../pages/search_engines/model";
+import { FacetValue } from "../pages/search-engines/model";
 
 export interface EngineDemo {
   id: number;
@@ -81,4 +81,48 @@ export interface EngineFilter {
   euEcoStandards: CheckboxValue[];
   uicEcoStandards: CheckboxValue[];
   lastFetchedEngineId: number;
+}
+
+export interface SaveEngine {
+  manufacturerId: string;
+  series: string;
+  model: string;
+  assignmentId: string;
+  engineRatingId: string;
+  operatingTimeYear: string;
+  operatingTimeFirstTs: string;
+  operatingTimeToRepair: string;
+  powerRating: string;
+  rotationSpeed: string;
+  torqueMax: string;
+  fuelRate: string;
+  fuelRateNominalPower: string;
+  cylinderWorkingVolume: string;
+  cylinderQuantity: string;
+  cylinderDiameter: string;
+  pistonStroke: string;
+  compressionRatio: string;
+  injectionType: string;
+  injectionPressure: string;
+  cylinderMaxPressure: string;
+  cylinderArrangement: string;
+  cylinderDegrees: string;
+  weightDryNoImplements: string;
+  weightWithImplements: string;
+  coolingSystemType: string;
+  length: string;
+  width: string;
+  height: string;
+  oilRate: string;
+  oilSystemVolume: string;
+  coolingSystemVolume: string;
+  imoEcoStandard: string;
+  epaEcoStandard: string;
+  euEcoStandard: string;
+  uicEcoStandard: string;
+  vesselType: string;
+  classificationSocietyId: string;
+  flangeId: string;
+  files: File[] | null;
+  image: File | null;
 }

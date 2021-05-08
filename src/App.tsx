@@ -5,16 +5,14 @@ import { Routes } from "./routes";
 
 import { AccountLoader } from "./lib/accout-loader";
 
-function App() {
-  return (
-    <>
-      <Router>
-        <AccountLoader>
-          <Routes />
-        </AccountLoader>
-      </Router>
-    </>
-  );
-}
+const App = () => (
+  <>
+    <Router>
+      <AccountLoader>
+        <Routes />
+      </AccountLoader>
+    </Router>
+  </>
+);
 
 export default App;

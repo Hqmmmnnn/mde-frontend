@@ -1,4 +1,4 @@
-import { imoEcoStandardData } from "../../pages/search_engines/model";
+import { imoEcoStandardData } from "../../pages/search-engines/model";
 import { EcoStanardItemValue, EcoStandardSelect } from "./EcoStandardSelect";
 /*
 export const ImoEcoStandard = () => (

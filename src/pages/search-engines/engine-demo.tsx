@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import { useStore } from "effector-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { $engines, getEnginesFx, lastFetchedEngineIdChanged } from "./model";
 import { LoadMoreEnginesButton } from "./load-more-engines-button";
@@ -49,22 +49,23 @@ export const EngineDemo = () => {
     getEnginesFx(history.location.search);
   }, []);
 
+  if (isLoading && engines.length === 0) {
+    return (
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <>
-      {console.log(engines.length)}
-      {isLoading && engines.length === 0 && (
-        <div
-          style={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-      )}
-
       {engines.length > 0 ? (
         <>
           <Grid container spacing={4} justify="center">
@@ -76,13 +77,16 @@ export const EngineDemo = () => {
                       to={`/engines/${engine.id}`}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
-                      <CardMedia
-                        className={styles.card}
-                        component="img"
-                        alt="Картинка двигателя"
-                        height="140"
-                        image={`/images/${engine.id}`}
-                      />
+                      <div
+                        aria-label={`engine image, model: ${engine.model} `}
+                        style={{
+                          height: "140px",
+                          backgroundImage: `url(/images/${engine.id})`,
+                          backgroundSize: "contain",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center",
+                        }}
+                      ></div>
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="h2" align="center">
                           {engine.model}

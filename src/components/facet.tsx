@@ -15,7 +15,7 @@ import RemoveOutlinedIcon from "@material-ui/icons/RemoveOutlined";
 import clsx from "clsx";
 import { useStore } from "effector-react";
 import { useState } from "react";
-import { FacetData } from "../pages/search_engines/model";
+import { FacetData } from "../pages/search-engines/model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

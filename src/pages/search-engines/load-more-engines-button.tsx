@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import { useStore } from "effector-react";
 import { useHistory } from "react-router-dom";
 import { $engineFilter, loadMoreEnginesFx } from "./model";
-import { getQueryParams } from "../../lib/getQueryParams";
+import { getQueryParams } from "../../lib/get-query-params";
 
 export const LoadMoreEnginesButton = () => {
   const engineFilter = useStore($engineFilter);

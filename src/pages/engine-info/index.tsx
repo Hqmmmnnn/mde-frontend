@@ -16,9 +16,10 @@ import {
   Box,
 } from "@material-ui/core";
 import { useStore } from "effector-react";
-import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router";
 import { Header } from "../../components/header";
+
 import {
   $engineFilenames,
   $engineInfoTables,
@@ -41,14 +42,30 @@ const useStyles = makeStyles({
   },
 });
 
+export const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 export const EngineInfoPage = () => {
   const styles = useStyles();
   const { id }: { id: string } = useParams();
+  const { pathname } = useLocation();
+
   const engineInfoTables = useStore($engineInfoTables);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
     if (id) {
-      loadEngineFx(id);
+      loadEngineFx(id).then();
       loadFileNamesFx(id);
     }
   }, [id]);
@@ -114,7 +131,18 @@ const AttachedFiles = () => {
       ) : (
         filenames.map((filename) => (
           <Grid item key={filename}>
-            <Link onClick={() => loadFileFx(filename)}>{filename}</Link>
+            <Link
+              onClick={() => loadFileFx(filename)}
+              style={{
+                maxWidth: "300px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                display: "block",
+              }}
+            >
+              {filename}
+            </Link>
           </Grid>
         ))
       )}

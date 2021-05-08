@@ -3,7 +3,6 @@ import { useStore } from "effector-react";
 import { useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Facet } from "../../components/facet";
-import { Header } from "../../components/header";
 import {
   $engineFilter,
   lastFetchedEngineIdChanged,
@@ -22,7 +21,7 @@ import {
   widthData,
   heightData,
 } from "./model";
-import { getQueryParams, getInitialStateFromQueryParams } from "../../lib/getQueryParams";
+import { getQueryParams, getInitialStateFromQueryParams } from "../../lib/get-query-params";
 import { CylinderQuantity } from "./cylinder-quantity";
 import { EngineDemo } from "./engine-demo";
 import { EngineSearch } from "./engine-search";
@@ -33,6 +32,7 @@ import { ImoEcoStandard } from "./imo-eco-standard";
 import { Manufacturers } from "./manufacturers";
 import { RotationSpeed } from "./rotation-speed";
 import { UicEcoStandard } from "./uic-eco-standards";
+import { Header } from "../../components/header";
 
 export const SearchEnginesPage = () => (
   <Grid container>
