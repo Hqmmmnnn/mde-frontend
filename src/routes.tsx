@@ -1,5 +1,5 @@
 import { renderRoutes } from "react-router-config";
-import { CreateEngine } from "./pages/create-egnine";
+import { CreateEnginePage } from "./pages/create-and-edit-engine/create-egnine";
 import { EngineInfoPage } from "./pages/engine-info";
 import { SearchEnginesPage } from "./pages/search-engines";
 
@@ -17,7 +17,7 @@ const routes = () => [
   {
     path: "/createEngine",
     exact: true,
-    component: CreateEngine,
+    component: CreateEnginePage,
   },
 ];
 
