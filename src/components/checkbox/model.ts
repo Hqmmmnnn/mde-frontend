@@ -83,6 +83,7 @@ export type CheckboxWithSearchDataProps = {
   checkboxesFiltered: Event<string>;
   checkedChanged: Event<string>;
   $filteredCheckboxes: Store<CheckboxValue[]>;
+  placeholder: string;
 };
 
 export const getCheckboxWithSearchData = (

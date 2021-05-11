@@ -131,7 +131,7 @@ export const euEcoStandardData = getCheckboxData([]);
 export const uicEcoStandardData = getCheckboxData([]);
 export const flangeTypeData = getCheckboxData([]);
 export const cylinderQuantityData = getCheckboxData([]);
-export const rotationFrequencyData = getCheckboxData([]);
+export const rotationFrequencyData = getCheckboxWithSearchData([]);
 export const manufacturersData = getCheckboxWithSearchData([]);
 
 export const $engineFilter = combine<EngineFilter>({

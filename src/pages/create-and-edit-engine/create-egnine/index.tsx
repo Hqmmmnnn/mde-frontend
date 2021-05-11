@@ -9,9 +9,7 @@ import {
   SeriesView,
   PowerRatingView,
   TorqueMaxView,
-  CoolingSystemTypeView,
   CoolingSystemVolumeView,
-  CylinderArrangementView,
   CylinderDegreesView,
   CylinderDiameterView,
   CylinderWorkingVolumeView,
@@ -19,7 +17,6 @@ import {
   FuelRateView,
   HeightView,
   InjectionPressureView,
-  InjectionTypeView,
   LengthView,
   OilRateView,
   OilSystemVolumeView,
@@ -27,7 +24,6 @@ import {
   OperatingTimeToRepairView,
   OperatingTimeYearView,
   PistonStrokeView,
-  VesselTypeView,
   WeightDryNoImplementsView,
   WeightWithImplementsView,
   WidthView,
@@ -37,15 +33,19 @@ import {
 import {
   AssignmentView,
   ClassificationSocietyView,
+  CoolingSystemTypeView,
+  CylinderArrangementView,
   CylinderQuantityView,
   EngineRatingView,
   EpaEcoStandardView,
   EuEcoStandardView,
   FlangeTypeView,
   ImoEcoStandardView,
+  InjectionTypeView,
   ManufacturerView,
   RotationFrequencyView,
   UicEcoStandardView,
+  VesselTypeView,
 } from "../common/selects";
 
 import { FilesUploaderView, ImageUploaderView } from "../common/uploaders";
@@ -212,8 +212,8 @@ const СompressionRatio = () => {
 };
 
 const InjectionType = () => {
-  const { value, onChange } = useField(createEngineForm.fields.injectionType);
-  return <InjectionTypeView value={value} onChange={onChange} />;
+  const { onChange } = useField(createEngineForm.fields.injectionTypeId);
+  return <InjectionTypeView onChange={onChange} />;
 };
 
 const InjectionPressure = () => {
@@ -227,8 +227,8 @@ const СylinderMaxPressure = () => {
 };
 
 const CylinderArrangement = () => {
-  const { value, onChange } = useField(createEngineForm.fields.cylinderArrangement);
-  return <CylinderArrangementView value={value} onChange={onChange} />;
+  const { onChange } = useField(createEngineForm.fields.cylinderArrangementId);
+  return <CylinderArrangementView onChange={onChange} />;
 };
 
 const CylinderDegrees = () => {
@@ -247,8 +247,8 @@ const WeightWithImplements = () => {
 };
 
 const CoolingSystemType = () => {
-  const { value, onChange } = useField(createEngineForm.fields.coolingSystemType);
-  return <CoolingSystemTypeView value={value} onChange={onChange} />;
+  const { onChange } = useField(createEngineForm.fields.coolingSystemTypeId);
+  return <CoolingSystemTypeView onChange={onChange} />;
 };
 
 const Length = () => {
@@ -302,8 +302,8 @@ const UicEcoStandard = () => {
 };
 
 const VesselType = () => {
-  const { value, onChange } = useField(createEngineForm.fields.vesselType);
-  return <VesselTypeView value={value} onChange={onChange} />;
+  const { onChange } = useField(createEngineForm.fields.vesselTypeId);
+  return <VesselTypeView onChange={onChange} />;
 };
 
 const ClassificationSociety = () => {

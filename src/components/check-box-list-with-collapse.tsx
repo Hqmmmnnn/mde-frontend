@@ -39,7 +39,7 @@ export const CheckBoxListWithCollapse = ({
         />
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          {children}
+          <Box style={{ maxHeight: "380px", overflowY: "auto" }}>{children}</Box>
         </Collapse>
       </FormControl>
     </Container>

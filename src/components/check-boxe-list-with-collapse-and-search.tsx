@@ -8,6 +8,7 @@ export const CheckBoxesWithSearch = ({
   $filteredCheckboxes,
   checkedChanged,
   checkboxesFiltered,
+  placeholder,
 }: CheckboxWithSearchDataProps) => {
   const classes = useCheckBoxesWithSearchStyles();
 
@@ -21,7 +22,7 @@ export const CheckBoxesWithSearch = ({
         <Box component="div" className={classes.root}>
           <InputBase
             className={classes.input}
-            placeholder="Имя производителя"
+            placeholder={placeholder}
             onChange={filterCheckBoxes}
           />
           <IconButton size="small" className={classes.iconButton} aria-label="search">
@@ -30,7 +31,7 @@ export const CheckBoxesWithSearch = ({
         </Box>
       </Card>
 
-      <Box p={0.25}>
+      <Box p={0.25} style={{ display: "flex", flexDirection: "column" }}>
         <Checkboxes $checkboxes={$filteredCheckboxes} checkedChanged={checkedChanged} />
       </Box>
     </>

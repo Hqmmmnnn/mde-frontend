@@ -59,6 +59,10 @@ export const imoEcoStandardSelect = getSelectedData();
 export const epaEcoStandardSelect = getSelectedData();
 export const euEcoStandardSelect = getSelectedData();
 export const uicEcoStandardSelect = getSelectedData();
+export const cylinderArrangementsSelect = getSelectedData();
+export const injectionTypesSelect = getSelectedData();
+export const vesselTypesSelect = getSelectedData();
+export const coolingSystemTypesSelect = getSelectedData();
 
 export const createEngineForm = createForm({
   fields: {
@@ -116,7 +120,7 @@ export const createEngineForm = createForm({
     compressionRatio: {
       init: "" as string,
     },
-    injectionType: {
+    injectionTypeId: {
       init: "" as string,
     },
     injectionPressure: {
@@ -125,7 +129,7 @@ export const createEngineForm = createForm({
     cylinderMaxPressure: {
       init: "" as string,
     },
-    cylinderArrangement: {
+    cylinderArrangementId: {
       init: "" as string,
     },
     cylinderDegrees: {
@@ -137,7 +141,7 @@ export const createEngineForm = createForm({
     weightWithImplements: {
       init: "" as string,
     },
-    coolingSystemType: {
+    coolingSystemTypeId: {
       init: "" as string,
     },
     length: {
@@ -170,7 +174,7 @@ export const createEngineForm = createForm({
     uicEcoStandardId: {
       init: "" as string,
     },
-    vesselType: {
+    vesselTypeId: {
       init: "" as string,
     },
     classificationSocietyId: {

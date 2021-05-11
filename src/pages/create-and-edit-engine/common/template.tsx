@@ -160,8 +160,6 @@ export const EngineFormTemplate = ({
                 cylinderDiameter,
                 pistonStroke,
                 compressionRatio,
-                injectionType,
-                injectionPressure,
                 cylinderMaxPressure,
                 cylinderArrangement,
                 cylinderDegrees,
@@ -174,17 +172,15 @@ export const EngineFormTemplate = ({
                 items={[operatingTimeYear, operatingTimeFirstTs, operatingTimeToRepair]}
               />
               <EngineFormBlock name="Расход топлива" items={[fuelRate, fuelRateNominalPower]} />
-              <EngineFormBlock name="Впрыск" items={[oilRate, oilSystemVolume]} />
+              <EngineFormBlock name="Система смазки" items={[oilRate, oilSystemVolume]} />
             </Grid>
 
             <Grid item>
               <EngineFormBlock name="Габариты, мм" items={[length, width, height]} />
-
               <EngineFormBlock
                 name="Масса, кг"
                 items={[weightDryNoImplements, weightWithImplements]}
               />
-
               <EngineFormBlock name="Охлаждение" items={[coolingSystemType, coolingSystemVolume]} />
             </Grid>
 
@@ -193,6 +189,10 @@ export const EngineFormTemplate = ({
                 name="Эко стандарты"
                 items={[imoEcoStandard, epaEcoStandard, euEcoStandard, uicEcoStandard]}
               />
+            </Grid>
+
+            <Grid item>
+              <EngineFormBlock name="Впрыск" items={[injectionType, injectionPressure]} />
             </Grid>
 
             <Grid item>

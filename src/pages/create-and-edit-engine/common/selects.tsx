@@ -14,6 +14,10 @@ import {
   epaEcoStandardSelect,
   euEcoStandardSelect,
   uicEcoStandardSelect,
+  cylinderArrangementsSelect,
+  injectionTypesSelect,
+  vesselTypesSelect,
+  coolingSystemTypesSelect,
 } from "../create-egnine/create-engine-model";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 
@@ -98,7 +102,7 @@ export const AssignmentView = ({ onChange }: SelectProps<string>) => (
 export const EngineRatingView = ({ onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="engineRatingIdLabel"
-    labelName="Рейтинг двигателя"
+    labelName="Рейтинг"
     selectId="engineRatingIdSelect"
     selectData={engineRatingSelect}
     onChange={onChange}
@@ -191,5 +195,49 @@ export const UicEcoStandardView = ({ onChange }: SelectProps<string>) => (
     selectData={uicEcoStandardSelect}
     onChange={onChange}
     fetchingDataUrl="/uicEcoStandardsData"
+  />
+);
+
+export const CylinderArrangementView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="cylinderArrangementLabel"
+    labelName="Расположение"
+    selectId="cylinderArrangementSelect"
+    selectData={cylinderArrangementsSelect}
+    onChange={onChange}
+    fetchingDataUrl="/cylinderArrangementsData"
+  />
+);
+
+export const InjectionTypeView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="injectionTypeLabel"
+    labelName="Тип впрыска"
+    selectId="injectionTypeSelect"
+    selectData={injectionTypesSelect}
+    onChange={onChange}
+    fetchingDataUrl="/injectionTypesData"
+  />
+);
+
+export const VesselTypeView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="vesselTypeLabel"
+    labelName="Тип судна"
+    selectId="vesselTypeSelect"
+    selectData={vesselTypesSelect}
+    onChange={onChange}
+    fetchingDataUrl="/vesselTypesData"
+  />
+);
+
+export const CoolingSystemTypeView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="coolingSystemTypeLabel"
+    labelName="Тип"
+    selectId="coolingSystemTypeSelect"
+    selectData={coolingSystemTypesSelect}
+    onChange={onChange}
+    fetchingDataUrl="/coolingSystemTypesData"
   />
 );

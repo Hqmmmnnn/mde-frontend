@@ -48,7 +48,7 @@ export const TorqueMaxView = ({ value, onChange }: TextFieldProps<string>) => (
     value={value}
     onChange={(e) => onChange(e.target.value)}
     name="torqueMax"
-    label="Макс. крутящий момент"
+    label="Макс. крутящий момент, нм"
     variant="outlined"
     size="small"
   />
@@ -162,18 +162,6 @@ export const СompressionRatioView = ({ value, onChange }: TextFieldProps<string
   />
 );
 
-export const InjectionTypeView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="injectionType"
-    label="Тип впрыска"
-    variant="outlined"
-    size="small"
-  />
-);
-
 export const InjectionPressureView = ({ value, onChange }: TextFieldProps<string>) => (
   <TextField
     fullWidth
@@ -193,18 +181,6 @@ export const СylinderMaxPressureView = ({ value, onChange }: TextFieldProps<str
     onChange={(e) => onChange(e.target.value)}
     name="cylinderMaxPressure"
     label="Макс. давление, (Pz), бар"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const CylinderArrangementView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="cylinderArrangement"
-    label="Расположение цилиндра"
     variant="outlined"
     size="small"
   />
@@ -241,18 +217,6 @@ export const WeightWithImplementsView = ({ value, onChange }: TextFieldProps<str
     onChange={(e) => onChange(e.target.value)}
     name="weightWithImplements"
     label="Вес с оборудованием"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const CoolingSystemTypeView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="coolingSystemType"
-    label="Тип системы охлаждения"
     variant="outlined"
     size="small"
   />
@@ -324,19 +288,7 @@ export const CoolingSystemVolumeView = ({ value, onChange }: TextFieldProps<stri
     value={value}
     onChange={(e) => onChange(e.target.value)}
     name="coolingSystemVolume"
-    label="Объем системы охлаждения, л"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const VesselTypeView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="vesselType"
-    label="Тип судна"
+    label="Объем  , л"
     variant="outlined"
     size="small"
   />

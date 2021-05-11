@@ -8,6 +8,7 @@ export const Manufacturers = () => (
       $filteredCheckboxes={manufacturersData.$filteredCheckboxes}
       checkedChanged={manufacturersData.checkedChanged}
       checkboxesFiltered={manufacturersData.checkboxesFiltered}
+      placeholder="Имя производителя"
     />
   </CheckBoxListWithCollapse>
 );

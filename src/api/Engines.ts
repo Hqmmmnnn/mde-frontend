@@ -102,14 +102,14 @@ export interface SaveEngine {
   cylinderDiameter: string;
   pistonStroke: string;
   compressionRatio: string;
-  injectionType: string;
+  injectionTypeId: string;
   injectionPressure: string;
   cylinderMaxPressure: string;
-  cylinderArrangement: string;
+  cylinderArrangementId: string;
   cylinderDegrees: string;
   weightDryNoImplements: string;
   weightWithImplements: string;
-  coolingSystemType: string;
+  coolingSystemTypeId: string;
   length: string;
   width: string;
   height: string;
@@ -120,7 +120,7 @@ export interface SaveEngine {
   epaEcoStandardId: string;
   euEcoStandardId: string;
   uicEcoStandardId: string;
-  vesselType: string;
+  vesselTypeId: string;
   classificationSocietyId: string;
   flangeId: string;
   files: File[] | null;

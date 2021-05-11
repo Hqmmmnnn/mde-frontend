@@ -30,7 +30,7 @@ import { EuEcoStandard } from "./eu-eco-standard";
 import { FlangeTypes } from "./flange-types";
 import { ImoEcoStandard } from "./imo-eco-standard";
 import { Manufacturers } from "./manufacturers";
-import { RotationFrequency } from "./rotation-speed";
+import { RotationFrequency } from "./rotation-frequency";
 import { UicEcoStandard } from "./uic-eco-standards";
 import { Header } from "../../components/header";
 
