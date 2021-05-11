@@ -8,7 +8,7 @@ import {
   lastFetchedEngineIdChanged,
   getEnginesFx,
   cylinderQuantityData,
-  rotationSpeedData,
+  rotationFrequencyData,
   manufacturersData,
   flangeTypeData,
   imoEcoStandardData,
@@ -30,7 +30,7 @@ import { EuEcoStandard } from "./eu-eco-standard";
 import { FlangeTypes } from "./flange-types";
 import { ImoEcoStandard } from "./imo-eco-standard";
 import { Manufacturers } from "./manufacturers";
-import { RotationSpeed } from "./rotation-speed";
+import { RotationFrequency } from "./rotation-speed";
 import { UicEcoStandard } from "./uic-eco-standards";
 import { Header } from "../../components/header";
 
@@ -83,7 +83,7 @@ const Aside = () => {
 
     Promise.all([
       cylinderQuantityData.dataFromServerLoaded("/cylindersQuantity"),
-      rotationSpeedData.dataFromServerLoaded("/rotationSpeed"),
+      rotationFrequencyData.dataFromServerLoaded("/rotationFrequencies"),
       manufacturersData.dataFromServerLoaded("/manufacturers"),
       flangeTypeData.dataFromServerLoaded("/flangeTypes"),
       imoEcoStandardData.dataFromServerLoaded("/imoEcoStandards"),
@@ -108,7 +108,7 @@ const Aside = () => {
       <EngineSearch />
 
       <Manufacturers />
-      <RotationSpeed />
+      <RotationFrequency />
       <FlangeTypes />
       <CylinderQuantity />
 

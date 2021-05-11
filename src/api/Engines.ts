@@ -26,7 +26,7 @@ export interface Engine {
   id: number;
   model: string;
   powerRating: number;
-  rotationSpeed: number;
+  rotationFrequency: number;
   manufacturerName: string;
   torqueMax: number;
   assignment: string;
@@ -69,7 +69,7 @@ export interface EngineFilter {
   model: string;
   manufacturerNames: CheckboxValue[];
   powerRating: FacetValue;
-  rotationSpeed: CheckboxValue[];
+  rotationFrequencies: CheckboxValue[];
   cylindersQuantity: CheckboxValue[];
   flangeTypes: CheckboxValue[];
   weightDryNoImplements: FacetValue;
@@ -93,12 +93,12 @@ export interface SaveEngine {
   operatingTimeFirstTs: string;
   operatingTimeToRepair: string;
   powerRating: string;
-  rotationSpeed: string;
+  rotationFrequencyId: string;
   torqueMax: string;
   fuelRate: string;
   fuelRateNominalPower: string;
   cylinderWorkingVolume: string;
-  cylinderQuantity: string;
+  cylinderQuantityId: string;
   cylinderDiameter: string;
   pistonStroke: string;
   compressionRatio: string;
@@ -116,10 +116,10 @@ export interface SaveEngine {
   oilRate: string;
   oilSystemVolume: string;
   coolingSystemVolume: string;
-  imoEcoStandard: string;
-  epaEcoStandard: string;
-  euEcoStandard: string;
-  uicEcoStandard: string;
+  imoEcoStandardId: string;
+  epaEcoStandardId: string;
+  euEcoStandardId: string;
+  uicEcoStandardId: string;
   vesselType: string;
   classificationSocietyId: string;
   flangeId: string;

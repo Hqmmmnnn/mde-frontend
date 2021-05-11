@@ -9,7 +9,7 @@ type EngineFormTemplateProps = {
   model: React.ReactNode;
   series: React.ReactNode;
   powerRating: React.ReactNode;
-  rotationSpeed: React.ReactNode;
+  rotationFrequency: React.ReactNode;
   manufacturer: React.ReactNode;
   torqueMax: React.ReactNode;
   assignment: React.ReactNode;
@@ -54,16 +54,19 @@ type EngineFormTemplateProps = {
 
   vesselType: React.ReactNode;
   classificationSociety: React.ReactNode;
+
+  submitButtonText: React.ReactNode;
 };
 
 export const EngineFormTemplate = ({
   onSubmit,
+
   imageUploader,
   filesUploader,
   model,
   series,
   powerRating,
-  rotationSpeed,
+  rotationFrequency,
   manufacturer,
   torqueMax,
   assignment,
@@ -108,6 +111,8 @@ export const EngineFormTemplate = ({
 
   vesselType,
   classificationSociety,
+
+  submitButtonText,
 }: EngineFormTemplateProps) => (
   <Container>
     <form
@@ -138,7 +143,7 @@ export const EngineFormTemplate = ({
                 model,
                 series,
                 powerRating,
-                rotationSpeed,
+                rotationFrequency,
                 manufacturer,
                 torqueMax,
                 assignment,
@@ -196,7 +201,7 @@ export const EngineFormTemplate = ({
           </Grid>
           <Grid item style={{ display: "flex", justifyContent: "center" }}>
             <Button size="large" color="primary" variant="outlined" type="submit">
-              Добавить
+              {submitButtonText}
             </Button>
           </Grid>
         </Grid>
@@ -216,7 +221,7 @@ const EngineFormBlock = ({ items, name }: EngineFormBlockProps) => {
   return (
     <Box p={2}>
       <Grid container direction="column" spacing={2} style={{ width: "280px" }}>
-        <Box paddingLeft={2}>
+        <Box paddingLeft={1}>
           <Typography variant="h6">{name}</Typography>
         </Box>
 

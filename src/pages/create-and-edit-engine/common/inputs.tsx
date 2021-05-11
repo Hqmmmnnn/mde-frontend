@@ -42,18 +42,6 @@ export const PowerRatingView = ({ value, onChange }: TextFieldProps<string>) => 
   />
 );
 
-export const RotationSpeedView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="rotationSpeed"
-    label="Частота вращения"
-    variant="outlined"
-    size="small"
-  />
-);
-
 export const TorqueMaxView = ({ value, onChange }: TextFieldProps<string>) => (
   <TextField
     fullWidth
@@ -133,18 +121,6 @@ export const CylinderWorkingVolumeView = ({ value, onChange }: TextFieldProps<st
     onChange={(e) => onChange(e.target.value)}
     name="cylinderWorkingVolume"
     label="Рабочий объем"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const CylinderQuantityView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="cylinderQuantity"
-    label="Количество"
     variant="outlined"
     size="small"
   />
@@ -349,54 +325,6 @@ export const CoolingSystemVolumeView = ({ value, onChange }: TextFieldProps<stri
     onChange={(e) => onChange(e.target.value)}
     name="coolingSystemVolume"
     label="Объем системы охлаждения, л"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const ImoEcoStandardView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="imoEcoStandard"
-    label="IMO эко стандарт"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const EpaEcoStandardView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="epaEcoStandard"
-    label="EPA эко стандарт"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const EuEcoStandardView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="euEcoStandard"
-    label="EU эко стандарт"
-    variant="outlined"
-    size="small"
-  />
-);
-
-export const UicEcoStandardView = ({ value, onChange }: TextFieldProps<string>) => (
-  <TextField
-    fullWidth
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    name="uicEcoStandard"
-    label="UIC эко стандарт"
     variant="outlined"
     size="small"
   />

@@ -53,6 +53,12 @@ export const assignmentsSelect = getSelectedData();
 export const engineRatingSelect = getSelectedData();
 export const classificationSocietySelect = getSelectedData();
 export const flangeSelect = getSelectedData();
+export const rotationFrequencySelect = getSelectedData();
+export const cylinderQuantitySelect = getSelectedData();
+export const imoEcoStandardSelect = getSelectedData();
+export const epaEcoStandardSelect = getSelectedData();
+export const euEcoStandardSelect = getSelectedData();
+export const uicEcoStandardSelect = getSelectedData();
 
 export const createEngineForm = createForm({
   fields: {
@@ -83,7 +89,7 @@ export const createEngineForm = createForm({
     powerRating: {
       init: "" as string,
     },
-    rotationSpeed: {
+    rotationFrequencyId: {
       init: "" as string,
     },
     torqueMax: {
@@ -98,7 +104,7 @@ export const createEngineForm = createForm({
     cylinderWorkingVolume: {
       init: "" as string,
     },
-    cylinderQuantity: {
+    cylinderQuantityId: {
       init: "" as string,
     },
     cylinderDiameter: {
@@ -152,16 +158,16 @@ export const createEngineForm = createForm({
     coolingSystemVolume: {
       init: "" as string,
     },
-    imoEcoStandard: {
+    imoEcoStandardId: {
       init: "" as string,
     },
-    epaEcoStandard: {
+    epaEcoStandardId: {
       init: "" as string,
     },
-    euEcoStandard: {
+    euEcoStandardId: {
       init: "" as string,
     },
-    uicEcoStandard: {
+    uicEcoStandardId: {
       init: "" as string,
     },
     vesselType: {

@@ -103,9 +103,10 @@ export const getFacetData = (initialState: FacetValue): FacetData => {
     }))
     .on(dataFromServerLoaded.doneData, (_, { from, to }) => ({ from, to, checked: false }));
 
-  const $initialStateFromServer = createStore<FacetDataFromServer>(
-    initialState
-  ).on(dataFromServerLoaded.doneData, (_, { from, to }) => ({ from, to }));
+  const $initialStateFromServer = createStore<FacetDataFromServer>(initialState).on(
+    dataFromServerLoaded.doneData,
+    (_, { from, to }) => ({ from, to })
+  );
 
   return {
     handleFromChange,
@@ -130,14 +131,14 @@ export const euEcoStandardData = getCheckboxData([]);
 export const uicEcoStandardData = getCheckboxData([]);
 export const flangeTypeData = getCheckboxData([]);
 export const cylinderQuantityData = getCheckboxData([]);
-export const rotationSpeedData = getCheckboxData([]);
+export const rotationFrequencyData = getCheckboxData([]);
 export const manufacturersData = getCheckboxWithSearchData([]);
 
 export const $engineFilter = combine<EngineFilter>({
   model: $engineModel,
   manufacturerNames: manufacturersData.$checkboxes,
   powerRating: powerRatingData.$facetStore,
-  rotationSpeed: rotationSpeedData.$checkboxes,
+  rotationFrequencies: rotationFrequencyData.$checkboxes,
   cylindersQuantity: cylinderQuantityData.$checkboxes,
   flangeTypes: flangeTypeData.$checkboxes,
   weightDryNoImplements: weightDryNoImplementsData.$facetStore,

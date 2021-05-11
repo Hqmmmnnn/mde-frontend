@@ -3,7 +3,7 @@ import { createEffect, forward, restore, createEvent } from "effector";
 import { createForm } from "effector-forms/dist";
 import { loadSessionFx } from "../../features/common/session/session-model";
 import { tokenChanged } from "../../features/common/token";
-import { validationRules } from "../../lib/validationRules";
+import { validationRules } from "../../lib/validation-rules";
 
 type LoginRequest = {
   email: string;

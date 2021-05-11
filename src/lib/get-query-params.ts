@@ -7,7 +7,7 @@ import {
   flangeTypeData,
   imoEcoStandardData,
   manufacturersData,
-  rotationSpeedData,
+  rotationFrequencyData,
   uicEcoStandardData,
   powerRatingData,
   weightDryNoImplementsData,
@@ -25,7 +25,7 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
       key === "flangeTypes" ||
       key === "manufacturerNames" ||
       key === "cylindersQuantity" ||
-      key === "rotationSpeed" ||
+      key === "rotationFrequencies" ||
       key === "imoEcoStandards" ||
       key === "epaEcoStandards" ||
       key === "euEcoStandards" ||
@@ -84,9 +84,9 @@ export const getInitialStateFromQueryParams = (search: URLSearchParams) => {
       continue;
     }
 
-    if (name === "rotationSpeed") {
+    if (name === "rotationFrequencies") {
       const names = value.split(",");
-      rotationSpeedData.lastStateRestored(names);
+      rotationFrequencyData.lastStateRestored(names);
       continue;
     }
 

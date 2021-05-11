@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createEffect, createEvent, forward, restore } from "effector";
 import { createForm } from "effector-forms/dist";
-import { validationRules } from "../../lib/validationRules";
+import { validationRules } from "../../lib/validation-rules";
 
 type RegisterData = {
   email: string;
@@ -33,14 +33,12 @@ export const registerForm = createForm({
   validateOn: ["submit"],
 });
 
-export const registerUserFx = createEffect<RegisterData, void, Error>(
-  async (registerData) => {
-    axios
-      .post("/auth/register", registerData)
-      .then((response) => requestReceived(response.data))
-      .catch((e) => requestReceived(e.response.data));
-  }
-);
+export const registerUserFx = createEffect<RegisterData, void, Error>(async (registerData) => {
+  axios
+    .post("/auth/register", registerData)
+    .then((response) => requestReceived(response.data))
+    .catch((e) => requestReceived(e.response.data));
+});
 
 const requestReceived = createEvent<string>();
 export const $registerResponseFromServer = restore(requestReceived, "");

@@ -8,6 +8,12 @@ import {
   flangeSelect,
   manufacturersSelect,
   SelectedDataProps,
+  rotationFrequencySelect,
+  cylinderQuantitySelect,
+  imoEcoStandardSelect,
+  epaEcoStandardSelect,
+  euEcoStandardSelect,
+  uicEcoStandardSelect,
 } from "../create-egnine/create-engine-model";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 
@@ -119,5 +125,71 @@ export const FlangeTypeView = ({ onChange }: SelectProps<string>) => (
     selectData={flangeSelect}
     onChange={onChange}
     fetchingDataUrl="/flangeTypesData"
+  />
+);
+
+export const RotationFrequencyView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="rotationFrequencyLabel"
+    labelName="Частота вращения"
+    selectId="rotationFrequencySelect"
+    selectData={rotationFrequencySelect}
+    onChange={onChange}
+    fetchingDataUrl="/rotationFrequenciesData"
+  />
+);
+
+export const CylinderQuantityView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="cylinderQuantityLabel"
+    labelName="Количество цилиндров"
+    selectId="cylinderQuantitySelect"
+    selectData={cylinderQuantitySelect}
+    onChange={onChange}
+    fetchingDataUrl="/cylindersQuantityData"
+  />
+);
+
+export const ImoEcoStandardView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="imoEcoStandardLabel"
+    labelName="IMO"
+    selectId="imoEcoStandardSelect"
+    selectData={imoEcoStandardSelect}
+    onChange={onChange}
+    fetchingDataUrl="/imoEcoStandardsData"
+  />
+);
+
+export const EpaEcoStandardView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="epaEcoStandardLabel"
+    labelName="EPA"
+    selectId="epaEcoStandardSelect"
+    selectData={epaEcoStandardSelect}
+    onChange={onChange}
+    fetchingDataUrl="/epaEcoStandardsData"
+  />
+);
+
+export const EuEcoStandardView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="euEcoStandardLabel"
+    labelName="EU"
+    selectId="euEcoStandardSelect"
+    selectData={euEcoStandardSelect}
+    onChange={onChange}
+    fetchingDataUrl="/euEcoStandardsData"
+  />
+);
+
+export const UicEcoStandardView = ({ onChange }: SelectProps<string>) => (
+  <CreateEngineSelect
+    labelId="uicEcoStandardLabel"
+    labelName="UIC"
+    selectId="uicEcoStandardSelect"
+    selectData={uicEcoStandardSelect}
+    onChange={onChange}
+    fetchingDataUrl="/uicEcoStandardsData"
   />
 );
