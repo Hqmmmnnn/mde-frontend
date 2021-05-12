@@ -134,6 +134,8 @@ export const cylinderQuantityData = getCheckboxData([]);
 export const rotationFrequencyData = getCheckboxWithSearchData([]);
 export const manufacturersData = getCheckboxWithSearchData([]);
 
+export const resetEngineFitler = createEvent<void>();
+
 export const $engineFilter = combine<EngineFilter>({
   model: $engineModel,
   manufacturerNames: manufacturersData.$checkboxes,
@@ -150,4 +152,4 @@ export const $engineFilter = combine<EngineFilter>({
   euEcoStandards: euEcoStandardData.$checkboxes,
   uicEcoStandards: uicEcoStandardData.$checkboxes,
   lastFetchedEngineId: $lastFetchedEngineId,
-});
+}).reset(resetEngineFitler);

@@ -10,13 +10,9 @@ import {
 import { useStore } from "effector-react";
 import React from "react";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import { AuthTabs } from "../auth/auth";
-import { authModalOpened, tabIndexChanged } from "../auth/auth-model";
-import {
-  $isAuthenticated,
-  $session,
-  sessionDropped,
-} from "../features/common/session/session-model";
+import { AuthTabs } from "../../auth/auth";
+import { tabIndexChanged, authModalOpened } from "../../auth/auth-model";
+import { $session, $isAuthenticated, sessionDropped } from "./session/session-model";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -5,6 +5,7 @@ import { Checkboxes } from "./checkbox/Checkbox";
 import { CheckboxWithSearchDataProps } from "./checkbox/model";
 
 export const CheckBoxesWithSearch = ({
+  value,
   $filteredCheckboxes,
   checkedChanged,
   checkboxesFiltered,
@@ -21,6 +22,7 @@ export const CheckBoxesWithSearch = ({
       <Card variant="outlined">
         <Box component="div" className={classes.root}>
           <InputBase
+            value={value}
             className={classes.input}
             placeholder={placeholder}
             onChange={filterCheckBoxes}

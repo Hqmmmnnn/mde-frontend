@@ -309,17 +309,9 @@ export const EngineDemo = () => {
                       style={{
                         display: "flex",
                         width: "100%",
-                        justifyContent: "space-between",
+                        justifyContent: "flex-end",
                       }}
                     >
-                      <Button
-                        variant="outlined"
-                        size="medium"
-                        color="primary"
-                        className={styles.margin}
-                      >
-                        Подробнее
-                      </Button>
                       <Button size="medium" className={styles.margin} color="secondary">
                         Удалить
                       </Button>

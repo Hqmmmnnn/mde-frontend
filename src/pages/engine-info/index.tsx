@@ -16,9 +16,9 @@ import {
   Box,
 } from "@material-ui/core";
 import { useStore } from "effector-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
-import { Header } from "../../components/header";
+import { Header } from "../../features/common/header";
 
 import {
   $engineFilenames,

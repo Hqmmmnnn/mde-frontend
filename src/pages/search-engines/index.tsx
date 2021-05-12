@@ -20,6 +20,7 @@ import {
   lengthData,
   widthData,
   heightData,
+  resetEngineFitler,
 } from "./model";
 import { getQueryParams, getInitialStateFromQueryParams } from "../../lib/get-query-params";
 import { CylinderQuantity } from "./cylinder-quantity";
@@ -32,7 +33,7 @@ import { ImoEcoStandard } from "./imo-eco-standard";
 import { Manufacturers } from "./manufacturers";
 import { RotationFrequency } from "./rotation-frequency";
 import { UicEcoStandard } from "./uic-eco-standards";
-import { Header } from "../../components/header";
+import { Header } from "../../features/common/header";
 
 export const SearchEnginesPage = () => (
   <Grid container>
@@ -66,11 +67,29 @@ const SearchWithFiltersButton = () => {
         lastFetchedEngineIdChanged(0);
         params.delete("lastFetchedEngineId");
         history.push({ search: params.toString().replaceAll("%2C", ",") });
-
         return getEnginesFx(history.location.search);
       }}
     >
       Поиск
+    </Button>
+  );
+};
+
+const ResetEngineFilterStateButton = () => {
+  const history = useHistory();
+
+  return (
+    <Button
+      fullWidth
+      variant="outlined"
+      color="secondary"
+      onClick={() => {
+        resetEngineFitler();
+        history.replace("/");
+        getEnginesFx("");
+      }}
+    >
+      Очистить
     </Button>
   );
 };
@@ -123,7 +142,13 @@ const Aside = () => {
       <Facet data={widthData} label="Ширина" />
       <Facet data={heightData} label="Высота" />
 
-      <SearchWithFiltersButton />
+      <Box p={1}>
+        <SearchWithFiltersButton />
+      </Box>
+
+      <Box p={1}>
+        <ResetEngineFilterStateButton />
+      </Box>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useField } from "effector-forms/dist";
 import { FormEvent, useEffect } from "react";
-import { Header } from "../../../components/header";
 
 import { createEngineForm } from "./create-engine-model";
 import { EngineFormTemplate } from "../common/template";
@@ -49,6 +48,7 @@ import {
 } from "../common/selects";
 
 import { FilesUploaderView, ImageUploaderView } from "../common/uploaders";
+import { Header } from "../../../features/common/header";
 
 export const CreateEnginePage = () => (
   <>

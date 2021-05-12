@@ -71,6 +71,7 @@ export const getCheckboxData = (initialState: CheckboxValue[]): CheckboxData => 
 };
 
 export type CheckboxWithSearchData = {
+  $value: Store<string>;
   lastStateRestored: Event<string[]>;
   dataFromServerLoaded: Effect<string, CheckboxDataFromServer[], Error>;
   checkboxesFiltered: Event<string>;
@@ -80,6 +81,7 @@ export type CheckboxWithSearchData = {
 };
 
 export type CheckboxWithSearchDataProps = {
+  value: string;
   checkboxesFiltered: Event<string>;
   checkedChanged: Event<string>;
   $filteredCheckboxes: Store<CheckboxValue[]>;
@@ -98,6 +100,8 @@ export const getCheckboxWithSearchData = (
       return json.data;
     }
   );
+
+  const $value = createStore<string>("").on(checkboxesFiltered, (_, payload) => payload);
 
   const $checkboxes = createStore<CheckboxValue[]>(initialState)
     .on(checkedChanged, (checkboxes, id) =>
@@ -156,6 +160,7 @@ export const getCheckboxWithSearchData = (
   });
 
   return {
+    $value,
     lastStateRestored,
     dataFromServerLoaded,
     checkboxesFiltered,
