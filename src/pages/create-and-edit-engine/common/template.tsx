@@ -126,7 +126,7 @@ export const EngineFormTemplate = ({
       }}
     >
       <Grid container>
-        <Grid item style={{ padding: "24px", display: "flex", width: "100%" }}>
+        <Grid item style={{ padding: "0 24px", display: "flex", width: "100%" }}>
           <Grid container spacing={6}>
             <Grid item>{imageUploader}</Grid>
             <Grid item style={{ display: "flex", flexGrow: 1 }}>

@@ -83,7 +83,7 @@ export interface EngineFilter {
   lastFetchedEngineId: number;
 }
 
-export interface SaveEngine {
+export type SaveEngine = {
   manufacturerId: string;
   series: string;
   model: string;
@@ -125,4 +125,6 @@ export interface SaveEngine {
   flangeId: string;
   files: File[] | null;
   image: File | null;
-}
+};
+
+export type EditEngine = Omit<SaveEngine, "files" | "image"> & { engineId: string };

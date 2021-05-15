@@ -129,10 +129,10 @@ const AttachedFiles = () => {
       {filenames.length === 0 ? (
         <Typography>Пока что нет прикрепленных файлов</Typography>
       ) : (
-        filenames.map((filename) => (
-          <Grid item key={filename}>
+        filenames.map(({ id, name }) => (
+          <Grid item key={id}>
             <Link
-              onClick={() => loadFileFx(filename)}
+              onClick={() => loadFileFx(name)}
               style={{
                 maxWidth: "300px",
                 overflow: "hidden",
@@ -141,7 +141,7 @@ const AttachedFiles = () => {
                 display: "block",
               }}
             >
-              {filename}
+              {name}
             </Link>
           </Grid>
         ))

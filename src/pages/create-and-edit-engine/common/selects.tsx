@@ -1,13 +1,15 @@
 import { useStore } from "effector-react";
 import React, { useEffect } from "react";
 import { Event } from "effector";
+
+import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import {
-  assignmentsSelect,
-  classificationSocietySelect,
-  engineRatingSelect,
-  flangeSelect,
-  manufacturersSelect,
   SelectedDataProps,
+  manufacturersSelect,
+  assignmentsSelect,
+  engineRatingSelect,
+  classificationSocietySelect,
+  flangeSelect,
   rotationFrequencySelect,
   cylinderQuantitySelect,
   imoEcoStandardSelect,
@@ -18,30 +20,32 @@ import {
   injectionTypesSelect,
   vesselTypesSelect,
   coolingSystemTypesSelect,
-} from "../create-egnine/create-engine-model";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+} from "./model";
 
 type SelectProps<T> = {
+  value: T;
   onChange: Event<T>;
 };
 
-type CreateEngineSelectProps = {
+type CreateEngineSelectProps<T> = {
   labelId: string;
   labelName: string;
   selectId: string;
   selectData: SelectedDataProps;
-  onChange: Event<string>;
+  value: T;
+  onChange: Event<T>;
   fetchingDataUrl: string;
 };
 
-const CreateEngineSelect = ({
+const CreateEngineSelect = function <T>({
   labelId,
   labelName,
   selectId,
   selectData,
+  value,
   onChange,
   fetchingDataUrl,
-}: CreateEngineSelectProps) => {
+}: CreateEngineSelectProps<T>) {
   const { loadSelectDataFx, $selectedData } = selectData;
   const items = useStore($selectedData);
 
@@ -60,7 +64,7 @@ const CreateEngineSelect = ({
         label={labelName}
         labelId={labelId}
         id={selectId}
-        defaultValue=""
+        value={value}
         onChange={handleChange}
       >
         <MenuItem value="">
@@ -77,166 +81,181 @@ const CreateEngineSelect = ({
   );
 };
 
-export const ManufacturerView = ({ onChange }: SelectProps<string>) => (
+export const ManufacturerView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="manufacturersLabel"
     labelName="Производитель"
     selectId="manufacturersSelect"
     selectData={manufacturersSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/manufacturersData"
   />
 );
 
-export const AssignmentView = ({ onChange }: SelectProps<string>) => (
+export const AssignmentView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="assignmentIdLabel"
     labelName="Назначение"
     selectId="assignmentIdSelect"
     selectData={assignmentsSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/assignmentsData"
   />
 );
 
-export const EngineRatingView = ({ onChange }: SelectProps<string>) => (
+export const EngineRatingView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="engineRatingIdLabel"
     labelName="Рейтинг"
     selectId="engineRatingIdSelect"
     selectData={engineRatingSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/engineRatingData"
   />
 );
 
-export const ClassificationSocietyView = ({ onChange }: SelectProps<string>) => (
+export const ClassificationSocietyView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="classificationSocietiesLabel"
     labelName="Классифиционное общество"
     selectId="classificationSocietiesSelect"
     selectData={classificationSocietySelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/classificationSocietyData"
   />
 );
 
-export const FlangeTypeView = ({ onChange }: SelectProps<string>) => (
+export const FlangeTypeView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="flangeTypeLabel"
     labelName="Тип фланца"
     selectId="flangeTypeSelect"
     selectData={flangeSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/flangeTypesData"
   />
 );
 
-export const RotationFrequencyView = ({ onChange }: SelectProps<string>) => (
+export const RotationFrequencyView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="rotationFrequencyLabel"
     labelName="Частота вращения"
     selectId="rotationFrequencySelect"
     selectData={rotationFrequencySelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/rotationFrequenciesData"
   />
 );
 
-export const CylinderQuantityView = ({ onChange }: SelectProps<string>) => (
+export const CylinderQuantityView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="cylinderQuantityLabel"
     labelName="Количество цилиндров"
     selectId="cylinderQuantitySelect"
     selectData={cylinderQuantitySelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/cylindersQuantityData"
   />
 );
 
-export const ImoEcoStandardView = ({ onChange }: SelectProps<string>) => (
+export const ImoEcoStandardView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="imoEcoStandardLabel"
     labelName="IMO"
     selectId="imoEcoStandardSelect"
     selectData={imoEcoStandardSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/imoEcoStandardsData"
   />
 );
 
-export const EpaEcoStandardView = ({ onChange }: SelectProps<string>) => (
+export const EpaEcoStandardView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="epaEcoStandardLabel"
     labelName="EPA"
     selectId="epaEcoStandardSelect"
     selectData={epaEcoStandardSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/epaEcoStandardsData"
   />
 );
 
-export const EuEcoStandardView = ({ onChange }: SelectProps<string>) => (
+export const EuEcoStandardView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="euEcoStandardLabel"
     labelName="EU"
     selectId="euEcoStandardSelect"
     selectData={euEcoStandardSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/euEcoStandardsData"
   />
 );
 
-export const UicEcoStandardView = ({ onChange }: SelectProps<string>) => (
+export const UicEcoStandardView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="uicEcoStandardLabel"
     labelName="UIC"
     selectId="uicEcoStandardSelect"
     selectData={uicEcoStandardSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/uicEcoStandardsData"
   />
 );
 
-export const CylinderArrangementView = ({ onChange }: SelectProps<string>) => (
+export const CylinderArrangementView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="cylinderArrangementLabel"
     labelName="Расположение"
     selectId="cylinderArrangementSelect"
     selectData={cylinderArrangementsSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/cylinderArrangementsData"
   />
 );
 
-export const InjectionTypeView = ({ onChange }: SelectProps<string>) => (
+export const InjectionTypeView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="injectionTypeLabel"
     labelName="Тип впрыска"
     selectId="injectionTypeSelect"
     selectData={injectionTypesSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/injectionTypesData"
   />
 );
 
-export const VesselTypeView = ({ onChange }: SelectProps<string>) => (
+export const VesselTypeView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="vesselTypeLabel"
     labelName="Тип судна"
     selectId="vesselTypeSelect"
     selectData={vesselTypesSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/vesselTypesData"
   />
 );
 
-export const CoolingSystemTypeView = ({ onChange }: SelectProps<string>) => (
+export const CoolingSystemTypeView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="coolingSystemTypeLabel"
     labelName="Тип"
     selectId="coolingSystemTypeSelect"
     selectData={coolingSystemTypesSelect}
+    value={value}
     onChange={onChange}
     fetchingDataUrl="/coolingSystemTypesData"
   />

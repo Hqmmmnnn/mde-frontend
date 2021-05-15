@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createEffect, restore } from "effector";
+import { EngineFileName } from "../../api/Files";
 
 type EngineInfoRow = {
   name: string;
@@ -20,8 +21,8 @@ const initialState: EngineInfoTable[] = [];
 
 export const $engineInfoTables = restore(loadEngineFx, initialState);
 
-export const loadFileNamesFx = createEffect<string, string[], Error>(async (engineId) => {
-  const filenames = await axios.get<string[]>(`/filenames/${engineId}`);
+export const loadFileNamesFx = createEffect<string, EngineFileName[], Error>(async (engineId) => {
+  const filenames = await axios.get<EngineFileName[]>(`/filenames/${engineId}`);
   return filenames.data;
 });
 
