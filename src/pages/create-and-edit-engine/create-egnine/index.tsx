@@ -28,6 +28,7 @@ import {
   WidthView,
   СompressionRatioView,
   СylinderMaxPressureView,
+  RotationFrequencyView,
 } from "../common/inputs";
 import {
   AssignmentView,
@@ -42,7 +43,6 @@ import {
   ImoEcoStandardView,
   InjectionTypeView,
   ManufacturerView,
-  RotationFrequencyView,
   UicEcoStandardView,
   VesselTypeView,
 } from "../common/selects";
@@ -50,12 +50,17 @@ import {
 import { FilesUploaderView, ImageUploaderView } from "../common/uploaders";
 import { Header } from "../../../features/common/header";
 import { useDropzone } from "react-dropzone";
+import { WithSecure } from "../../../lib/wIth-secure";
+import { ScrollToTop } from "../../../lib/scroll-to-top";
 
 export const CreateEnginePage = () => (
-  <>
-    <Header />
-    <CreateEngineForm />
-  </>
+  <WithSecure>
+    <>
+      <ScrollToTop />
+      <Header />
+      <CreateEngineForm />
+    </>
+  </WithSecure>
 );
 
 const CreateEngineForm = () => {
@@ -138,7 +143,7 @@ const PowerRating = () => {
 };
 
 const RotationFrequency = () => {
-  const { value, onChange } = useField(newEngineForm.fields.rotationFrequencyId);
+  const { value, onChange } = useField(newEngineForm.fields.rotationFrequency);
   return <RotationFrequencyView value={value} onChange={onChange} />;
 };
 

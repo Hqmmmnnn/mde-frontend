@@ -57,7 +57,7 @@ const createEngineForm = () => {
       powerRating: {
         init: "" as string,
       },
-      rotationFrequencyId: {
+      rotationFrequency: {
         init: "" as string,
       },
       torqueMax: {

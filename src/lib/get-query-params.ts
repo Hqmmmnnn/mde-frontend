@@ -25,7 +25,6 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
       key === "flangeTypes" ||
       key === "manufacturerNames" ||
       key === "cylindersQuantity" ||
-      key === "rotationFrequencies" ||
       key === "imoEcoStandards" ||
       key === "epaEcoStandards" ||
       key === "euEcoStandards" ||
@@ -41,12 +40,12 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
     }
 
     if (
-      (key === "powerRating" ||
-        key === "height" ||
-        key === "width" ||
-        key === "length" ||
-        key === "weightDryNoImplements") &&
-      value
+      key === "rotationFrequencies" ||
+      key === "powerRating" ||
+      key === "height" ||
+      key === "width" ||
+      key === "length" ||
+      key === "weightDryNoImplements"
     ) {
       if (value.checked === true) {
         params.append(key, `${value.from}-${value.to}`);
@@ -84,12 +83,6 @@ export const getInitialStateFromQueryParams = (search: URLSearchParams) => {
       continue;
     }
 
-    if (name === "rotationFrequencies") {
-      const names = value.split(",");
-      rotationFrequencyData.lastStateRestored(names);
-      continue;
-    }
-
     if (name === "manufacturerNames") {
       const names = value.split(",");
       manufacturersData.lastStateRestored(names);
@@ -120,29 +113,40 @@ export const getInitialStateFromQueryParams = (search: URLSearchParams) => {
       continue;
     }
 
+    if (name === "rotationFrequencies") {
+      const range = value.split("-").map((v) => Number(v));
+      rotationFrequencyData.loadStateRestored({ from: range[0], to: range[1] });
+      continue;
+    }
+
     if (name === "powerRating") {
       const range = value.split("-").map((v) => Number(v));
       powerRatingData.loadStateRestored({ from: range[0], to: range[1] });
+      continue;
     }
 
     if (name === "weightDryNoImplements") {
       const range = value.split("-").map((v) => Number(v));
       weightDryNoImplementsData.loadStateRestored({ from: range[0], to: range[1] });
+      continue;
     }
 
     if (name === "length") {
       const range = value.split("-").map((v) => Number(v));
       lengthData.loadStateRestored({ from: range[0], to: range[1] });
+      continue;
     }
 
     if (name === "width") {
       const range = value.split("-").map((v) => Number(v));
       widthData.loadStateRestored({ from: range[0], to: range[1] });
+      continue;
     }
 
     if (name === "height") {
       const range = value.split("-").map((v) => Number(v));
       heightData.loadStateRestored({ from: range[0], to: range[1] });
+      continue;
     }
   }
 };

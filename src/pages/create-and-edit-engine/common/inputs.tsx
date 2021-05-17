@@ -18,6 +18,18 @@ export const ModelView = ({ value, onChange }: TextFieldProps<string>) => (
   />
 );
 
+export const RotationFrequencyView = ({ value, onChange }: TextFieldProps<string>) => (
+  <TextField
+    fullWidth
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    name="model"
+    label="Частота вращения"
+    variant="outlined"
+    size="small"
+  />
+);
+
 export const SeriesView = ({ value, onChange }: TextFieldProps<string>) => (
   <TextField
     fullWidth

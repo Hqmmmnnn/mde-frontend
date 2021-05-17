@@ -1,8 +1,7 @@
 import { IconButton } from "@material-ui/core";
 import { useField } from "effector-forms/dist";
 import { useStore } from "effector-react";
-import { FormEvent, useEffect } from "react";
-import { useDropzone } from "react-dropzone";
+import React, { FormEvent, useEffect } from "react";
 import { useParams } from "react-router";
 import { Header } from "../../../features/common/header";
 import CloseIcon from "@material-ui/icons/Close";
@@ -31,9 +30,9 @@ import {
   OilRateView,
   OilSystemVolumeView,
   CoolingSystemVolumeView,
+  RotationFrequencyView,
 } from "../common/inputs";
 import {
-  RotationFrequencyView,
   ManufacturerView,
   AssignmentView,
   EngineRatingView,
@@ -50,7 +49,7 @@ import {
   FlangeTypeView,
 } from "../common/selects";
 import { EngineFormTemplate } from "../common/template";
-import { ImageUploaderView, FilesUploaderViewForUpdate } from "../common/uploaders";
+import { FilesUploaderViewForUpdate, ImageUploaderView } from "../common/uploaders";
 
 import {
   $engineImage,
@@ -58,20 +57,24 @@ import {
   editEngineForm,
   getEngineImageFx,
   getEditDataFx,
-  saveEngineImageFx,
   deleteEngineImageFx,
   getFilesFx,
   $editEngineFiles,
+  saveEngineImageFx,
 } from "./edit-engie-model";
+import { useDropzone } from "react-dropzone";
+import { WithSecure } from "../../../lib/wIth-secure";
+import { ScrollToTop } from "../../../lib/scroll-to-top";
 
-export const EditEnginePage = () => {
-  return (
+export const EditEnginePage = () => (
+  <WithSecure>
     <>
+      <ScrollToTop />
       <Header />
       <EditEngineForm />
     </>
-  );
-};
+  </WithSecure>
+);
 
 const EditEngineForm = () => {
   const { id }: { id: string } = useParams();
@@ -168,7 +171,7 @@ const PowerRating = () => {
 };
 
 const RotationFrequency = () => {
-  const { value, onChange } = useField(editEngineForm.fields.rotationFrequencyId);
+  const { value, onChange } = useField(editEngineForm.fields.rotationFrequency);
   return <RotationFrequencyView value={value} onChange={onChange} />;
 };
 

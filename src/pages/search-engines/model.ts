@@ -3,6 +3,11 @@ import { combine, createEffect, createEvent, createStore, Effect, Event, Store }
 import { EngineDemo, EngineFilter } from "../../api/Engines";
 import { getCheckboxData, getCheckboxWithSearchData } from "../../components/checkbox/model";
 
+export const deleteEngineFx = createEffect<number, number, Error>(async (engineId) => {
+  await axios.delete(`/engines/${engineId}`);
+  return engineId;
+});
+
 export const getEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
   const req = await fetch(`/engines${queryParams}`);
   const data = req.json();
@@ -29,7 +34,10 @@ export const $engines = createStore<EngineDemo[]>([])
     }
 
     return [...state, ...payload];
-  });
+  })
+  .on(deleteEngineFx.doneData, (engines, deletedEngineId) =>
+    engines.filter(({ id }) => id !== deletedEngineId)
+  );
 
 export const engineModelChanged = createEvent<string>();
 export const lastFetchedEngineIdChanged = createEvent<number>();
@@ -102,7 +110,6 @@ export const getFacetData = (initialState: FacetValue): FacetData => {
       checked: true,
     }))
     .on(dataFromServerLoaded.doneData, (_, { from, to }) => ({ from, to, checked: false }));
-
   const $initialStateFromServer = createStore<FacetDataFromServer>(initialState).on(
     dataFromServerLoaded.doneData,
     (_, { from, to }) => ({ from, to })
@@ -119,6 +126,7 @@ export const getFacetData = (initialState: FacetValue): FacetData => {
   };
 };
 
+export const rotationFrequencyData = getFacetData({ from: 0, to: 0, checked: false });
 export const weightDryNoImplementsData = getFacetData({ from: 0, to: 0, checked: false });
 export const powerRatingData = getFacetData({ from: 0, to: 0, checked: false });
 export const lengthData = getFacetData({ from: 0, to: 0, checked: false });
@@ -131,16 +139,13 @@ export const euEcoStandardData = getCheckboxData([]);
 export const uicEcoStandardData = getCheckboxData([]);
 export const flangeTypeData = getCheckboxData([]);
 export const cylinderQuantityData = getCheckboxData([]);
-export const rotationFrequencyData = getCheckboxWithSearchData([]);
 export const manufacturersData = getCheckboxWithSearchData([]);
-
-export const resetEngineFitler = createEvent<void>();
 
 export const $engineFilter = combine<EngineFilter>({
   model: $engineModel,
   manufacturerNames: manufacturersData.$checkboxes,
   powerRating: powerRatingData.$facetStore,
-  rotationFrequencies: rotationFrequencyData.$checkboxes,
+  rotationFrequencies: rotationFrequencyData.$facetStore,
   cylindersQuantity: cylinderQuantityData.$checkboxes,
   flangeTypes: flangeTypeData.$checkboxes,
   weightDryNoImplements: weightDryNoImplementsData.$facetStore,
@@ -152,4 +157,4 @@ export const $engineFilter = combine<EngineFilter>({
   euEcoStandards: euEcoStandardData.$checkboxes,
   uicEcoStandards: uicEcoStandardData.$checkboxes,
   lastFetchedEngineId: $lastFetchedEngineId,
-}).reset(resetEngineFitler);
+});

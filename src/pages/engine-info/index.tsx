@@ -42,16 +42,6 @@ const useStyles = makeStyles({
   },
 });
 
-export const ScrollToTop = () => {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-};
-
 export const EngineInfoPage = () => {
   const styles = useStyles();
   const { id }: { id: string } = useParams();

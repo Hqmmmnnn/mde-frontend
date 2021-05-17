@@ -101,7 +101,7 @@ export const editEngineForm = createForm({
     powerRating: {
       init: "" as string,
     },
-    rotationFrequencyId: {
+    rotationFrequency: {
       init: "" as string,
     },
     torqueMax: {
@@ -191,7 +191,6 @@ export const editEngineForm = createForm({
     flangeId: {
       init: "" as string,
     },
-    files: { init: null as File[] | null },
     image: { init: null as (File & { preview: string }) | null },
   },
 
@@ -200,7 +199,16 @@ export const editEngineForm = createForm({
 
 export const getEditDataFx = createEffect<string, EditEngine, Error>(async (engineId) => {
   var editEngine = await axios.get<EditEngine>(`/editEngine/${engineId}`);
-  return editEngine.data;
+
+  const data = editEngine.data as any;
+
+  for (const key in data) {
+    if (data[key] === null) {
+      data[key] = "";
+    }
+  }
+
+  return data;
 });
 
 forward({

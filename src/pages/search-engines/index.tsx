@@ -20,7 +20,6 @@ import {
   lengthData,
   widthData,
   heightData,
-  resetEngineFitler,
 } from "./model";
 import { getQueryParams, getInitialStateFromQueryParams } from "../../lib/get-query-params";
 import { CylinderQuantity } from "./cylinder-quantity";
@@ -31,7 +30,6 @@ import { EuEcoStandard } from "./eu-eco-standard";
 import { FlangeTypes } from "./flange-types";
 import { ImoEcoStandard } from "./imo-eco-standard";
 import { Manufacturers } from "./manufacturers";
-import { RotationFrequency } from "./rotation-frequency";
 import { UicEcoStandard } from "./uic-eco-standards";
 import { Header } from "../../features/common/header";
 
@@ -67,7 +65,7 @@ const SearchWithFiltersButton = () => {
         lastFetchedEngineIdChanged(0);
         params.delete("lastFetchedEngineId");
         history.push({ search: params.toString().replaceAll("%2C", ",") });
-        return getEnginesFx(history.location.search);
+        getEnginesFx(history.location.search);
       }}
     >
       Поиск
@@ -84,9 +82,9 @@ const ResetEngineFilterStateButton = () => {
       variant="outlined"
       color="secondary"
       onClick={() => {
-        resetEngineFitler();
         history.replace("/");
         getEnginesFx("");
+        loadAllDataForFilter();
       }}
     >
       Очистить
@@ -94,32 +92,33 @@ const ResetEngineFilterStateButton = () => {
   );
 };
 
+const loadAllDataForFilter = () => {
+  return Promise.all([
+    cylinderQuantityData.dataFromServerLoaded("/cylindersQuantity"),
+    rotationFrequencyData.dataFromServerLoaded("/rotationFrequencies"),
+    manufacturersData.dataFromServerLoaded("/manufacturers"),
+    flangeTypeData.dataFromServerLoaded("/flangeTypes"),
+    imoEcoStandardData.dataFromServerLoaded("/imoEcoStandards"),
+    epaEcoStandardData.dataFromServerLoaded("/epaEcoStandards"),
+    euEcoStandardData.dataFromServerLoaded("/euEcoStandards"),
+    uicEcoStandardData.dataFromServerLoaded("/uicEcoStandards"),
+    powerRatingData.dataFromServerLoaded("/powerRatingMinAndMax"),
+    weightDryNoImplementsData.dataFromServerLoaded("/weightDryNoImplementsMinAndMax"),
+  ]).then(() => {
+    return Promise.all([
+      lengthData.dataFromServerLoaded("/lengthMinAndMax"),
+      widthData.dataFromServerLoaded("/widthMinAndMax"),
+      heightData.dataFromServerLoaded("/heightMinAndMax"),
+    ]);
+  });
+};
+
 const Aside = () => {
   const search = useLocation().search;
 
   useEffect(() => {
     const searchParams = new URLSearchParams(search);
-
-    Promise.all([
-      cylinderQuantityData.dataFromServerLoaded("/cylindersQuantity"),
-      rotationFrequencyData.dataFromServerLoaded("/rotationFrequencies"),
-      manufacturersData.dataFromServerLoaded("/manufacturers"),
-      flangeTypeData.dataFromServerLoaded("/flangeTypes"),
-      imoEcoStandardData.dataFromServerLoaded("/imoEcoStandards"),
-      epaEcoStandardData.dataFromServerLoaded("/epaEcoStandards"),
-      euEcoStandardData.dataFromServerLoaded("/euEcoStandards"),
-      uicEcoStandardData.dataFromServerLoaded("/uicEcoStandards"),
-      powerRatingData.dataFromServerLoaded("/powerRatingMinAndMax"),
-      weightDryNoImplementsData.dataFromServerLoaded("/weightDryNoImplementsMinAndMax"),
-    ]).then(() => {
-      Promise.all([
-        lengthData.dataFromServerLoaded("/lengthMinAndMax"),
-        widthData.dataFromServerLoaded("/widthMinAndMax"),
-        heightData.dataFromServerLoaded("/heightMinAndMax"),
-      ]).then(() => {
-        getInitialStateFromQueryParams(searchParams);
-      });
-    });
+    loadAllDataForFilter().then(() => getInitialStateFromQueryParams(searchParams));
   }, []);
 
   return (
@@ -127,7 +126,7 @@ const Aside = () => {
       <EngineSearch />
 
       <Manufacturers />
-      <RotationFrequency />
+      <Facet data={rotationFrequencyData} label="Частота вращения" />
       <FlangeTypes />
       <CylinderQuantity />
 

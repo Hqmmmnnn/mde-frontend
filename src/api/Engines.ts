@@ -69,7 +69,7 @@ export interface EngineFilter {
   model: string;
   manufacturerNames: CheckboxValue[];
   powerRating: FacetValue;
-  rotationFrequencies: CheckboxValue[];
+  rotationFrequencies: FacetValue;
   cylindersQuantity: CheckboxValue[];
   flangeTypes: CheckboxValue[];
   weightDryNoImplements: FacetValue;
@@ -93,7 +93,7 @@ export type SaveEngine = {
   operatingTimeFirstTs: string;
   operatingTimeToRepair: string;
   powerRating: string;
-  rotationFrequencyId: string;
+  rotationFrequency: string;
   torqueMax: string;
   fuelRate: string;
   fuelRateNominalPower: string;

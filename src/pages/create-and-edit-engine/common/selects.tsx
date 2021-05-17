@@ -141,18 +141,6 @@ export const FlangeTypeView = ({ value, onChange }: SelectProps<string>) => (
   />
 );
 
-export const RotationFrequencyView = ({ value, onChange }: SelectProps<string>) => (
-  <CreateEngineSelect
-    labelId="rotationFrequencyLabel"
-    labelName="Частота вращения"
-    selectId="rotationFrequencySelect"
-    selectData={rotationFrequencySelect}
-    value={value}
-    onChange={onChange}
-    fetchingDataUrl="/rotationFrequenciesData"
-  />
-);
-
 export const CylinderQuantityView = ({ value, onChange }: SelectProps<string>) => (
   <CreateEngineSelect
     labelId="cylinderQuantityLabel"

@@ -48,7 +48,7 @@ export const ImageUploaderView = ({
   const thumbs = value && (
     <div style={thumb} key={value.name}>
       <div style={thumbInner}>
-        <img src={value.preview} style={img} />
+        <img src={value.preview} style={img} alt="engine" />
         <IconButton
           onClick={onCloseIconClick}
           aria-label="delete engine image"

@@ -2,6 +2,7 @@ import {
   AppBar,
   Button,
   createStyles,
+  Link,
   makeStyles,
   Theme,
   Toolbar,
@@ -13,6 +14,7 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import { AuthTabs } from "../../auth/auth";
 import { tabIndexChanged, authModalOpened } from "../../auth/auth-model";
 import { $session, $isAuthenticated, sessionDropped } from "./session/session-model";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,6 +48,16 @@ export const Header = () => {
           </Typography>
           {isAuthenticated ? (
             <>
+              {currentUser?.role === "ADMIN" && (
+                <Link
+                  color="inherit"
+                  className={classes.item}
+                  component={RouterLink}
+                  to="/createEngine"
+                >
+                  Добавление двигателя
+                </Link>
+              )}
               <AccountCircleOutlinedIcon className={classes.item} />
               <div className={classes.item}>
                 <Typography>

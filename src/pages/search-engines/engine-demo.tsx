@@ -1,7 +1,6 @@
 import {
   Card,
   makeStyles,
-  CardMedia,
   CardContent,
   Typography,
   Button,
@@ -10,14 +9,16 @@ import {
   CircularProgress,
   Box,
   CardActionArea,
+  Link,
 } from "@material-ui/core";
 
 import { useStore } from "effector-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router";
-import { $engines, getEnginesFx, lastFetchedEngineIdChanged } from "./model";
+import { $engines, deleteEngineFx, getEnginesFx, lastFetchedEngineIdChanged } from "./model";
 import { LoadMoreEnginesButton } from "./load-more-engines-button";
 import { Link as RouterLink } from "react-router-dom";
+import { $session } from "../../features/common/session/session-model";
 
 const useStyles = makeStyles({
   root: {
@@ -39,6 +40,7 @@ export const EngineDemo = () => {
   const styles = useStyles();
   const history = useHistory();
   const engines = useStore($engines);
+  const currentUser = useStore($session);
   const isLoading = useStore(getEnginesFx.pending);
 
   useEffect(() => {
@@ -304,19 +306,36 @@ export const EngineDemo = () => {
                       </CardContent>
                     </RouterLink>
                   </CardActionArea>
-                  <CardActions>
-                    <div
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <Button size="medium" className={styles.margin} color="secondary">
-                        Удалить
-                      </Button>
-                    </div>
-                  </CardActions>
+                  {currentUser?.role === "ADMIN" && (
+                    <CardActions>
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "100%",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Button
+                          size="medium"
+                          color="primary"
+                          className={styles.margin}
+                          component={RouterLink}
+                          to={`/editEngine/${engine.id}`}
+                        >
+                          Редактировать
+                        </Button>
+
+                        <Button
+                          onClick={() => deleteEngineFx(engine.id)}
+                          size="medium"
+                          className={styles.margin}
+                          color="secondary"
+                        >
+                          Удалить
+                        </Button>
+                      </div>
+                    </CardActions>
+                  )}
                 </Card>
               </Grid>
             ))}
