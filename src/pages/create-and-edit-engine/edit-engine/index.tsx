@@ -1,7 +1,7 @@
 import { IconButton } from "@material-ui/core";
 import { useField } from "effector-forms/dist";
 import { useStore } from "effector-react";
-import React, { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { useParams } from "react-router";
 import { Header } from "../../../features/common/header";
 import CloseIcon from "@material-ui/icons/Close";
@@ -31,6 +31,7 @@ import {
   OilSystemVolumeView,
   CoolingSystemVolumeView,
   RotationFrequencyView,
+  NoteView,
 } from "../common/inputs";
 import {
   ManufacturerView,
@@ -149,6 +150,7 @@ const EditEngineForm = () => {
         // others
         vesselType={<VesselType />}
         classificationSociety={<ClassificationSociety />}
+        note={<Note />}
         submitButtonText="Обновить"
       />
     </>
@@ -348,6 +350,11 @@ const ClassificationSociety = () => {
 const FlangeType = () => {
   const { value, onChange } = useField(editEngineForm.fields.flangeId);
   return <FlangeTypeView value={value} onChange={onChange} />;
+};
+
+const Note = () => {
+  const { value, onChange } = useField(editEngineForm.fields.note);
+  return <NoteView value={value} onChange={onChange} />;
 };
 
 const ImageUploader = ({ engineId }: { engineId: string }) => {

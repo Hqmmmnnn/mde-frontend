@@ -28,7 +28,7 @@ export const loadFileNamesFx = createEffect<string, EngineFileName[], Error>(asy
 
 export const $engineFilenames = restore(loadFileNamesFx, []);
 
-export const loadFileFx = createEffect<string, void, Error>(async (filename) => {
+export const downloadFileFx = createEffect<string, void, Error>(async (filename) => {
   axios.get(`/download/${filename}`, { responseType: "blob" }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");

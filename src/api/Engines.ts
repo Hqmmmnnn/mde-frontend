@@ -123,6 +123,7 @@ export type SaveEngine = {
   vesselTypeId: string;
   classificationSocietyId: string;
   flangeId: string;
+  note: string;
   files: File[] | null;
   image: File | null;
 };

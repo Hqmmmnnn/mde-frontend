@@ -191,6 +191,9 @@ export const editEngineForm = createForm({
     flangeId: {
       init: "" as string,
     },
+    note: {
+      init: "" as string,
+    },
     image: { init: null as (File & { preview: string }) | null },
   },
 

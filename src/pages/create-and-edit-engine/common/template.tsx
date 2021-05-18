@@ -55,6 +55,8 @@ type EngineFormTemplateProps = {
   vesselType: React.ReactNode;
   classificationSociety: React.ReactNode;
 
+  note: React.ReactNode;
+
   submitButtonText: React.ReactNode;
 };
 
@@ -113,6 +115,7 @@ export const EngineFormTemplate = ({
   classificationSociety,
 
   submitButtonText,
+  note,
 }: EngineFormTemplateProps) => (
   <Container>
     <form
@@ -196,7 +199,7 @@ export const EngineFormTemplate = ({
             </Grid>
 
             <Grid item>
-              <EngineFormBlock name="Другое" items={[vesselType, classificationSociety]} />
+              <EngineFormBlock name="Другое" items={[vesselType, classificationSociety, note]} />
             </Grid>
           </Grid>
           <Grid item style={{ display: "flex", justifyContent: "center" }}>

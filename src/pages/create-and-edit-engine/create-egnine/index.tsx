@@ -29,6 +29,7 @@ import {
   СompressionRatioView,
   СylinderMaxPressureView,
   RotationFrequencyView,
+  NoteView,
 } from "../common/inputs";
 import {
   AssignmentView,
@@ -122,6 +123,7 @@ const CreateEngineForm = () => {
       // others
       vesselType={<VesselType />}
       classificationSociety={<ClassificationSociety />}
+      note={<Note />}
       submitButtonText="Добавить"
     />
   );
@@ -320,6 +322,11 @@ const ClassificationSociety = () => {
 const FlangeType = () => {
   const { value, onChange } = useField(newEngineForm.fields.flangeId);
   return <FlangeTypeView value={value} onChange={onChange} />;
+};
+
+const Note = () => {
+  const { value, onChange } = useField(newEngineForm.fields.note);
+  return <NoteView value={value} onChange={onChange} />;
 };
 
 const ImageUploader = () => {

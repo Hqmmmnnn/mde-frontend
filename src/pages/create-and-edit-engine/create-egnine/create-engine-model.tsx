@@ -147,6 +147,9 @@ const createEngineForm = () => {
       flangeId: {
         init: "" as string,
       },
+      note: {
+        init: "" as string,
+      },
       files: { init: null as File[] | null },
       image: { init: null as (File & { preview: string }) | null },
     },

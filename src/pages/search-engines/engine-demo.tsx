@@ -15,7 +15,13 @@ import {
 import { useStore } from "effector-react";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
-import { $engines, deleteEngineFx, getEnginesFx, lastFetchedEngineIdChanged } from "./model";
+import {
+  $engines,
+  deleteEngineFx,
+  downloadEngineInCSV,
+  getEnginesFx,
+  lastFetchedEngineIdChanged,
+} from "./model";
 import { LoadMoreEnginesButton } from "./load-more-engines-button";
 import { Link as RouterLink } from "react-router-dom";
 import { $session } from "../../features/common/session/session-model";
@@ -306,13 +312,34 @@ export const EngineDemo = () => {
                       </CardContent>
                     </RouterLink>
                   </CardActionArea>
+                  <CardActions style={{ padding: 0 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button
+                        onClick={() =>
+                          downloadEngineInCSV({ engineId: engine.id, engineModel: engine.model })
+                        }
+                        size="medium"
+                        className={styles.margin}
+                        color="inherit"
+                      >
+                        Экспорт в CSV
+                      </Button>
+                    </div>
+                  </CardActions>
                   {currentUser?.role === "ADMIN" && (
-                    <CardActions>
+                    <CardActions style={{ padding: 0 }}>
                       <div
                         style={{
                           display: "flex",
                           width: "100%",
                           justifyContent: "center",
+                          marginBottom: "8px",
                         }}
                       >
                         <Button

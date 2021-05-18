@@ -24,7 +24,7 @@ import {
   $engineFilenames,
   $engineInfoTables,
   loadEngineFx,
-  loadFileFx,
+  downloadFileFx,
   loadFileNamesFx,
   EngineInfoTable,
 } from "./engine_info_model";
@@ -122,7 +122,7 @@ const AttachedFiles = () => {
         filenames.map(({ id, name }) => (
           <Grid item key={id}>
             <Link
-              onClick={() => loadFileFx(name)}
+              onClick={() => downloadFileFx(name)}
               style={{
                 maxWidth: "300px",
                 overflow: "hidden",

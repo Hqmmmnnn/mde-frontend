@@ -3,6 +3,25 @@ import { combine, createEffect, createEvent, createStore, Effect, Event, Store }
 import { EngineDemo, EngineFilter } from "../../api/Engines";
 import { getCheckboxData, getCheckboxWithSearchData } from "../../components/checkbox/model";
 
+type downloadEngineInCSVRequest = {
+  engineId: number;
+  engineModel: string;
+};
+
+export const downloadEngineInCSV = createEffect<downloadEngineInCSVRequest, void, Error>(
+  async (req) => {
+    axios.get(`/download/csv/${req.engineId}`, { responseType: "blob" }).then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", req.engineModel + ".csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    });
+  }
+);
+
 export const deleteEngineFx = createEffect<number, number, Error>(async (engineId) => {
   await axios.delete(`/engines/${engineId}`);
   return engineId;

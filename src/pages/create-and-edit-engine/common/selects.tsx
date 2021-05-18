@@ -10,7 +10,6 @@ import {
   engineRatingSelect,
   classificationSocietySelect,
   flangeSelect,
-  rotationFrequencySelect,
   cylinderQuantitySelect,
   imoEcoStandardSelect,
   epaEcoStandardSelect,

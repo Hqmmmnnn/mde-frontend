@@ -305,3 +305,16 @@ export const CoolingSystemVolumeView = ({ value, onChange }: TextFieldProps<stri
     size="small"
   />
 );
+
+export const NoteView = ({ value, onChange }: TextFieldProps<string>) => (
+  <TextField
+    fullWidth
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    name="note"
+    label="Примечание"
+    variant="outlined"
+    multiline
+    rows={6}
+  />
+);
