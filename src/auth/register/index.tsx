@@ -44,7 +44,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const RegisterModal = () => {
+export const RegisterTab = () => {
   const { fields, submit, eachValid } = useForm(registerForm);
   const responseFromServer = useStore($registerResponseFromServer);
   const [showPassword, setShowPassword] = useState(false);

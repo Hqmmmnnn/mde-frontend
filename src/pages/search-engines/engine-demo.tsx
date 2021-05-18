@@ -9,24 +9,33 @@ import {
   CircularProgress,
   Box,
   CardActionArea,
-  Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
 
 import { useStore } from "effector-react";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 import {
+  $deleteEngineModal,
   $engines,
   deleteEngineFx,
+  deleteEngineModalClosed,
+  deleteEngineModalOpened,
   downloadEngineInCSV,
   getEnginesFx,
   lastFetchedEngineIdChanged,
+  $currentDeletedEngineId,
+  currentDeletedEngineIdChanged,
 } from "./model";
 import { LoadMoreEnginesButton } from "./load-more-engines-button";
 import { Link as RouterLink } from "react-router-dom";
 import { $session } from "../../features/common/session/session-model";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 350,
   },
@@ -37,10 +46,10 @@ const useStyles = makeStyles({
     objectFit: "contain",
   },
   margin: {
-    margin: 8,
+    margin: theme.spacing(1),
     textTransform: "capitalize",
   },
-});
+}));
 
 export const EngineDemo = () => {
   const styles = useStyles();
@@ -353,7 +362,10 @@ export const EngineDemo = () => {
                         </Button>
 
                         <Button
-                          onClick={() => deleteEngineFx(engine.id)}
+                          onClick={() => {
+                            currentDeletedEngineIdChanged(engine.id);
+                            deleteEngineModalOpened();
+                          }}
                           size="medium"
                           className={styles.margin}
                           color="secondary"
@@ -370,6 +382,7 @@ export const EngineDemo = () => {
           <Box display="flex" justifyContent="center" m={2}>
             <LoadMoreEnginesButton />
           </Box>
+          <ConfirmDeleteEngineDialog />
         </>
       ) : (
         <div
@@ -384,5 +397,55 @@ export const EngineDemo = () => {
         </div>
       )}
     </>
+  );
+};
+
+const ConfirmDeleteEngineDialog = () => {
+  const currentDeletedEngineId = useStore($currentDeletedEngineId);
+  const isDeleteEngineModalOpened = useStore($deleteEngineModal);
+
+  return (
+    <Dialog open={isDeleteEngineModalOpened} onClose={() => deleteEngineModalClosed()}>
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "500px",
+            textAlign: "center",
+            backgroundColor: "#fff",
+            padding: "1rem",
+            borderRadius: "16px",
+          }}
+        >
+          <DialogTitle>Удаление двигателя</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Удаление двигателя удалит данные, фотографию и все связанные с ним файлы.
+            </DialogContentText>
+            <DialogContentText>Вы действительно хотите удалить двигатель?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="secondary"
+              onClick={() => {
+                deleteEngineFx(currentDeletedEngineId);
+                deleteEngineModalClosed();
+              }}
+            >
+              Да
+            </Button>
+            <Button onClick={() => deleteEngineModalClosed()} color="primary">
+              Нет
+            </Button>
+          </DialogActions>
+        </div>
+      </div>
+    </Dialog>
   );
 };

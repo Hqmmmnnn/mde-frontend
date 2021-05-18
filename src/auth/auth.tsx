@@ -1,8 +1,8 @@
 import { AppBar, makeStyles, Modal, Tab, Tabs, Theme } from "@material-ui/core";
 import { useStore } from "effector-react";
-import { LoginModal } from "./login";
+import { LoginTab } from "./login";
 import { $currentTabIndex, $isAuthModalOpen, authModalClosed, tabIndexChanged } from "./auth-model";
-import { RegisterModal } from "./register";
+import { RegisterTab } from "./register";
 
 const useStyles = makeStyles((theme: Theme) => ({
   modal: {
@@ -37,10 +37,10 @@ export const AuthTabs = () => {
         </AppBar>
 
         <AuthTab value={index} index={0}>
-          <LoginModal />
+          <LoginTab />
         </AuthTab>
         <AuthTab value={index} index={1}>
-          <RegisterModal />
+          <RegisterTab />
         </AuthTab>
       </div>
     </Modal>

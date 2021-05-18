@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const LoginModal = () => {
+export const LoginTab = () => {
   const classes = useStyles();
   const { fields, submit, eachValid } = useForm(loginForm);
   const errorFromServer = useStore($loginErrorFromServer);

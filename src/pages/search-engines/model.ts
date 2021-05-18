@@ -3,6 +3,19 @@ import { combine, createEffect, createEvent, createStore, Effect, Event, Store }
 import { EngineDemo, EngineFilter } from "../../api/Engines";
 import { getCheckboxData, getCheckboxWithSearchData } from "../../components/checkbox/model";
 
+export const deleteEngineModalOpened = createEvent<void>();
+export const deleteEngineModalClosed = createEvent<void>();
+export const currentDeletedEngineIdChanged = createEvent<number>();
+
+export const $currentDeletedEngineId = createStore<number>(0).on(
+  currentDeletedEngineIdChanged,
+  (_, id) => id
+);
+
+export const $deleteEngineModal = createStore<boolean>(false)
+  .on(deleteEngineModalOpened, () => true)
+  .on(deleteEngineModalClosed, () => false);
+
 type downloadEngineInCSVRequest = {
   engineId: number;
   engineModel: string;
