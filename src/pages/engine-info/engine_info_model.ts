@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createEffect, restore } from "effector";
-import { EngineFileName } from "../../api/Files";
+import { EngineFileName } from "../../api/files";
 
 type EngineInfoRow = {
   name: string;
@@ -13,7 +13,7 @@ export type EngineInfoTable = {
 };
 
 export const loadEngineFx = createEffect<string, EngineInfoTable[], Error>(async (engineId) => {
-  const engineData = await axios.get<EngineInfoTable[]>(`/engines/${engineId}`);
+  const engineData = await axios.get<EngineInfoTable[]>(`/api/engines/${engineId}`);
   return engineData.data;
 });
 
@@ -22,14 +22,14 @@ const initialState: EngineInfoTable[] = [];
 export const $engineInfoTables = restore(loadEngineFx, initialState);
 
 export const loadFileNamesFx = createEffect<string, EngineFileName[], Error>(async (engineId) => {
-  const filenames = await axios.get<EngineFileName[]>(`/filenames/${engineId}`);
+  const filenames = await axios.get<EngineFileName[]>(`/api/filenames/${engineId}`);
   return filenames.data;
 });
 
 export const $engineFilenames = restore(loadFileNamesFx, []);
 
 export const downloadFileFx = createEffect<string, void, Error>(async (filename) => {
-  axios.get(`/download/${filename}`, { responseType: "blob" }).then((response) => {
+  axios.get(`/api/download/${filename}`, { responseType: "blob" }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;

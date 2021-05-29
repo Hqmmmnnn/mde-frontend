@@ -4,7 +4,6 @@ import { Event } from "effector";
 
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import {
-  SelectedDataProps,
   manufacturersSelect,
   assignmentsSelect,
   engineRatingSelect,
@@ -20,6 +19,7 @@ import {
   vesselTypesSelect,
   coolingSystemTypesSelect,
 } from "./model";
+import { SelectedDataProps } from "../../../api/engines";
 
 type SelectProps<T> = {
   value: T;
@@ -45,11 +45,11 @@ const CreateEngineSelect = function <T>({
   onChange,
   fetchingDataUrl,
 }: CreateEngineSelectProps<T>) {
-  const { loadSelectDataFx, $selectedData } = selectData;
+  const { loadSelectDataFxWithToken, $selectedData } = selectData;
   const items = useStore($selectedData);
 
   useEffect(() => {
-    loadSelectDataFx(fetchingDataUrl);
+    loadSelectDataFxWithToken(fetchingDataUrl);
   }, []);
 
   const handleChange = (event: React.ChangeEvent<{ name?: string; value: any }>) => {
@@ -88,7 +88,7 @@ export const ManufacturerView = ({ value, onChange }: SelectProps<string>) => (
     selectData={manufacturersSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/manufacturersData"
+    fetchingDataUrl="/api/selectData/manufacturers"
   />
 );
 
@@ -100,7 +100,7 @@ export const AssignmentView = ({ value, onChange }: SelectProps<string>) => (
     selectData={assignmentsSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/assignmentsData"
+    fetchingDataUrl="/api/selectData/assignments"
   />
 );
 
@@ -112,7 +112,7 @@ export const EngineRatingView = ({ value, onChange }: SelectProps<string>) => (
     selectData={engineRatingSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/engineRatingData"
+    fetchingDataUrl="/api/selectData/engineRating"
   />
 );
 
@@ -124,7 +124,7 @@ export const ClassificationSocietyView = ({ value, onChange }: SelectProps<strin
     selectData={classificationSocietySelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/classificationSocietyData"
+    fetchingDataUrl="/api/selectData/classificationSociety"
   />
 );
 
@@ -136,7 +136,7 @@ export const FlangeTypeView = ({ value, onChange }: SelectProps<string>) => (
     selectData={flangeSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/flangeTypesData"
+    fetchingDataUrl="/api/selectData/flangeTypes"
   />
 );
 
@@ -148,7 +148,7 @@ export const CylinderQuantityView = ({ value, onChange }: SelectProps<string>) =
     selectData={cylinderQuantitySelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/cylindersQuantityData"
+    fetchingDataUrl="/api/selectData/cylindersQuantity"
   />
 );
 
@@ -160,7 +160,7 @@ export const ImoEcoStandardView = ({ value, onChange }: SelectProps<string>) => 
     selectData={imoEcoStandardSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/imoEcoStandardsData"
+    fetchingDataUrl="/api/selectData/imoEcoStandards"
   />
 );
 
@@ -172,7 +172,7 @@ export const EpaEcoStandardView = ({ value, onChange }: SelectProps<string>) => 
     selectData={epaEcoStandardSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/epaEcoStandardsData"
+    fetchingDataUrl="/api/selectData/epaEcoStandards"
   />
 );
 
@@ -184,7 +184,7 @@ export const EuEcoStandardView = ({ value, onChange }: SelectProps<string>) => (
     selectData={euEcoStandardSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/euEcoStandardsData"
+    fetchingDataUrl="/api/selectData/euEcoStandards"
   />
 );
 
@@ -196,7 +196,7 @@ export const UicEcoStandardView = ({ value, onChange }: SelectProps<string>) => 
     selectData={uicEcoStandardSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/uicEcoStandardsData"
+    fetchingDataUrl="/api/selectData/uicEcoStandards"
   />
 );
 
@@ -208,7 +208,7 @@ export const CylinderArrangementView = ({ value, onChange }: SelectProps<string>
     selectData={cylinderArrangementsSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/cylinderArrangementsData"
+    fetchingDataUrl="/api/selectData/cylinderArrangements"
   />
 );
 
@@ -220,7 +220,7 @@ export const InjectionTypeView = ({ value, onChange }: SelectProps<string>) => (
     selectData={injectionTypesSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/injectionTypesData"
+    fetchingDataUrl="/api/selectData/injectionTypes"
   />
 );
 
@@ -232,7 +232,7 @@ export const VesselTypeView = ({ value, onChange }: SelectProps<string>) => (
     selectData={vesselTypesSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/vesselTypesData"
+    fetchingDataUrl="/api/selectData/vesselTypes"
   />
 );
 
@@ -244,6 +244,6 @@ export const CoolingSystemTypeView = ({ value, onChange }: SelectProps<string>) 
     selectData={coolingSystemTypesSelect}
     value={value}
     onChange={onChange}
-    fetchingDataUrl="/coolingSystemTypesData"
+    fetchingDataUrl="/api/selectData/coolingSystemTypes"
   />
 );

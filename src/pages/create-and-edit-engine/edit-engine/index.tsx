@@ -1,5 +1,5 @@
 import { IconButton } from "@material-ui/core";
-import { useField } from "effector-forms/dist";
+import { useField, useForm } from "effector-forms/dist";
 import { useStore } from "effector-react";
 import { FormEvent, useEffect } from "react";
 import { useParams } from "react-router";
@@ -57,15 +57,18 @@ import {
   $isEngineImageExist,
   editEngineForm,
   getEngineImageFx,
-  getEditDataFx,
-  deleteEngineImageFx,
+  deleteEngineImageWithTokenFx,
   getFilesFx,
   $editEngineFiles,
-  saveEngineImageFx,
+  saveEngineImageFxWithToken,
+  loadEngineDataForEditFxWithToken,
+  editEngineFxWithToken,
 } from "./edit-engie-model";
 import { useDropzone } from "react-dropzone";
 import { WithSecure } from "../../../lib/wIth-secure";
 import { ScrollToTop } from "../../../lib/scroll-to-top";
+import { useSnackbar } from "notistack";
+import { SubmitButton } from "../common/submitButton";
 
 export const EditEnginePage = () => (
   <WithSecure>
@@ -84,14 +87,13 @@ const EditEngineForm = () => {
   const isImgExist = useStore($isEngineImageExist);
 
   useEffect(() => {
-    getEditDataFx(id);
+    loadEngineDataForEditFxWithToken(Number(id));
     getEngineImageFx(id);
   }, [id]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     onChange(id);
     e.preventDefault();
-    editEngineForm.submit();
   };
 
   return (
@@ -151,7 +153,7 @@ const EditEngineForm = () => {
         vesselType={<VesselType />}
         classificationSociety={<ClassificationSociety />}
         note={<Note />}
-        submitButtonText="Обновить"
+        submitButton={<EditEngineButton />}
       />
     </>
   );
@@ -357,6 +359,21 @@ const Note = () => {
   return <NoteView value={value} onChange={onChange} />;
 };
 
+const EditEngineButton = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { isValid, values } = useForm(editEngineForm);
+
+  const handleClick = () => {
+    if (isValid) {
+      editEngineFxWithToken(values)
+        .then(() => enqueueSnackbar("Двигатель успешно изменен", { variant: "success" }))
+        .catch(() => enqueueSnackbar("Не удалось изменить двигатель", { variant: "error" }));
+    }
+  };
+
+  return <SubmitButton text="Изменить" onClick={handleClick} />;
+};
+
 const ImageUploader = ({ engineId }: { engineId: string }) => {
   const { value, onChange, reset } = useField(editEngineForm.fields.image);
 
@@ -366,7 +383,7 @@ const ImageUploader = ({ engineId }: { engineId: string }) => {
     onDrop: (acceptedFiles) => {
       const image = acceptedFiles[0];
 
-      saveEngineImageFx({ engineId, image }).then(() => {
+      saveEngineImageFxWithToken({ engineId, image }).then(() => {
         onChange(Object.assign(image, { preview: URL.createObjectURL(image) }));
       });
     },
@@ -381,7 +398,7 @@ const ImageUploader = ({ engineId }: { engineId: string }) => {
   );
 
   const onCloseIconClick = (e: any) => {
-    deleteEngineImageFx(engineId);
+    deleteEngineImageWithTokenFx(engineId);
     reset();
   };
 
@@ -402,7 +419,7 @@ const Image = ({ img, engineId }: { img: string; engineId: string }) => (
   <div style={{ display: "flex" }}>
     <img src={img} style={{ width: "250px", height: "250px", objectFit: "contain" }} />
     <IconButton
-      onClick={() => deleteEngineImageFx(engineId)}
+      onClick={() => deleteEngineImageWithTokenFx(engineId)}
       aria-label="delete engine image"
       style={{ height: "24px", padding: 0, position: "relative", left: "-30px", top: "5px" }}
     >

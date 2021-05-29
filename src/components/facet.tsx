@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "row",
       cursor: "pointer",
+      paddingLeft: "12px",
     },
     separator: {
       margin: "8px 0px",
@@ -88,38 +89,42 @@ export const Facet = ({ data, label }: FacetProps) => {
       </Box>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <Box className={classes.box}>
-          <TextField
-            size="small"
-            variant="outlined"
-            placeholder="от"
-            value={from}
-            onChange={handleFromChange}
-          />
-          <Box className={classes.separator}>
-            <Icon color="primary">
-              <RemoveOutlinedIcon />
-            </Icon>
+        <Box paddingX={2}>
+          <Box px={1.5}>
+            <Box className={classes.box}>
+              <TextField
+                size="small"
+                variant="outlined"
+                placeholder="от"
+                value={from}
+                onChange={handleFromChange}
+              />
+              <Box className={classes.separator}>
+                <Icon color="primary">
+                  <RemoveOutlinedIcon />
+                </Icon>
+              </Box>
+              <TextField
+                size="small"
+                variant="outlined"
+                placeholder="до"
+                value={to}
+                onChange={handleToChange}
+              />
+            </Box>
+            <Slider
+              step={5}
+              value={[
+                from < initialState.from ? initialState.from : from,
+                to > initialState.to ? initialState.to : to,
+              ]}
+              onChange={handleFromToChange}
+              min={initialState.from}
+              max={initialState.to}
+              aria-labelledby="power-rating-slider"
+            />
           </Box>
-          <TextField
-            size="small"
-            variant="outlined"
-            placeholder="до"
-            value={to}
-            onChange={handleToChange}
-          />
         </Box>
-        <Slider
-          step={5}
-          value={[
-            from < initialState.from ? initialState.from : from,
-            to > initialState.to ? initialState.to : to,
-          ]}
-          onChange={handleFromToChange}
-          min={initialState.from}
-          max={initialState.to}
-          aria-labelledby="power-rating-slider"
-        />
       </Collapse>
     </>
   );

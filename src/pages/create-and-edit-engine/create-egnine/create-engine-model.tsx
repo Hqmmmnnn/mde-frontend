@@ -1,30 +1,17 @@
-import axios from "axios";
-import { createEffect, forward } from "effector";
+import { AxiosResponse } from "axios";
+import { createEffect, attach } from "effector";
 import { createForm } from "effector-forms/dist";
-import { SaveEngine } from "../../../api/Engines";
+import { enginesApi, SaveEngine, SaveEngineReqest } from "../../../api/engines";
+import { $token } from "../../../features/common/token";
 
-const saveEngineFx = createEffect<SaveEngine, void, Error>(async (createEngineFormData) => {
-  const formData = new FormData();
+const saveEngineFx = createEffect<SaveEngineReqest, Promise<AxiosResponse<any>>, Error>(
+  enginesApi.saveEngine
+);
 
-  for (const [key, value] of Object.entries(createEngineFormData)) {
-    if (value instanceof Array) {
-      if (value) {
-        for (let i = 0; i < value.length; i++) {
-          formData.append(key, value[i]);
-        }
-
-        continue;
-      }
-    }
-
-    if (value) formData.append(key, value);
-  }
-
-  axios({
-    method: "POST",
-    url: "/engines",
-    data: formData,
-  });
+export const saveEngineFxWithToken = attach({
+  effect: saveEngineFx,
+  source: $token,
+  mapParams: (data: SaveEngine, token: string | null) => ({ data, token }),
 });
 
 const createEngineForm = () => {
@@ -159,8 +146,3 @@ const createEngineForm = () => {
 };
 
 export const newEngineForm = createEngineForm();
-
-forward({
-  from: newEngineForm.formValidated,
-  to: saveEngineFx,
-});

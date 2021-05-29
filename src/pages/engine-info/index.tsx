@@ -74,7 +74,7 @@ export const EngineInfoPage = () => {
                 component="img"
                 alt="Картинка двигателя"
                 height="500"
-                image={`/images/${id}`}
+                image={`/api/images/${id}`}
               />
             </Grid>
 

@@ -1,4 +1,7 @@
+import axios from "axios";
+import { Effect, Store } from "effector";
 import { CheckboxValue } from "../components/checkbox/model";
+import { SelectData } from "../pages/create-and-edit-engine/common/model";
 import { FacetValue } from "../pages/search-engines/model";
 
 export interface EngineDemo {
@@ -83,6 +86,29 @@ export interface EngineFilter {
   lastFetchedEngineId: number;
 }
 
+export type EditEngine = Omit<SaveEngine, "files" | "image"> & { engineId: string };
+
+export type LoadEngineDataRequest = {
+  engineId: number;
+  token: string | null;
+};
+
+const loadEngineData = async ({ engineId, token }: LoadEngineDataRequest) => {
+  var editEngine = await axios.get<EditEngine>(`/api/editEngine/${engineId}`, {
+    headers: { Authorization: token },
+  });
+
+  const data = editEngine.data as any;
+
+  for (const key in data) {
+    if (data[key] === null) {
+      data[key] = "";
+    }
+  }
+
+  return data;
+};
+
 export type SaveEngine = {
   manufacturerId: string;
   series: string;
@@ -128,4 +154,96 @@ export type SaveEngine = {
   image: File | null;
 };
 
-export type EditEngine = Omit<SaveEngine, "files" | "image"> & { engineId: string };
+export type SaveEngineReqest = {
+  data: SaveEngine;
+  token: string | null;
+};
+
+const saveEngine = async ({ data, token }: SaveEngineReqest) => {
+  const formData = new FormData();
+
+  for (const [key, value] of Object.entries(data)) {
+    if (value instanceof Array) {
+      if (value) {
+        for (let i = 0; i < value.length; i++) {
+          formData.append(key, value[i]);
+        }
+
+        continue;
+      }
+    }
+
+    if (value) formData.append(key, value);
+  }
+
+  return axios.post("/api/engines", formData, { headers: { Authorization: token } });
+};
+
+export type EditEngineRequest = {
+  data: EditEngine;
+  token: string | null;
+};
+
+const editEngine = async ({ data, token }: EditEngineRequest) => {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(data)) {
+    if (value) {
+      formData.append(key, value);
+    }
+  }
+
+  return axios.put("/api/engines", formData, { headers: { Authorization: token } });
+};
+
+export type DeleteEngineRequest = {
+  engineId: number;
+  token: string | null;
+};
+
+const deleteEngine = async ({ engineId, token }: DeleteEngineRequest) => {
+  await axios.delete(`/api/engines/${engineId}`, { headers: { Authorization: token } });
+  return engineId;
+};
+
+export type DownloadEngineInCSVRequest = {
+  engineId: number;
+  engineModel: string;
+};
+
+const downloadEngineInCSV = async (req: DownloadEngineInCSVRequest) => {
+  axios.get(`/api/download/csv/${req.engineId}`, { responseType: "blob" }).then((res) => {
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", req.engineModel + ".csv");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
+};
+
+export type GetSelectedDataRequest = {
+  url: string;
+  token: string | null;
+};
+
+export type SelectedDataProps = {
+  loadSelectDataFxWithToken: Effect<string, SelectData[], Error>;
+  $selectedData: Store<SelectData[]>;
+};
+
+const loadSelectedData = async ({ url, token }: GetSelectedDataRequest) => {
+  const { data } = await axios.get<SelectData[]>(url, {
+    headers: { Authorization: token },
+  });
+  return data;
+};
+
+export const enginesApi = {
+  loadEngineData,
+  loadSelectedData,
+  saveEngine,
+  editEngine,
+  deleteEngine,
+  downloadEngineInCSV,
+};

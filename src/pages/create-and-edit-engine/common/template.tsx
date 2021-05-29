@@ -1,5 +1,6 @@
 import { Container, Grid, Button, Box, Typography } from "@material-ui/core";
 import React, { FormEvent } from "react";
+import { Event } from "effector";
 
 type EngineFormTemplateProps = {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -57,7 +58,8 @@ type EngineFormTemplateProps = {
 
   note: React.ReactNode;
 
-  submitButtonText: React.ReactNode;
+  submitButton: React.ReactNode;
+  onClickReset?: Event<void>;
 };
 
 export const EngineFormTemplate = ({
@@ -114,8 +116,9 @@ export const EngineFormTemplate = ({
   vesselType,
   classificationSociety,
 
-  submitButtonText,
+  submitButton,
   note,
+  onClickReset,
 }: EngineFormTemplateProps) => (
   <Container>
     <form
@@ -203,9 +206,19 @@ export const EngineFormTemplate = ({
             </Grid>
           </Grid>
           <Grid item style={{ display: "flex", justifyContent: "center" }}>
-            <Button size="large" color="primary" variant="outlined" type="submit">
-              {submitButtonText}
-            </Button>
+            <Box m={2}>{submitButton}</Box>
+            <Box m={2}>
+              {onClickReset && (
+                <Button
+                  onClick={() => onClickReset()}
+                  size="large"
+                  color="secondary"
+                  variant="outlined"
+                >
+                  Очистить форму
+                </Button>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Grid>

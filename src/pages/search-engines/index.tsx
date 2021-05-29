@@ -20,6 +20,7 @@ import {
   lengthData,
   widthData,
   heightData,
+  engineModelReseted,
 } from "./model";
 import { getQueryParams, getInitialStateFromQueryParams } from "../../lib/get-query-params";
 import { CylinderQuantity } from "./cylinder-quantity";
@@ -84,6 +85,8 @@ const ResetEngineFilterStateButton = () => {
       onClick={() => {
         history.replace("/");
         getEnginesFx("");
+        engineModelReseted();
+        manufacturersData.reset();
         loadAllDataForFilter();
       }}
     >
@@ -94,21 +97,23 @@ const ResetEngineFilterStateButton = () => {
 
 const loadAllDataForFilter = () => {
   return Promise.all([
-    cylinderQuantityData.dataFromServerLoaded("/cylindersQuantity"),
-    rotationFrequencyData.dataFromServerLoaded("/rotationFrequencies"),
-    manufacturersData.dataFromServerLoaded("/manufacturers"),
-    flangeTypeData.dataFromServerLoaded("/flangeTypes"),
-    imoEcoStandardData.dataFromServerLoaded("/imoEcoStandards"),
-    epaEcoStandardData.dataFromServerLoaded("/epaEcoStandards"),
-    euEcoStandardData.dataFromServerLoaded("/euEcoStandards"),
-    uicEcoStandardData.dataFromServerLoaded("/uicEcoStandards"),
-    powerRatingData.dataFromServerLoaded("/powerRatingMinAndMax"),
-    weightDryNoImplementsData.dataFromServerLoaded("/weightDryNoImplementsMinAndMax"),
+    cylinderQuantityData.dataFromServerLoaded("/api/filtrationData/cylindersQuantity"),
+    rotationFrequencyData.dataFromServerLoaded("/api/filtrationData/rotationFrequencies"),
+    manufacturersData.dataFromServerLoaded("/api/filtrationData/manufacturers"),
+    flangeTypeData.dataFromServerLoaded("/api/filtrationData/flangeTypes"),
+    imoEcoStandardData.dataFromServerLoaded("/api/filtrationData/imoEcoStandards"),
+    epaEcoStandardData.dataFromServerLoaded("/api/filtrationData/epaEcoStandards"),
+    euEcoStandardData.dataFromServerLoaded("/api/filtrationData/euEcoStandards"),
+    uicEcoStandardData.dataFromServerLoaded("/api/filtrationData/uicEcoStandards"),
+    powerRatingData.dataFromServerLoaded("/api/filtrationData/powerRatingMinAndMax"),
+    weightDryNoImplementsData.dataFromServerLoaded(
+      "/api/filtrationData/weightDryNoImplementsMinAndMax"
+    ),
   ]).then(() => {
     return Promise.all([
-      lengthData.dataFromServerLoaded("/lengthMinAndMax"),
-      widthData.dataFromServerLoaded("/widthMinAndMax"),
-      heightData.dataFromServerLoaded("/heightMinAndMax"),
+      lengthData.dataFromServerLoaded("/api/filtrationData/lengthMinAndMax"),
+      widthData.dataFromServerLoaded("/api/filtrationData/widthMinAndMax"),
+      heightData.dataFromServerLoaded("/api/filtrationData/heightMinAndMax"),
     ]);
   });
 };
@@ -141,12 +146,16 @@ const Aside = () => {
       <Facet data={widthData} label="Ширина" />
       <Facet data={heightData} label="Высота" />
 
-      <Box p={1}>
-        <SearchWithFiltersButton />
+      <Box px={2}>
+        <Box py={1}>
+          <SearchWithFiltersButton />
+        </Box>
       </Box>
 
-      <Box p={1}>
-        <ResetEngineFilterStateButton />
+      <Box px={2}>
+        <Box py={1}>
+          <ResetEngineFilterStateButton />
+        </Box>
       </Box>
     </div>
   );

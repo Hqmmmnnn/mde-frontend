@@ -33,7 +33,7 @@ export const loginForm = createForm({
 
 export const loginUserFx = createEffect<LoginRequest, void, Error>(async (loginData) => {
   axios
-    .post<Token>("/auth/login", loginData)
+    .post<Token>("/api/auth/login", loginData)
     .then((res) => {
       tokenChanged(res.data.token);
       loadSessionFx();

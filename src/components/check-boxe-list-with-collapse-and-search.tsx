@@ -19,7 +19,7 @@ export const CheckBoxesWithSearch = ({
 
   return (
     <>
-      <Card variant="outlined">
+      <Card variant="outlined" style={{ margin: "0 16px" }}>
         <Box component="div" className={classes.root}>
           <InputBase
             value={value}
@@ -42,7 +42,7 @@ export const CheckBoxesWithSearch = ({
 
 const useCheckBoxesWithSearchStyles = makeStyles((theme) => ({
   root: {
-    padding: "2px 4px",
+    padding: "0px 4px",
     display: "flex",
     alignItems: "center",
     minWidth: 200,

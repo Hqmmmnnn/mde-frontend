@@ -22,14 +22,15 @@ import { useHistory } from "react-router";
 import {
   $deleteEngineModal,
   $engines,
-  deleteEngineFx,
+  deleteEngineFxWithToken,
   deleteEngineModalClosed,
   deleteEngineModalOpened,
-  downloadEngineInCSV,
   getEnginesFx,
   lastFetchedEngineIdChanged,
   $currentDeletedEngineId,
   currentDeletedEngineIdChanged,
+  downloadEngineInCSVFx,
+  loadEngineDataForCreateFxWithToken,
 } from "./model";
 import { LoadMoreEnginesButton } from "./load-more-engines-button";
 import { Link as RouterLink } from "react-router-dom";
@@ -38,6 +39,7 @@ import { $session } from "../../features/common/session/session-model";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 350,
+    borderRadius: "16px",
   },
   media: {
     height: 140,
@@ -45,9 +47,20 @@ const useStyles = makeStyles((theme) => ({
   card: {
     objectFit: "contain",
   },
-  margin: {
-    margin: theme.spacing(1),
-    textTransform: "capitalize",
+  cardItemContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+
+  btnContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  btnText: {
+    textTransform: "inherit",
+    margin: theme.spacing(0.5),
   },
 }));
 
@@ -98,7 +111,7 @@ export const EngineDemo = () => {
                         aria-label={`engine image, model: ${engine.model} `}
                         style={{
                           height: "140px",
-                          backgroundImage: `url(/images/${engine.id})`,
+                          backgroundImage: `url(/api/images/${engine.id})`,
                           backgroundSize: "contain",
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center",
@@ -119,7 +132,7 @@ export const EngineDemo = () => {
                         </Typography>
                         <br />
 
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -137,7 +150,7 @@ export const EngineDemo = () => {
                             {engine.cylinderQuantity}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -155,7 +168,7 @@ export const EngineDemo = () => {
                             {engine.weightDryNoImplements}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -173,7 +186,7 @@ export const EngineDemo = () => {
                             {engine.loadMode}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -191,7 +204,7 @@ export const EngineDemo = () => {
                             {engine.flangeType}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -209,7 +222,7 @@ export const EngineDemo = () => {
                             {engine.assignment}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -227,7 +240,7 @@ export const EngineDemo = () => {
                             {engine.powerRating}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -245,7 +258,7 @@ export const EngineDemo = () => {
                             {engine.imoEcoStandard}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -263,7 +276,7 @@ export const EngineDemo = () => {
                             {engine.epaEcoStandard}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -281,7 +294,7 @@ export const EngineDemo = () => {
                             {engine.euEcoStandard}
                           </Typography>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
                             variant="body2"
@@ -331,10 +344,10 @@ export const EngineDemo = () => {
                     >
                       <Button
                         onClick={() =>
-                          downloadEngineInCSV({ engineId: engine.id, engineModel: engine.model })
+                          downloadEngineInCSVFx({ engineId: engine.id, engineModel: engine.model })
                         }
                         size="medium"
-                        className={styles.margin}
+                        className={styles.btnText}
                         color="inherit"
                       >
                         Экспорт в CSV
@@ -346,32 +359,47 @@ export const EngineDemo = () => {
                       <div
                         style={{
                           display: "flex",
+                          flexDirection: "column",
                           width: "100%",
-                          justifyContent: "center",
+
                           marginBottom: "8px",
                         }}
                       >
-                        <Button
-                          size="medium"
-                          color="primary"
-                          className={styles.margin}
-                          component={RouterLink}
-                          to={`/editEngine/${engine.id}`}
-                        >
-                          Редактировать
-                        </Button>
+                        <div className={styles.btnContainer}>
+                          <Button
+                            size="medium"
+                            color="default"
+                            className={styles.btnText}
+                            component={RouterLink}
+                            to={"/createEngine"}
+                            onClick={() => loadEngineDataForCreateFxWithToken(engine.id)}
+                          >
+                            Добавить на основе этого двигателя
+                          </Button>
+                        </div>
+                        <div className={styles.btnContainer}>
+                          <Button
+                            size="medium"
+                            color="primary"
+                            className={styles.btnText}
+                            component={RouterLink}
+                            to={`/editEngine/${engine.id}`}
+                          >
+                            Редактировать
+                          </Button>
 
-                        <Button
-                          onClick={() => {
-                            currentDeletedEngineIdChanged(engine.id);
-                            deleteEngineModalOpened();
-                          }}
-                          size="medium"
-                          className={styles.margin}
-                          color="secondary"
-                        >
-                          Удалить
-                        </Button>
+                          <Button
+                            onClick={() => {
+                              currentDeletedEngineIdChanged(engine.id);
+                              deleteEngineModalOpened();
+                            }}
+                            size="medium"
+                            className={styles.btnText}
+                            color="secondary"
+                          >
+                            Удалить
+                          </Button>
+                        </div>
                       </div>
                     </CardActions>
                   )}
@@ -426,7 +454,7 @@ const ConfirmDeleteEngineDialog = () => {
           <DialogTitle>Удаление двигателя</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Удаление двигателя удалит данные, фотографию и все связанные с ним файлы.
+              Удаление двигателя затронет его данные, фотографию и все связанные с ним файлы.
             </DialogContentText>
             <DialogContentText>Вы действительно хотите удалить двигатель?</DialogContentText>
           </DialogContent>
@@ -434,7 +462,7 @@ const ConfirmDeleteEngineDialog = () => {
             <Button
               color="secondary"
               onClick={() => {
-                deleteEngineFx(currentDeletedEngineId);
+                deleteEngineFxWithToken(currentDeletedEngineId);
                 deleteEngineModalClosed();
               }}
             >

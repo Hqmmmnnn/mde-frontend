@@ -1,7 +1,7 @@
-import { useField } from "effector-forms/dist";
+import { useField, useForm } from "effector-forms/dist";
 import { FormEvent, useEffect } from "react";
 
-import { newEngineForm } from "./create-engine-model";
+import { newEngineForm, saveEngineFxWithToken } from "./create-engine-model";
 import { EngineFormTemplate } from "../common/template";
 import {
   ModelView,
@@ -53,6 +53,8 @@ import { Header } from "../../../features/common/header";
 import { useDropzone } from "react-dropzone";
 import { WithSecure } from "../../../lib/wIth-secure";
 import { ScrollToTop } from "../../../lib/scroll-to-top";
+import { useSnackbar } from "notistack";
+import { SubmitButton } from "../common/submitButton";
 
 export const CreateEnginePage = () => (
   <WithSecure>
@@ -67,7 +69,6 @@ export const CreateEnginePage = () => (
 const CreateEngineForm = () => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    newEngineForm.submit();
   };
 
   return (
@@ -124,9 +125,25 @@ const CreateEngineForm = () => {
       vesselType={<VesselType />}
       classificationSociety={<ClassificationSociety />}
       note={<Note />}
-      submitButtonText="Добавить"
+      submitButton={<AddedEngineButton />}
+      onClickReset={newEngineForm.reset}
     />
   );
+};
+
+const AddedEngineButton = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { isValid, values } = useForm(newEngineForm);
+
+  const handleClick = () => {
+    if (isValid) {
+      saveEngineFxWithToken(values)
+        .then(() => enqueueSnackbar("Двигатель успешно добавлен", { variant: "success" }))
+        .catch(() => enqueueSnackbar("Не удалось добавить двигатель", { variant: "error" }));
+    }
+  };
+
+  return <SubmitButton text="Добавить" onClick={handleClick} />;
 };
 
 const Model = () => {

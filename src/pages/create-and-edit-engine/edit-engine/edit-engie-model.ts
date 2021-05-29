@@ -1,57 +1,69 @@
-import axios from "axios";
-import { createEffect, createStore, forward } from "effector";
-import { EditEngine } from "../../../api/Engines";
+import { attach, createEffect, createStore, forward } from "effector";
+import {
+  EditEngine,
+  EditEngineRequest,
+  enginesApi,
+  LoadEngineDataRequest,
+} from "../../../api/engines";
 import { createForm } from "effector-forms/dist";
-import { EngineFileName } from "../../../api/Files";
+import {
+  EngineFileName,
+  filesApi,
+  DeleteFileRequest,
+  SaveEngineFilesData,
+  SaveEngineFilesRequest,
+} from "../../../api/files";
+import { $token } from "../../../features/common/token";
+import {
+  DeleteImageRequest,
+  imagesApi,
+  SaveEngineImageData,
+  SaveImageRequest,
+} from "../../../api/images";
+import { AxiosResponse } from "axios";
 
-type SaveEngineFilesReqest = {
-  engineId: string;
-  files: File[];
-};
-
-export const saveEngineFilesFx = createEffect<SaveEngineFilesReqest, EngineFileName[], Error>(
-  async (req) => {
-    const formData = new FormData();
-    req.files.forEach((file) => formData.append("files", file));
-    const files = await axios.post<EngineFileName[]>(`/filenames/${req.engineId}`, formData);
-    return files.data;
-  }
+const saveEngineFilesFx = createEffect<SaveEngineFilesRequest, EngineFileName[], Error>(
+  filesApi.saveFiles
 );
 
-export const deleteEngineFileFx = createEffect<string, string, Error>(async (fileId) => {
-  await axios.delete(`/filenames/${fileId}`);
-  return fileId;
+export const saveEngineFilesWithTokenFx = attach({
+  effect: saveEngineFilesFx,
+  source: $token,
+  mapParams: (data: SaveEngineFilesData, token: string | null) => ({ data, token }),
 });
 
-export const getFilesFx = createEffect<string, EngineFileName[], Error>(async (engineId) => {
-  const filenames = await axios.get<EngineFileName[]>(`/filenames/${engineId}`);
-  return filenames.data;
+const deleteEngineFileFx = createEffect<DeleteFileRequest, string, Error>(filesApi.deleteFile);
+
+export const deleteEngineFileWithTokenFx = attach({
+  effect: deleteEngineFileFx,
+  source: $token,
+  mapParams: (fileId: string, token: string | null) => ({ fileId, token }),
 });
+
+export const getFilesFx = createEffect<string, EngineFileName[], Error>(filesApi.getFiles);
 
 export const $editEngineFiles = createStore<EngineFileName[]>([])
   .on(getFilesFx.doneData, (_, files) => files)
   .on(saveEngineFilesFx.doneData, (state, payload) => [...state, ...payload])
   .on(deleteEngineFileFx.doneData, (state, fileId) => state.filter(({ id }) => id !== fileId));
 
-type SaveEngineImageReqest = {
-  engineId: string;
-  image: File;
-};
+const deleteEngineImageFx = createEffect<DeleteImageRequest, void, Error>(imagesApi.deleteImage);
 
-export const deleteEngineImageFx = createEffect<string, void, Error>(async (engineId) => {
-  await axios.delete(`/images/${engineId}`);
+export const deleteEngineImageWithTokenFx = attach({
+  effect: deleteEngineImageFx,
+  source: $token,
+  mapParams: (engineId: string, token: string | null) => ({ engineId, token }),
 });
 
-export const saveEngineImageFx = createEffect<SaveEngineImageReqest, void, Error>(async (req) => {
-  const formData = new FormData();
-  formData.append("image", req.image);
-  axios.post(`/images/${req.engineId}`, formData);
+const saveEngineImageFx = createEffect<SaveImageRequest, void, Error>(imagesApi.saveImage);
+
+export const saveEngineImageFxWithToken = attach({
+  effect: saveEngineImageFx,
+  source: $token,
+  mapParams: (data: SaveEngineImageData, token: string | null) => ({ data, token }),
 });
 
-export const getEngineImageFx = createEffect<string, Blob, Error>(async (engineId) => {
-  const blob = await axios.get<Blob>(`/images/${engineId}`, { responseType: "blob" });
-  return blob.data;
-});
+export const getEngineImageFx = createEffect<string, Blob, Error>(imagesApi.getImage);
 
 export const $engineImage = createStore("")
   .on(getEngineImageFx.doneData, (_, blob) => URL.createObjectURL(blob))
@@ -60,13 +72,14 @@ export const $engineImage = createStore("")
 
 export const $isEngineImageExist = $engineImage.map((img) => img !== "");
 
-const editEngineFx = createEffect<EditEngine, void, Error>(async (editEngineFormData) => {
-  const formData = new FormData();
+const editEngineFx = createEffect<EditEngineRequest, Promise<AxiosResponse<any>>, Error>(
+  enginesApi.editEngine
+);
 
-  for (const [key, value] of Object.entries(editEngineFormData))
-    if (value) formData.append(key, value);
-
-  axios({ method: "PUT", url: "/engines", data: formData });
+export const editEngineFxWithToken = attach({
+  effect: editEngineFx,
+  source: $token,
+  mapParams: (data: EditEngine, token: string | null) => ({ data, token }),
 });
 
 export const editEngineForm = createForm({
@@ -200,26 +213,17 @@ export const editEngineForm = createForm({
   validateOn: ["submit"],
 });
 
-export const getEditDataFx = createEffect<string, EditEngine, Error>(async (engineId) => {
-  var editEngine = await axios.get<EditEngine>(`/editEngine/${engineId}`);
+const getEditDataForEditFx = createEffect<LoadEngineDataRequest, EditEngine, Error>(
+  enginesApi.loadEngineData
+);
 
-  const data = editEngine.data as any;
-
-  for (const key in data) {
-    if (data[key] === null) {
-      data[key] = "";
-    }
-  }
-
-  return data;
+export const loadEngineDataForEditFxWithToken = attach({
+  effect: getEditDataForEditFx,
+  source: $token,
+  mapParams: (engineId: number, token: string | null) => ({ engineId, token }),
 });
 
 forward({
-  from: getEditDataFx.doneData,
+  from: getEditDataForEditFx.doneData,
   to: editEngineForm.setForm,
-});
-
-forward({
-  from: editEngineForm.formValidated,
-  to: editEngineFx,
 });

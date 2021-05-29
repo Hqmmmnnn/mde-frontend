@@ -4,7 +4,7 @@ import { $token, tokenDropped } from "../token";
 import { CurrentUser } from "../user/types";
 
 export const loadSessionFx = createEffect<void, CurrentUser, Error>(async () => {
-  const currentUser = await axios.get<CurrentUser>("/currentUser", {
+  const currentUser = await axios.get<CurrentUser>("/api/currentUser", {
     headers: { Authorization: $token.getState() },
   });
 

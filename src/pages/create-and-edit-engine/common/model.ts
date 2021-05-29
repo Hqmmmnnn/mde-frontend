@@ -1,25 +1,26 @@
-import axios from "axios";
-import { createEffect, Effect, restore, Store } from "effector";
+import { attach, createEffect, restore } from "effector";
+import { enginesApi, GetSelectedDataRequest } from "../../../api/engines";
+import { $token } from "../../../features/common/token";
 
 export type SelectData = {
   id: number;
   value: string;
 };
 
-export type SelectedDataProps = {
-  loadSelectDataFx: Effect<string, SelectData[], Error>;
-  $selectedData: Store<SelectData[]>;
-};
-
 const getSelectedData = () => {
-  const loadSelectDataFx = createEffect<string, SelectData[], Error>(async (url) => {
-    const { data } = await axios.get<SelectData[]>(url);
-    return data;
+  const loadSelectDataFx = createEffect<GetSelectedDataRequest, SelectData[], Error>(
+    enginesApi.loadSelectedData
+  );
+
+  const loadSelectDataFxWithToken = attach({
+    effect: loadSelectDataFx,
+    source: $token,
+    mapParams: (url: string, token: string | null) => ({ url, token }),
   });
 
   const $selectedData = restore(loadSelectDataFx, []);
 
-  return { loadSelectDataFx, $selectedData };
+  return { loadSelectDataFxWithToken, $selectedData };
 };
 
 export const manufacturersSelect = getSelectedData();

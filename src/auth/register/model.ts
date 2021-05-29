@@ -35,7 +35,7 @@ export const registerForm = createForm({
 
 export const registerUserFx = createEffect<RegisterData, void, Error>(async (registerData) => {
   axios
-    .post("/auth/register", registerData)
+    .post("/api/auth/register", registerData)
     .then((response) => requestReceived(response.data))
     .catch((e) => requestReceived(e.response.data));
 });

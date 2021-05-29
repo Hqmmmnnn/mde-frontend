@@ -5,10 +5,11 @@ import { engineModelChanged, $engineModel } from "./model";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: "2px 4px",
+    padding: "6px 4px",
     display: "flex",
     alignItems: "center",
     minWidth: 200,
+    margin: "0 16px",
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -33,7 +34,7 @@ export const EngineSearch = () => {
           engineModelChanged(e.target.value);
         }}
       />
-      <IconButton size="small" type="submit" className={classes.iconButton} aria-label="search">
+      <IconButton size="medium" type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />
       </IconButton>
     </Card>

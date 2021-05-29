@@ -1,7 +1,46 @@
 import axios from "axios";
-import { combine, createEffect, createEvent, createStore, Effect, Event, Store } from "effector";
-import { EngineDemo, EngineFilter } from "../../api/Engines";
+import {
+  attach,
+  combine,
+  createEffect,
+  createEvent,
+  createStore,
+  Effect,
+  Event,
+  forward,
+  Store,
+} from "effector";
+import {
+  EngineDemo,
+  EngineFilter,
+  enginesApi,
+  DownloadEngineInCSVRequest,
+  LoadEngineDataRequest,
+  EditEngine,
+  DeleteEngineRequest,
+} from "../../api/engines";
 import { getCheckboxData, getCheckboxWithSearchData } from "../../components/checkbox/model";
+import { $token } from "../../features/common/token";
+import { newEngineForm } from "../create-and-edit-engine/create-egnine/create-engine-model";
+
+export const downloadEngineInCSVFx = createEffect<DownloadEngineInCSVRequest, void, Error>(
+  enginesApi.downloadEngineInCSV
+);
+
+const loadEngineDataForCreateFx = createEffect<LoadEngineDataRequest, EditEngine, Error>(
+  enginesApi.loadEngineData
+);
+
+export const loadEngineDataForCreateFxWithToken = attach({
+  effect: loadEngineDataForCreateFx,
+  source: $token,
+  mapParams: (engineId: number, token: string | null) => ({ engineId, token }),
+});
+
+forward({
+  from: loadEngineDataForCreateFxWithToken.doneData,
+  to: newEngineForm.setForm,
+});
 
 export const deleteEngineModalOpened = createEvent<void>();
 export const deleteEngineModalClosed = createEvent<void>();
@@ -16,38 +55,21 @@ export const $deleteEngineModal = createStore<boolean>(false)
   .on(deleteEngineModalOpened, () => true)
   .on(deleteEngineModalClosed, () => false);
 
-type downloadEngineInCSVRequest = {
-  engineId: number;
-  engineModel: string;
-};
+const deleteEngineFx = createEffect<DeleteEngineRequest, number, Error>(enginesApi.deleteEngine);
 
-export const downloadEngineInCSV = createEffect<downloadEngineInCSVRequest, void, Error>(
-  async (req) => {
-    axios.get(`/download/csv/${req.engineId}`, { responseType: "blob" }).then((res) => {
-      const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", req.engineModel + ".csv");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    });
-  }
-);
-
-export const deleteEngineFx = createEffect<number, number, Error>(async (engineId) => {
-  await axios.delete(`/engines/${engineId}`);
-  return engineId;
+export const deleteEngineFxWithToken = attach({
+  effect: deleteEngineFx,
+  source: $token,
+  mapParams: (engineId: number, token: string | null) => ({ engineId, token }),
 });
 
 export const getEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
-  const req = await fetch(`/engines${queryParams}`);
-  const data = req.json();
-  return data;
+  const res = await axios.get(`/api/engines${queryParams}`);
+  return res.data;
 });
 
 export const loadMoreEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
-  const req = await fetch(`/engines${queryParams}`);
+  const req = await fetch(`/api/engines${queryParams}`);
   const data = req.json();
   return data;
 });
@@ -72,13 +94,14 @@ export const $engines = createStore<EngineDemo[]>([])
   );
 
 export const engineModelChanged = createEvent<string>();
-export const lastFetchedEngineIdChanged = createEvent<number>();
-
+export const engineModelReseted = createEvent<void>();
 export const engineModelLastStateRestored = createEvent<string>();
 export const $engineModel = createStore<string>("")
   .on(engineModelChanged, (_, payload) => payload)
-  .on(engineModelLastStateRestored, (_, payload) => payload);
+  .on(engineModelLastStateRestored, (_, payload) => payload)
+  .reset(engineModelReseted);
 
+export const lastFetchedEngineIdChanged = createEvent<number>();
 const $lastFetchedEngineId = createStore<number>(0).on(
   lastFetchedEngineIdChanged,
   (_, payload) => payload

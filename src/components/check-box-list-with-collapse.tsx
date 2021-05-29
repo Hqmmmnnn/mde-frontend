@@ -83,6 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       flexDirection: "row",
       cursor: "pointer",
+      paddingLeft: "12px",
     },
     expand: {
       transform: "rotate(0deg)",

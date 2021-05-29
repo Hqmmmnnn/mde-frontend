@@ -4,11 +4,10 @@ import { Event } from "effector";
 import { IconButton, Typography } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
-import { EngineFileName } from "../../../api/Files";
+import { EngineFileName } from "../../../api/files";
 import {
-  deleteEngineFileFx,
-  saveEngineFilesFx,
-  saveEngineImageFx,
+  deleteEngineFileWithTokenFx,
+  saveEngineFilesWithTokenFx,
 } from "../edit-engine/edit-engie-model";
 
 type ImageUploaderViewProps = {
@@ -165,7 +164,7 @@ export const FilesUploaderViewForUpdate = ({
   const { getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
     maxFiles: 10,
     onDrop: (acceptedFiles) => {
-      saveEngineFilesFx({ engineId, files: acceptedFiles });
+      saveEngineFilesWithTokenFx({ engineId, files: acceptedFiles });
     },
   });
 
@@ -184,7 +183,7 @@ export const FilesUploaderViewForUpdate = ({
       </Typography>
 
       <IconButton
-        onClick={() => deleteEngineFileFx(id)}
+        onClick={() => deleteEngineFileWithTokenFx(id)}
         aria-label="delete engine file"
         style={{ height: "24px", padding: 0, position: "relative", left: "5px", top: "9px" }}
       >
