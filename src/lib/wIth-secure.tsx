@@ -1,6 +1,6 @@
 import { useStore } from "effector-react";
 import { Redirect } from "react-router";
-import { $session } from "../features/common/session/session-model";
+import { $session } from "../features/common/session-model";
 
 type WithSecureProps = {
   children: React.ReactElement;

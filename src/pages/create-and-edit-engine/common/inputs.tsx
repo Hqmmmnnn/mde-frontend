@@ -24,7 +24,7 @@ export const RotationFrequencyView = ({ value, onChange }: TextFieldProps<string
     value={value}
     onChange={(e) => onChange(e.target.value)}
     name="model"
-    label="Частота вращения"
+    label="Частота вращения об/мин"
     variant="outlined"
     size="small"
   />
@@ -144,7 +144,7 @@ export const CylinderDiameterView = ({ value, onChange }: TextFieldProps<string>
     value={value}
     onChange={(e) => onChange(e.target.value)}
     name="cylinderDiameter"
-    label="Диаметр, мм"
+    label="Диаметр цилиндра, мм"
     variant="outlined"
     size="small"
   />

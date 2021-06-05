@@ -1,7 +1,7 @@
 import { useStore } from "effector-react";
 import { useEffect } from "react";
-import { $session, loadSessionFx } from "../features/common/session/session-model";
-import { $token } from "../features/common/token";
+import { $session, loadSessionWithTokenFx } from "../features/common/session-model";
+import { $token } from "../features/common/token-model";
 
 type AccountLoaderProps = {
   children: React.ReactElement;
@@ -12,7 +12,7 @@ export const AccountLoader = ({ children }: AccountLoaderProps) => {
   const token = useStore($token);
 
   useEffect(() => {
-    loadSessionFx();
+    loadSessionWithTokenFx();
   }, []);
 
   if (token && !session) return null;

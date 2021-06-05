@@ -1,5 +1,5 @@
 import { createEvent, createStore } from "effector";
-import { loadSessionFx } from "../features/common/session/session-model";
+import { loadSessionWithTokenFx } from "../features/common/session-model";
 
 export const tabIndexChanged = createEvent<number>();
 export const authModalOpened = createEvent();
@@ -10,4 +10,4 @@ export const $isAuthModalOpen = createStore<boolean>(false)
   .on(authModalOpened, () => true)
   .on(authModalClosed, () => false);
 
-loadSessionFx.doneData.watch(() => authModalClosed());
+loadSessionWithTokenFx.doneData.watch(() => authModalClosed());

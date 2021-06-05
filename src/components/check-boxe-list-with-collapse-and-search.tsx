@@ -1,7 +1,7 @@
 import { Box, Card, IconButton, InputBase, makeStyles } from "@material-ui/core";
 
 import SearchIcon from "@material-ui/icons/Search";
-import { Checkboxes } from "./checkbox/Checkbox";
+import { Checkboxes } from "./checkbox/checkbox";
 import { CheckboxWithSearchDataProps } from "./checkbox/model";
 
 export const CheckBoxesWithSearch = ({
@@ -42,7 +42,7 @@ export const CheckBoxesWithSearch = ({
 
 const useCheckBoxesWithSearchStyles = makeStyles((theme) => ({
   root: {
-    padding: "0px 4px",
+    padding: "0spx 4px",
     display: "flex",
     alignItems: "center",
     minWidth: 200,

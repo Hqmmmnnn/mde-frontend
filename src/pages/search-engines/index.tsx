@@ -5,7 +5,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Facet } from "../../components/facet";
 import {
   $engineFilter,
-  lastFetchedEngineIdChanged,
+  currentPageChanged,
   getEnginesFx,
   cylinderQuantityData,
   rotationFrequencyData,
@@ -21,6 +21,7 @@ import {
   widthData,
   heightData,
   engineModelReseted,
+  downloadEngineInCSVByConditionFx,
 } from "./model";
 import { getQueryParams, getInitialStateFromQueryParams } from "../../lib/get-query-params";
 import { CylinderQuantity } from "./cylinder-quantity";
@@ -61,10 +62,11 @@ const SearchWithFiltersButton = () => {
       fullWidth
       variant="contained"
       color="primary"
+      style={{ textTransform: "capitalize" }}
       onClick={() => {
         const params = getQueryParams(engineFilter);
-        lastFetchedEngineIdChanged(0);
-        params.delete("lastFetchedEngineId");
+        currentPageChanged(1);
+        params.delete("currentPage");
         history.push({ search: params.toString().replaceAll("%2C", ",") });
         getEnginesFx(history.location.search);
       }}
@@ -82,6 +84,7 @@ const ResetEngineFilterStateButton = () => {
       fullWidth
       variant="outlined"
       color="secondary"
+      style={{ textTransform: "capitalize" }}
       onClick={() => {
         history.replace("/");
         getEnginesFx("");
@@ -95,8 +98,26 @@ const ResetEngineFilterStateButton = () => {
   );
 };
 
-const loadAllDataForFilter = () => {
-  return Promise.all([
+const DownloadEnginesInCSVByConditionButton = () => {
+  const history = useHistory();
+
+  return (
+    <Button
+      fullWidth
+      variant="outlined"
+      color="inherit"
+      style={{ textTransform: "none" }}
+      onClick={() => {
+        downloadEngineInCSVByConditionFx(history.location.search);
+      }}
+    >
+      Скачать найденные двигатели
+    </Button>
+  );
+};
+
+const loadAllDataForFilter = async () => {
+  await Promise.all([
     cylinderQuantityData.dataFromServerLoaded("/api/filtrationData/cylindersQuantity"),
     rotationFrequencyData.dataFromServerLoaded("/api/filtrationData/rotationFrequencies"),
     manufacturersData.dataFromServerLoaded("/api/filtrationData/manufacturers"),
@@ -109,13 +130,12 @@ const loadAllDataForFilter = () => {
     weightDryNoImplementsData.dataFromServerLoaded(
       "/api/filtrationData/weightDryNoImplementsMinAndMax"
     ),
-  ]).then(() => {
-    return Promise.all([
-      lengthData.dataFromServerLoaded("/api/filtrationData/lengthMinAndMax"),
-      widthData.dataFromServerLoaded("/api/filtrationData/widthMinAndMax"),
-      heightData.dataFromServerLoaded("/api/filtrationData/heightMinAndMax"),
-    ]);
-  });
+  ]);
+  return await Promise.all([
+    lengthData.dataFromServerLoaded("/api/filtrationData/lengthMinAndMax"),
+    widthData.dataFromServerLoaded("/api/filtrationData/widthMinAndMax"),
+    heightData.dataFromServerLoaded("/api/filtrationData/heightMinAndMax"),
+  ]);
 };
 
 const Aside = () => {
@@ -155,6 +175,12 @@ const Aside = () => {
       <Box px={2}>
         <Box py={1}>
           <ResetEngineFilterStateButton />
+        </Box>
+      </Box>
+
+      <Box px={2}>
+        <Box py={1}>
+          <DownloadEnginesInCSVByConditionButton />
         </Box>
       </Box>
     </div>

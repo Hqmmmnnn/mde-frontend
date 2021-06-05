@@ -1,6 +1,6 @@
 import { attach, createEffect, restore } from "effector";
 import { enginesApi, GetSelectedDataRequest } from "../../../api/engines";
-import { $token } from "../../../features/common/token";
+import { $token } from "../../../features/common/token-model";
 
 export type SelectData = {
   id: number;

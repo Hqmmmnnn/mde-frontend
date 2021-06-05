@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   IconButton,
@@ -12,7 +13,7 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { useForm } from "effector-forms/dist";
 import { useStore } from "effector-react";
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { $loginErrorFromServer, loginForm, loginUserFx } from "./model";
 
 const useStyles = makeStyles({
@@ -116,9 +117,11 @@ export const LoginTab = () => {
         </Button>
 
         {errorFromServer && (
-          <Typography color="error" component="p" align="center">
-            {errorFromServer}
-          </Typography>
+          <Box mt={1.5}>
+            <Typography color="error" component="p" align="center">
+              {errorFromServer}
+            </Typography>
+          </Box>
         )}
       </form>
     </div>

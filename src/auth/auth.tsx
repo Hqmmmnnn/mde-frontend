@@ -47,13 +47,13 @@ export const AuthTabs = () => {
   );
 };
 
-type TabPanelProps = {
+type AuthTabProps = {
   children?: React.ReactNode;
   index: any;
   value: any;
 };
 
-const AuthTab = (props: TabPanelProps) => {
+const AuthTab = (props: AuthTabProps) => {
   const { children, index, value, ...other } = props;
 
   return (

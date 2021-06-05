@@ -15,6 +15,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@material-ui/core";
+import { Pagination as MaterialPagination } from "@material-ui/lab";
 
 import { useStore } from "effector-react";
 import { useEffect } from "react";
@@ -26,15 +27,16 @@ import {
   deleteEngineModalClosed,
   deleteEngineModalOpened,
   getEnginesFx,
-  lastFetchedEngineIdChanged,
-  $currentDeletedEngineId,
-  currentDeletedEngineIdChanged,
+  $currentEngineIdForDelete,
+  currentEngineIdForDeleteChanged,
   downloadEngineInCSVFx,
   loadEngineDataForCreateFxWithToken,
+  $currentPage,
+  currentPageChanged,
+  searchParamsChanged,
 } from "./model";
-import { LoadMoreEnginesButton } from "./load-more-engines-button";
 import { Link as RouterLink } from "react-router-dom";
-import { $session } from "../../features/common/session/session-model";
+import { $session } from "../../features/common/session-model";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,19 +69,17 @@ const useStyles = makeStyles((theme) => ({
 export const EngineDemo = () => {
   const styles = useStyles();
   const history = useHistory();
-  const engines = useStore($engines);
+  const enginesData = useStore($engines);
   const currentUser = useStore($session);
   const isLoading = useStore(getEnginesFx.pending);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(history.location.search);
-    lastFetchedEngineIdChanged(0);
-    searchParams.delete("lastFetchedEngineId");
     history.push({ search: searchParams.toString().replaceAll("%2C", ",") });
     getEnginesFx(history.location.search);
   }, []);
 
-  if (isLoading && engines.length === 0) {
+  if (isLoading && enginesData.engines.length === 0) {
     return (
       <div
         style={{
@@ -96,10 +96,10 @@ export const EngineDemo = () => {
 
   return (
     <>
-      {engines.length > 0 ? (
+      {enginesData.engines.length > 0 ? (
         <>
           <Grid container spacing={4} justify="center">
-            {engines.map((engine) => (
+            {enginesData.engines.map((engine) => (
               <Grid item key={engine.id}>
                 <Card className={styles.root} variant="outlined" key={engine.id}>
                   <CardActionArea>
@@ -107,19 +107,32 @@ export const EngineDemo = () => {
                       to={`/engines/${engine.id}`}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
-                      <div
-                        aria-label={`engine image, model: ${engine.model} `}
+                      <Box
                         style={{
-                          height: "140px",
-                          backgroundImage: `url(/api/images/${engine.id})`,
-                          backgroundSize: "contain",
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition: "center",
+                          display: "flex",
+                          justifyContent: "center",
+                          padding: "8px 0",
                         }}
-                      ></div>
+                      >
+                        <div
+                          aria-label={`engine image, model: ${engine.model} `}
+                          style={{
+                            backgroundImage: `url(/api/images/${engine.id})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            height: "230px",
+                            width: "230px",
+                          }}
+                        ></div>
+                      </Box>
+
                       <CardContent>
                         <Typography gutterBottom variant="h5" component="h2" align="center">
                           {engine.model}
+                        </Typography>
+                        <Typography align="center" gutterBottom variant="h6" component="h3">
+                          {engine.series}
                         </Typography>
                         <Typography
                           align="center"
@@ -132,96 +145,6 @@ export const EngineDemo = () => {
                         </Typography>
                         <br />
 
-                        <div className={styles.cardItemContainer}>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            количество цилиндров
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            {engine.cylinderQuantity}
-                          </Typography>
-                        </div>
-                        <div className={styles.cardItemContainer}>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            вес без оборудования
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            {engine.weightDryNoImplements}
-                          </Typography>
-                        </div>
-                        <div className={styles.cardItemContainer}>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            рейтинг нагрузки
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            {engine.loadMode}
-                          </Typography>
-                        </div>
-                        <div className={styles.cardItemContainer}>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            тип фланца
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            {engine.flangeType}
-                          </Typography>
-                        </div>
-                        <div className={styles.cardItemContainer}>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            назначение
-                          </Typography>
-                          <Typography
-                            gutterBottom
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            {engine.assignment}
-                          </Typography>
-                        </div>
                         <div className={styles.cardItemContainer}>
                           <Typography
                             gutterBottom
@@ -247,6 +170,78 @@ export const EngineDemo = () => {
                             color="textSecondary"
                             component="p"
                           >
+                            количество цилиндров
+                          </Typography>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            {engine.cylinderQuantity}
+                          </Typography>
+                        </div>
+                        <div className={styles.cardItemContainer}>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            диаметр цилиндра
+                          </Typography>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            {engine.cylinderDiameter}
+                          </Typography>
+                        </div>
+                        <div className={styles.cardItemContainer}>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            ход поршня
+                          </Typography>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            {engine.pistonStroke}
+                          </Typography>
+                        </div>
+                        <div className={styles.cardItemContainer}>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            частота вращения
+                          </Typography>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            {engine.rotationFrequency}
+                          </Typography>
+                        </div>
+                        <div className={styles.cardItemContainer}>
+                          <Typography
+                            gutterBottom
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
                             IMO
                           </Typography>
                           <Typography
@@ -255,7 +250,7 @@ export const EngineDemo = () => {
                             color="textSecondary"
                             component="p"
                           >
-                            {engine.imoEcoStandard}
+                            {engine.imoEcoStandard || "-"}
                           </Typography>
                         </div>
                         <div className={styles.cardItemContainer}>
@@ -273,7 +268,7 @@ export const EngineDemo = () => {
                             color="textSecondary"
                             component="p"
                           >
-                            {engine.epaEcoStandard}
+                            {engine.epaEcoStandard || "-"}
                           </Typography>
                         </div>
                         <div className={styles.cardItemContainer}>
@@ -291,7 +286,7 @@ export const EngineDemo = () => {
                             color="textSecondary"
                             component="p"
                           >
-                            {engine.euEcoStandard}
+                            {engine.euEcoStandard || "-"}
                           </Typography>
                         </div>
                         <div className={styles.cardItemContainer}>
@@ -309,7 +304,7 @@ export const EngineDemo = () => {
                             color="textSecondary"
                             component="p"
                           >
-                            {engine.uicEcoStandard}
+                            {engine.uicEcoStandard || "-"}
                           </Typography>
                         </div>
                         <br />
@@ -320,16 +315,7 @@ export const EngineDemo = () => {
                           component="p"
                           align="center"
                         >
-                          {engine.length}m x {engine.width}м x {engine.height}м
-                        </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                          align="center"
-                        >
-                          {engine.classificationSociety || "Отсутствует классифиционное общество"}
+                          {engine.length}мм x {engine.width}мм x {engine.height}мм
                         </Typography>
                       </CardContent>
                     </RouterLink>
@@ -350,7 +336,7 @@ export const EngineDemo = () => {
                         className={styles.btnText}
                         color="inherit"
                       >
-                        Экспорт в CSV
+                        Скачать в CSV
                       </Button>
                     </div>
                   </CardActions>
@@ -390,7 +376,7 @@ export const EngineDemo = () => {
 
                           <Button
                             onClick={() => {
-                              currentDeletedEngineIdChanged(engine.id);
+                              currentEngineIdForDeleteChanged(engine.id);
                               deleteEngineModalOpened();
                             }}
                             size="medium"
@@ -408,7 +394,7 @@ export const EngineDemo = () => {
             ))}
           </Grid>
           <Box display="flex" justifyContent="center" m={2}>
-            <LoadMoreEnginesButton />
+            <Pagination totalPages={enginesData.totalPages} />
           </Box>
           <ConfirmDeleteEngineDialog />
         </>
@@ -421,19 +407,51 @@ export const EngineDemo = () => {
             justifyContent: "center",
           }}
         >
-          <div>Двигатели не найдены :(</div>
+          <Typography variant="h6">Двигатели не найдены</Typography>
         </div>
       )}
     </>
   );
 };
 
+type PaginationProps = {
+  totalPages: number;
+};
+
+const Pagination = ({ totalPages }: PaginationProps) => {
+  const currentPage = useStore($currentPage);
+  const history = useHistory();
+
+  const handleChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    currentPageChanged(page);
+    window.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    searchParamsChanged(history);
+  }, [currentPage]);
+
+  return (
+    <MaterialPagination
+      size="large"
+      color="primary"
+      count={totalPages}
+      page={currentPage}
+      onChange={handleChange}
+    />
+  );
+};
+
 const ConfirmDeleteEngineDialog = () => {
-  const currentDeletedEngineId = useStore($currentDeletedEngineId);
+  const currentEngineIdForDelete = useStore($currentEngineIdForDelete);
   const isDeleteEngineModalOpened = useStore($deleteEngineModal);
 
   return (
-    <Dialog open={isDeleteEngineModalOpened} onClose={() => deleteEngineModalClosed()}>
+    <Dialog
+      PaperProps={{ style: { borderRadius: "16px" } }}
+      open={isDeleteEngineModalOpened}
+      onClose={() => deleteEngineModalClosed()}
+    >
       <div
         style={{
           display: "flex",
@@ -448,7 +466,6 @@ const ConfirmDeleteEngineDialog = () => {
             textAlign: "center",
             backgroundColor: "#fff",
             padding: "1rem",
-            borderRadius: "16px",
           }}
         >
           <DialogTitle>Удаление двигателя</DialogTitle>
@@ -462,7 +479,7 @@ const ConfirmDeleteEngineDialog = () => {
             <Button
               color="secondary"
               onClick={() => {
-                deleteEngineFxWithToken(currentDeletedEngineId);
+                deleteEngineFxWithToken(currentEngineIdForDelete);
                 deleteEngineModalClosed();
               }}
             >

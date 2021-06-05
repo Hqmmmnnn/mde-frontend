@@ -15,10 +15,12 @@ import {
   withStyles,
   Box,
 } from "@material-ui/core";
+import DescriptionIcon from "@material-ui/icons/Description";
 import { useStore } from "effector-react";
 import { useEffect } from "react";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Header } from "../../features/common/header";
+import { ScrollToTop } from "../../lib/scroll-to-top";
 
 import {
   $engineFilenames,
@@ -38,20 +40,13 @@ const useStyles = makeStyles({
   },
   card: {
     objectFit: "contain",
-    width: "500px",
   },
 });
 
 export const EngineInfoPage = () => {
   const styles = useStyles();
-  const { id }: { id: string } = useParams();
-  const { pathname } = useLocation();
-
   const engineInfoTables = useStore($engineInfoTables);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  const { id }: { id: string } = useParams();
 
   useEffect(() => {
     if (id) {
@@ -62,20 +57,24 @@ export const EngineInfoPage = () => {
 
   return (
     <Grid container direction="column">
+      <ScrollToTop />
+
       <Grid item>
         <Header />
       </Grid>
       <Grid item>
         <Container className={styles.container}>
-          <Grid container justify="space-around">
+          <Grid container spacing={6}>
             <Grid item>
-              <CardMedia
-                className={styles.card}
-                component="img"
-                alt="Картинка двигателя"
-                height="500"
-                image={`/api/images/${id}`}
-              />
+              <Box>
+                <CardMedia
+                  className={styles.card}
+                  component="img"
+                  alt="Картинка двигателя"
+                  image={`/api/images/${id}`}
+                  style={{ height: "300px", width: "300px" }}
+                />
+              </Box>
             </Grid>
 
             <Grid item>
@@ -95,7 +94,10 @@ export const EngineInfoPage = () => {
                 </Grid>
 
                 <Grid item>
-                  <Typography variant="h6">Прикрепленные файлы:</Typography>
+                  <Box pl={0.5}>
+                    <Typography variant="h6">Прикрепленные файлы:</Typography>
+                  </Box>
+
                   <AttachedFiles />
                 </Grid>
               </Grid>
@@ -120,19 +122,24 @@ const AttachedFiles = () => {
         <Typography>Пока что нет прикрепленных файлов</Typography>
       ) : (
         filenames.map(({ id, name }) => (
-          <Grid item key={id}>
-            <Link
-              onClick={() => downloadFileFx(name)}
-              style={{
-                maxWidth: "300px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                display: "block",
-              }}
-            >
-              {name}
-            </Link>
+          <Grid item key={id} onClick={() => downloadFileFx(name)} style={{ cursor: "pointer" }}>
+            <Box style={{ display: "flex", alignItems: "center" }}>
+              <Box mr={1}>
+                <DescriptionIcon fontSize="large" color="primary" />
+              </Box>
+
+              <Typography
+                style={{
+                  maxWidth: "300px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  display: "block",
+                }}
+              >
+                {name}
+              </Typography>
+            </Box>
           </Grid>
         ))
       )}
@@ -144,7 +151,7 @@ const EngineInfo = ({ engineInfoTables }: { engineInfoTables: EngineInfoTable[] 
   <>
     {engineInfoTables.map(({ name, rows }) => (
       <div style={{ marginBottom: "24px" }} key={name}>
-        <Box pl={2}>
+        <Box>
           <Typography variant="h6" id={name}>
             {name}
           </Typography>

@@ -4,24 +4,28 @@ import { CheckboxValue } from "../components/checkbox/model";
 import { SelectData } from "../pages/create-and-edit-engine/common/model";
 import { FacetValue } from "../pages/search-engines/model";
 
+export interface EnginesDemo {
+  totalPages: number;
+  engines: EngineDemo[];
+}
+
 export interface EngineDemo {
   id: number;
   model: string;
+  series: string;
+  powerRating: number;
+  rotationFrequency: string;
   manufacturerName: string;
   cylinderQuantity: number;
-  weightDryNoImplements: number;
-  loadMode: string;
-  flangeType: string;
-  assignment: string;
-  powerRating: number;
+  cylinderDiameter: string;
+  length: string;
+  width: string;
+  height: string;
+  pistonStroke: string;
   imoEcoStandard: string;
   epaEcoStandard: string;
   euEcoStandard: string;
   uicEcoStandard: string;
-  length: number;
-  width: number;
-  height: number;
-  classificationSociety: string;
   image: string;
 }
 
@@ -83,7 +87,7 @@ export interface EngineFilter {
   epaEcoStandards: CheckboxValue[];
   euEcoStandards: CheckboxValue[];
   uicEcoStandards: CheckboxValue[];
-  lastFetchedEngineId: number;
+  currentPage: number;
 }
 
 export type EditEngine = Omit<SaveEngine, "files" | "image"> & { engineId: string };
@@ -210,18 +214,6 @@ export type DownloadEngineInCSVRequest = {
   engineModel: string;
 };
 
-const downloadEngineInCSV = async (req: DownloadEngineInCSVRequest) => {
-  axios.get(`/api/download/csv/${req.engineId}`, { responseType: "blob" }).then((res) => {
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", req.engineModel + ".csv");
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  });
-};
-
 export type GetSelectedDataRequest = {
   url: string;
   token: string | null;
@@ -239,6 +231,46 @@ const loadSelectedData = async ({ url, token }: GetSelectedDataRequest) => {
   return data;
 };
 
+const downloadEngineInCSV = async (req: DownloadEngineInCSVRequest) => {
+  axios.get(`/api/download/csv/${req.engineId}`, { responseType: "blob" }).then((res) => {
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", req.engineModel + ".csv");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
+};
+
+const downloadEngineInCSVByCondition = async (searchParams: string) => {
+  axios.get(`/api/download/csv/engines${searchParams}`, { responseType: "blob" }).then((res) => {
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    var date = new Date();
+    var datetime =
+      date.getDate() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getFullYear() +
+      " " +
+      date.getHours() +
+      "-" +
+      date.getMinutes() +
+      "-" +
+      date.getSeconds();
+
+    console.log(datetime);
+
+    link.setAttribute("download", "Выборка двигателей от " + datetime.toString() + ".csv");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
+};
+
 export const enginesApi = {
   loadEngineData,
   loadSelectedData,
@@ -246,4 +278,5 @@ export const enginesApi = {
   editEngine,
   deleteEngine,
   downloadEngineInCSV,
+  downloadEngineInCSVByCondition,
 };

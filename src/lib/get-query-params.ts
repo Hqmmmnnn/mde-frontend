@@ -14,7 +14,8 @@ import {
   lengthData,
   widthData,
   heightData,
-  engineModelLastStateRestored,
+  currentPageChanged,
+  engineModelChanged,
 } from "../pages/search-engines/model";
 
 export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
@@ -66,8 +67,13 @@ export const getQueryParams = (engineFilter: EngineFilter): URLSearchParams => {
 
 export const getInitialStateFromQueryParams = (search: URLSearchParams) => {
   for (let [name, value] of search.entries()) {
+    if (name === "currentPage") {
+      currentPageChanged(Number(value));
+      continue;
+    }
+
     if (name === "model") {
-      engineModelLastStateRestored(value);
+      engineModelChanged(value);
       continue;
     }
 

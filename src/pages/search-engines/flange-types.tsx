@@ -1,6 +1,6 @@
 import { Box, FormGroup } from "@material-ui/core";
 import { CheckBoxListWithCollapse } from "../../components/check-box-list-with-collapse";
-import { Checkboxes } from "../../components/checkbox/Checkbox";
+import { Checkboxes } from "../../components/checkbox/checkbox";
 import { flangeTypeData } from "./model";
 
 export const FlangeTypes = () => (

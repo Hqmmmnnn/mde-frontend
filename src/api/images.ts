@@ -5,6 +5,11 @@ const getImage = async (engineId: string) => {
   return blob.data;
 };
 
+const getImageForUpdate = async (engineId: string) => {
+  const blob = await axios.get<Blob>(`/api/images/update/${engineId}`, { responseType: "blob" });
+  return blob.data;
+};
+
 export type SaveEngineImageData = {
   engineId: string;
   image: File;
@@ -34,6 +39,7 @@ const deleteImage = async ({ engineId, token }: DeleteImageRequest) => {
 
 export const imagesApi = {
   getImage,
+  getImageForUpdate,
   saveImage,
   deleteImage,
 };

@@ -7,6 +7,7 @@ import {
   Typography,
   OutlinedInput,
   InputAdornment,
+  Box,
   IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
@@ -144,9 +145,11 @@ export const RegisterTab = () => {
           </Button>
 
           {responseFromServer && (
-            <Typography color="error" component="p" align="center">
-              responseFromServer
-            </Typography>
+            <Box mt={1.5}>
+              <Typography color="error" component="p" align="center">
+                responseFromServer
+              </Typography>
+            </Box>
           )}
         </form>
       </div>

@@ -8,23 +8,30 @@ import {
   Effect,
   Event,
   forward,
+  sample,
   Store,
 } from "effector";
+import { History } from "history";
 import {
-  EngineDemo,
   EngineFilter,
   enginesApi,
   DownloadEngineInCSVRequest,
   LoadEngineDataRequest,
   EditEngine,
   DeleteEngineRequest,
+  EnginesDemo,
 } from "../../api/engines";
 import { getCheckboxData, getCheckboxWithSearchData } from "../../components/checkbox/model";
-import { $token } from "../../features/common/token";
+import { $token } from "../../features/common/token-model";
+import { getQueryParams } from "../../lib/get-query-params";
 import { newEngineForm } from "../create-and-edit-engine/create-egnine/create-engine-model";
 
 export const downloadEngineInCSVFx = createEffect<DownloadEngineInCSVRequest, void, Error>(
   enginesApi.downloadEngineInCSV
+);
+
+export const downloadEngineInCSVByConditionFx = createEffect<string, void, Error>(
+  enginesApi.downloadEngineInCSVByCondition
 );
 
 const loadEngineDataForCreateFx = createEffect<LoadEngineDataRequest, EditEngine, Error>(
@@ -44,10 +51,10 @@ forward({
 
 export const deleteEngineModalOpened = createEvent<void>();
 export const deleteEngineModalClosed = createEvent<void>();
-export const currentDeletedEngineIdChanged = createEvent<number>();
+export const currentEngineIdForDeleteChanged = createEvent<number>();
 
-export const $currentDeletedEngineId = createStore<number>(0).on(
-  currentDeletedEngineIdChanged,
+export const $currentEngineIdForDelete = createStore<number>(0).on(
+  currentEngineIdForDeleteChanged,
   (_, id) => id
 );
 
@@ -63,49 +70,31 @@ export const deleteEngineFxWithToken = attach({
   mapParams: (engineId: number, token: string | null) => ({ engineId, token }),
 });
 
-export const getEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
-  const res = await axios.get(`/api/engines${queryParams}`);
+export const getEnginesFx = createEffect<string, EnginesDemo, Error>(async (searchParams) => {
+  const res = await axios.get(`/api/engines${searchParams}`);
   return res.data;
 });
 
-export const loadMoreEnginesFx = createEffect<string, EngineDemo[], Error>(async (queryParams) => {
-  const req = await fetch(`/api/engines${queryParams}`);
-  const data = req.json();
-  return data;
-});
+const enginesInitialState: EnginesDemo = {
+  totalPages: 0,
+  engines: [],
+};
 
-export const $engines = createStore<EngineDemo[]>([])
-  .on(getEnginesFx.doneData, (_, engines) => {
-    if (engines && engines.length > 0) {
-      lastFetchedEngineIdChanged(engines[engines.length - 1].id);
-    }
-
-    return engines;
-  })
-  .on(loadMoreEnginesFx.doneData, (state, payload) => {
-    if (payload && payload.length > 0) {
-      lastFetchedEngineIdChanged(payload[payload.length - 1].id);
-    }
-
-    return [...state, ...payload];
-  })
-  .on(deleteEngineFx.doneData, (engines, deletedEngineId) =>
-    engines.filter(({ id }) => id !== deletedEngineId)
-  );
+export const $engines = createStore<EnginesDemo>(enginesInitialState)
+  .on(getEnginesFx.doneData, (_, engines) => engines)
+  .on(deleteEngineFx.doneData, (enginesDemo, deletedEngineId) => ({
+    ...enginesDemo,
+    engines: enginesDemo.engines.filter((engine) => engine.id !== deletedEngineId),
+  }));
 
 export const engineModelChanged = createEvent<string>();
 export const engineModelReseted = createEvent<void>();
-export const engineModelLastStateRestored = createEvent<string>();
 export const $engineModel = createStore<string>("")
   .on(engineModelChanged, (_, payload) => payload)
-  .on(engineModelLastStateRestored, (_, payload) => payload)
   .reset(engineModelReseted);
 
-export const lastFetchedEngineIdChanged = createEvent<number>();
-const $lastFetchedEngineId = createStore<number>(0).on(
-  lastFetchedEngineIdChanged,
-  (_, payload) => payload
-);
+export const currentPageChanged = createEvent<number>();
+export const $currentPage = createStore<number>(1).on(currentPageChanged, (_, page) => page);
 
 export type FacetValue = {
   from: number;
@@ -211,5 +200,18 @@ export const $engineFilter = combine<EngineFilter>({
   epaEcoStandards: epaEcoStandardData.$checkboxes,
   euEcoStandards: euEcoStandardData.$checkboxes,
   uicEcoStandards: uicEcoStandardData.$checkboxes,
-  lastFetchedEngineId: $lastFetchedEngineId,
+  currentPage: $currentPage,
+});
+
+export const searchParamsChanged = createEvent<History<unknown>>();
+
+sample({
+  clock: searchParamsChanged,
+  source: $engineFilter,
+  fn: (filterData, history) => {
+    const params = getQueryParams(filterData);
+    history.push({ search: params.toString().replaceAll("%2C", ",") });
+    return history.location.search;
+  },
+  target: getEnginesFx,
 });

@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { createEffect, attach } from "effector";
 import { createForm } from "effector-forms/dist";
 import { enginesApi, SaveEngine, SaveEngineReqest } from "../../../api/engines";
-import { $token } from "../../../features/common/token";
+import { $token } from "../../../features/common/token-model";
 
 const saveEngineFx = createEffect<SaveEngineReqest, Promise<AxiosResponse<any>>, Error>(
   enginesApi.saveEngine

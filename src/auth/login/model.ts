@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createEffect, forward, restore, createEvent } from "effector";
 import { createForm } from "effector-forms/dist";
-import { loadSessionFx } from "../../features/common/session/session-model";
-import { tokenChanged } from "../../features/common/token";
+import { loadSessionWithTokenFx } from "../../features/common/session-model";
+import { tokenChanged } from "../../features/common/token-model";
 import { validationRules } from "../../lib/validation-rules";
 
 type LoginRequest = {
@@ -36,7 +36,7 @@ export const loginUserFx = createEffect<LoginRequest, void, Error>(async (loginD
     .post<Token>("/api/auth/login", loginData)
     .then((res) => {
       tokenChanged(res.data.token);
-      loadSessionFx();
+      loadSessionWithTokenFx();
     })
     .catch((e) => loginErrorReceived(e.response.data));
 });

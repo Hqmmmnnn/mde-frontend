@@ -13,7 +13,7 @@ import {
   SaveEngineFilesData,
   SaveEngineFilesRequest,
 } from "../../../api/files";
-import { $token } from "../../../features/common/token";
+import { $token } from "../../../features/common/token-model";
 import {
   DeleteImageRequest,
   imagesApi,
@@ -63,7 +63,7 @@ export const saveEngineImageFxWithToken = attach({
   mapParams: (data: SaveEngineImageData, token: string | null) => ({ data, token }),
 });
 
-export const getEngineImageFx = createEffect<string, Blob, Error>(imagesApi.getImage);
+export const getEngineImageFx = createEffect<string, Blob, Error>(imagesApi.getImageForUpdate);
 
 export const $engineImage = createStore("")
   .on(getEngineImageFx.doneData, (_, blob) => URL.createObjectURL(blob))

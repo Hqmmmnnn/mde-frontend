@@ -1,6 +1,6 @@
 import { Box, FormGroup } from "@material-ui/core";
 import { CheckBoxListWithCollapse } from "../../components/check-box-list-with-collapse";
-import { Checkboxes } from "../../components/checkbox/Checkbox";
+import { Checkboxes } from "../../components/checkbox/checkbox";
 import { uicEcoStandardData } from "./model";
 
 export const UicEcoStandard = () => (
