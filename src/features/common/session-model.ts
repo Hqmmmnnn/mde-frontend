@@ -1,12 +1,13 @@
 import { attach, createEffect, createEvent, createStore, forward } from "effector";
-import { CurrentUser, LoadSessionRequest, sessionApi } from "../../api/session";
+import { LoadSessionRequest, sessionApi } from "../../api/session";
+import { User } from "../../api/users";
 import { $token, tokenDropped } from "./token-model";
 
 export const sessionDropped = createEvent();
-export const $session = createStore<CurrentUser | null>(null);
+export const $session = createStore<User | null>(null);
 export const $isAuthenticated = $session.map((session) => session !== null);
 
-const loadSessionFx = createEffect<LoadSessionRequest, CurrentUser, Error>(sessionApi.loadSession);
+const loadSessionFx = createEffect<LoadSessionRequest, User, Error>(sessionApi.loadSession);
 export const loadSessionWithTokenFx = attach({
   effect: loadSessionFx,
   source: $token,

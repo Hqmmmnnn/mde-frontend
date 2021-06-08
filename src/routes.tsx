@@ -3,6 +3,7 @@ import { CreateEnginePage } from "./pages/create-and-edit-engine/create-egnine";
 import { EditEnginePage } from "./pages/create-and-edit-engine/edit-engine";
 import { EngineInfoPage } from "./pages/engine-info";
 import { SearchEnginesPage } from "./pages/search-engines";
+import { UsersPage } from "./pages/users";
 
 const routes = () => [
   {
@@ -24,6 +25,11 @@ const routes = () => [
     path: "/editEngine/:id",
     exact: true,
     component: EditEnginePage,
+  },
+  {
+    path: "/users",
+    exact: true,
+    component: UsersPage,
   },
 ];
 

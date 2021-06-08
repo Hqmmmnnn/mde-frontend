@@ -22,6 +22,7 @@ import { AuthTabs } from "../../auth/auth";
 import { tabIndexChanged, authModalOpened } from "../../auth/auth-model";
 import { $session, $isAuthenticated, sessionDropped } from "./session-model";
 import { Link as RouterLink } from "react-router-dom";
+import { mapRole } from "../../lib/mapRole";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: "capitalize",
     },
     text: {
-      fontSize: "1.2rem",
+      fontSize: "1.1rem",
     },
   })
 );
@@ -83,16 +84,28 @@ export const Header = () => {
                 </Box>
 
                 {currentUser!.role === "ADMIN" && (
-                  <Box>
-                    <Link
-                      color="inherit"
-                      className={classes.text}
-                      component={RouterLink}
-                      to="/createEngine"
-                    >
-                      Добавление двигателя
-                    </Link>
-                  </Box>
+                  <>
+                    <Box mr={2}>
+                      <Link
+                        color="inherit"
+                        className={classes.text}
+                        component={RouterLink}
+                        to="/createEngine"
+                      >
+                        Добавление двигателя
+                      </Link>
+                    </Box>
+                    <Box>
+                      <Link
+                        color="inherit"
+                        className={classes.text}
+                        component={RouterLink}
+                        to="/users"
+                      >
+                        Управление пользователями
+                      </Link>
+                    </Box>
+                  </>
                 )}
               </nav>
 
@@ -158,33 +171,6 @@ export const Header = () => {
       <AuthTabs />
     </React.Fragment>
   );
-};
-
-const mapRole = (role: string) => {
-  let formatedRole;
-
-  switch (role) {
-    case "ADMIN":
-      formatedRole = "Администратор";
-      break;
-
-    case "EDITOR":
-      formatedRole = "Редактор";
-      break;
-
-    case "PREEDITOR":
-      formatedRole = "Редактор 2";
-      break;
-
-    case "READER":
-      formatedRole = "Читатель";
-      break;
-
-    default:
-      formatedRole = "";
-  }
-
-  return formatedRole;
 };
 
 const usePopoverStyles = makeStyles((theme: Theme) =>

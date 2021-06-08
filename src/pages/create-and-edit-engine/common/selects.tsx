@@ -36,7 +36,7 @@ type CreateEngineSelectProps<T> = {
   fetchingDataUrl: string;
 };
 
-const CreateEngineSelect = function <T>({
+export const CreateEngineSelect = function <T>({
   labelId,
   labelName,
   selectId,

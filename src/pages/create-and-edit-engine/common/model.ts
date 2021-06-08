@@ -7,7 +7,7 @@ export type SelectData = {
   value: string;
 };
 
-const getSelectedData = () => {
+export const getSelectedData = () => {
   const loadSelectDataFx = createEffect<GetSelectedDataRequest, SelectData[], Error>(
     enginesApi.loadSelectedData
   );

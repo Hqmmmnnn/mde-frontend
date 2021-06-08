@@ -366,10 +366,10 @@ export const EngineDemo = () => {
                         <div className={styles.btnContainer}>
                           <Button
                             size="medium"
-                            color="primary"
                             className={styles.btnText}
                             component={RouterLink}
                             to={`/editEngine/${engine.id}`}
+                            style={{ color: "#1967d2" }}
                           >
                             Редактировать
                           </Button>

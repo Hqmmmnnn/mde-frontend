@@ -61,14 +61,18 @@ const SearchWithFiltersButton = () => {
     <Button
       fullWidth
       variant="contained"
-      color="primary"
-      style={{ textTransform: "capitalize" }}
       onClick={() => {
         const params = getQueryParams(engineFilter);
         currentPageChanged(1);
         params.delete("currentPage");
         history.push({ search: params.toString().replaceAll("%2C", ",") });
         getEnginesFx(history.location.search);
+      }}
+      style={{
+        textTransform: "capitalize",
+        color: "#fff",
+        backgroundColor: "rgb(25, 103, 210)",
+        boxShadow: "none",
       }}
     >
       Поиск
