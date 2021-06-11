@@ -37,6 +37,7 @@ import {
 } from "./model";
 import { Link as RouterLink } from "react-router-dom";
 import { $session } from "../../features/common/session-model";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -336,7 +337,7 @@ export const EngineDemo = () => {
                         className={styles.btnText}
                         color="inherit"
                       >
-                        Скачать в CSV
+                        Экспорт
                       </Button>
                     </div>
                   </CardActions>
@@ -445,6 +446,7 @@ const Pagination = ({ totalPages }: PaginationProps) => {
 const ConfirmDeleteEngineDialog = () => {
   const currentEngineIdForDelete = useStore($currentEngineIdForDelete);
   const isDeleteEngineModalOpened = useStore($deleteEngineModal);
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Dialog
@@ -471,22 +473,27 @@ const ConfirmDeleteEngineDialog = () => {
           <DialogTitle>Удаление двигателя</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Удаление двигателя затронет его данные, фотографию и все связанные с ним файлы.
+              При удалении двигателя будут также удалены все связанные с ним файлы.
             </DialogContentText>
             <DialogContentText>Вы действительно хотите удалить двигатель?</DialogContentText>
           </DialogContent>
           <DialogActions>
+            <Button onClick={() => deleteEngineModalClosed()} color="primary">
+              Нет
+            </Button>
+
             <Button
               color="secondary"
               onClick={() => {
-                deleteEngineFxWithToken(currentEngineIdForDelete);
+                deleteEngineFxWithToken(currentEngineIdForDelete)
+                  .then(() => enqueueSnackbar("Двигатель успешно удален", { variant: "info" }))
+                  .catch(() =>
+                    enqueueSnackbar("Не удалось удалить двигатель", { variant: "error" })
+                  );
                 deleteEngineModalClosed();
               }}
             >
               Да
-            </Button>
-            <Button onClick={() => deleteEngineModalClosed()} color="primary">
-              Нет
             </Button>
           </DialogActions>
         </div>

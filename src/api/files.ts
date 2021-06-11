@@ -5,7 +5,12 @@ export type EngineFileName = {
   name: string;
 };
 
-const getFiles = async (engineId: string) => {
+const fetchFiles = async (engineId: string) => {
+  const filenames = await axios.get<EngineFileName[]>(`/api/filenames/${engineId}`);
+  return filenames.data;
+};
+
+const fetchFilesNames = async (engineId: string) => {
   const filenames = await axios.get<EngineFileName[]>(`/api/filenames/${engineId}`);
   return filenames.data;
 };
@@ -39,8 +44,22 @@ const saveFiles = async ({ data, token }: SaveEngineFilesRequest) => {
   return files.data;
 };
 
+const downLoadFile = async (filename: string) => {
+  axios.get(`/api/download/${filename}`, { responseType: "blob" }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  });
+};
+
 export const filesApi = {
-  getFiles,
+  fetchFiles,
+  fetchFilesNames,
   saveFiles,
   deleteFile,
+  downLoadFile,
 };

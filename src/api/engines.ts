@@ -92,12 +92,12 @@ export interface EngineFilter {
 
 export type EditEngine = Omit<SaveEngine, "files" | "image"> & { engineId: string };
 
-export type LoadEngineDataRequest = {
+export type FetchEngineDataRequest = {
   engineId: number;
   token: string | null;
 };
 
-const loadEngineData = async ({ engineId, token }: LoadEngineDataRequest) => {
+const fetchEngineData = async ({ engineId, token }: FetchEngineDataRequest) => {
   var editEngine = await axios.get<EditEngine>(`/api/editEngine/${engineId}`, {
     headers: { Authorization: token },
   });
@@ -111,6 +111,26 @@ const loadEngineData = async ({ engineId, token }: LoadEngineDataRequest) => {
   }
 
   return data;
+};
+
+type EngineInfoRow = {
+  name: string;
+  value: number | string | boolean;
+};
+
+export type EngineInfoTable = {
+  name: string;
+  rows: EngineInfoRow[];
+};
+
+const fetchEngine = async (engineId: string) => {
+  const engineData = await axios.get<EngineInfoTable[]>(`/api/engines/${engineId}`);
+  return engineData.data;
+};
+
+const fetchEngines = async (searchParams: string) => {
+  const res = await axios.get(`/api/engines${searchParams}`);
+  return res.data;
 };
 
 export type SaveEngine = {
@@ -214,7 +234,7 @@ export type DownloadEngineInCSVRequest = {
   engineModel: string;
 };
 
-export type GetSelectedDataRequest = {
+export type FetchSelectedDataRequest = {
   url: string;
   token: string | null;
 };
@@ -224,7 +244,7 @@ export type SelectedDataProps = {
   $selectedData: Store<SelectData[]>;
 };
 
-const loadSelectedData = async ({ url, token }: GetSelectedDataRequest) => {
+const fetchSelectedData = async ({ url, token }: FetchSelectedDataRequest) => {
   const { data } = await axios.get<SelectData[]>(url, {
     headers: { Authorization: token },
   });
@@ -272,8 +292,10 @@ const downloadEngineInCSVByCondition = async (searchParams: string) => {
 };
 
 export const enginesApi = {
-  loadEngineData,
-  loadSelectedData,
+  fetchEngines,
+  fetchEngine,
+  fetchEngineData,
+  fetchSelectedData,
   saveEngine,
   editEngine,
   deleteEngine,

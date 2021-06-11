@@ -16,7 +16,7 @@ import {
   EngineFilter,
   enginesApi,
   DownloadEngineInCSVRequest,
-  LoadEngineDataRequest,
+  FetchEngineDataRequest,
   EditEngine,
   DeleteEngineRequest,
   EnginesDemo,
@@ -34,8 +34,8 @@ export const downloadEngineInCSVByConditionFx = createEffect<string, void, Error
   enginesApi.downloadEngineInCSVByCondition
 );
 
-const loadEngineDataForCreateFx = createEffect<LoadEngineDataRequest, EditEngine, Error>(
-  enginesApi.loadEngineData
+const loadEngineDataForCreateFx = createEffect<FetchEngineDataRequest, EditEngine, Error>(
+  enginesApi.fetchEngineData
 );
 
 export const loadEngineDataForCreateFxWithToken = attach({
@@ -70,10 +70,7 @@ export const deleteEngineFxWithToken = attach({
   mapParams: (engineId: number, token: string | null) => ({ engineId, token }),
 });
 
-export const getEnginesFx = createEffect<string, EnginesDemo, Error>(async (searchParams) => {
-  const res = await axios.get(`/api/engines${searchParams}`);
-  return res.data;
-});
+export const getEnginesFx = createEffect<string, EnginesDemo, Error>(enginesApi.fetchEngines);
 
 const enginesInitialState: EnginesDemo = {
   totalPages: 0,

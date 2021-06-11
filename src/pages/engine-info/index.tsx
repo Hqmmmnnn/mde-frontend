@@ -19,6 +19,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import { useStore } from "effector-react";
 import { useEffect } from "react";
 import { useParams } from "react-router";
+import { EngineInfoTable } from "../../api/engines";
 import { Header } from "../../features/common/header";
 import { ScrollToTop } from "../../lib/scroll-to-top";
 
@@ -28,7 +29,6 @@ import {
   loadEngineFx,
   downloadFileFx,
   loadFileNamesFx,
-  EngineInfoTable,
 } from "./engine_info_model";
 
 const useStyles = makeStyles({

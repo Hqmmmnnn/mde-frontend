@@ -146,8 +146,8 @@ export const RegisterTab = () => {
 
           {responseFromServer && (
             <Box mt={1.5}>
-              <Typography color="error" component="p" align="center">
-                responseFromServer
+              <Typography color="inherit" component="p" align="center">
+                {responseFromServer}
               </Typography>
             </Box>
           )}

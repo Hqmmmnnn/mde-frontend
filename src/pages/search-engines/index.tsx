@@ -115,7 +115,7 @@ const DownloadEnginesInCSVByConditionButton = () => {
         downloadEngineInCSVByConditionFx(history.location.search);
       }}
     >
-      Скачать найденные двигатели
+      Экспортировать результат поиска
     </Button>
   );
 };

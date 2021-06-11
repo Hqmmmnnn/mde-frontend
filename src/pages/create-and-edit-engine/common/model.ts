@@ -1,5 +1,5 @@
 import { attach, createEffect, restore } from "effector";
-import { enginesApi, GetSelectedDataRequest } from "../../../api/engines";
+import { enginesApi, FetchSelectedDataRequest } from "../../../api/engines";
 import { $token } from "../../../features/common/token-model";
 
 export type SelectData = {
@@ -8,8 +8,8 @@ export type SelectData = {
 };
 
 export const getSelectedData = () => {
-  const loadSelectDataFx = createEffect<GetSelectedDataRequest, SelectData[], Error>(
-    enginesApi.loadSelectedData
+  const loadSelectDataFx = createEffect<FetchSelectedDataRequest, SelectData[], Error>(
+    enginesApi.fetchSelectedData
   );
 
   const loadSelectDataFxWithToken = attach({

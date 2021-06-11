@@ -3,7 +3,7 @@ import {
   EditEngine,
   EditEngineRequest,
   enginesApi,
-  LoadEngineDataRequest,
+  FetchEngineDataRequest,
 } from "../../../api/engines";
 import { createForm } from "effector-forms/dist";
 import {
@@ -40,7 +40,7 @@ export const deleteEngineFileWithTokenFx = attach({
   mapParams: (fileId: string, token: string | null) => ({ fileId, token }),
 });
 
-export const getFilesFx = createEffect<string, EngineFileName[], Error>(filesApi.getFiles);
+export const getFilesFx = createEffect<string, EngineFileName[], Error>(filesApi.fetchFiles);
 
 export const $editEngineFiles = createStore<EngineFileName[]>([])
   .on(getFilesFx.doneData, (_, files) => files)
@@ -213,8 +213,8 @@ export const editEngineForm = createForm({
   validateOn: ["submit"],
 });
 
-const getEditDataForEditFx = createEffect<LoadEngineDataRequest, EditEngine, Error>(
-  enginesApi.loadEngineData
+const getEditDataForEditFx = createEffect<FetchEngineDataRequest, EditEngine, Error>(
+  enginesApi.fetchEngineData
 );
 
 export const loadEngineDataForEditFxWithToken = attach({
